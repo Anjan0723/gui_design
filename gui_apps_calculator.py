@@ -151,7 +151,7 @@ class AppsCalculatorUI:
         self._make_dropdown(self.nt, 8, "Rp_Max", self.nt_rpmax_var, RP_OPTIONS_LABELS, is_no_target=True, has_warning=True)
 
         # Row 9: Q factor with warning label
-        self._make_row(self.nt, 9, "Q_Factor", self.nt_qmin_var, is_input=False, tooltip="Valid range: 10 - 400", has_warning=True)
+        self._make_row(self.nt, 9, "Q_Factor", self.nt_qmin_var, is_input=False, tooltip="Valid range: 10 - 400", has_warning=True, name="nt_qmin")
 
         # Row 10-11: C1 and R1
         self._make_dropdown(self.nt, 10, "C1 (No Target)", self.nt_c1_var, C1_OPTIONS_LABELS)
@@ -168,6 +168,10 @@ class AppsCalculatorUI:
 
         # Row 15: response_time (user input)
         self._make_row(self.nt, 15, "response time", self.nt_response_var, is_input=True)
+
+        # Row 16: ConvTime (calculated)
+        self.nt_convtime_var = tk.StringVar()
+        self._make_row(self.nt, 16, "ConvTime (us)", self.nt_convtime_var, is_input=False)
 
     def _create_max_target_panel(self):
         """Create MAX TARGET panel."""
@@ -231,7 +235,7 @@ class AppsCalculatorUI:
                        anchor="w", padx=4, bd=1, relief="solid")
         lbl.grid(row=row_idx, column=0, columnspan=2, sticky="ew", ipady=4)
 
-    def _make_row(self, parent, row_idx, label_text, var, is_input=True, tooltip=None, has_warning=False):
+    def _make_row(self, parent, row_idx, label_text, var, is_input=True, tooltip=None, has_warning=False, fg_color=None, name=None):
         """Create a label + entry row."""
         tk.Label(parent, text=label_text, bg=COLORS["bg_white"], font=FONTS["normal"],
                 anchor="w", bd=1, relief="solid", padx=4).grid(
@@ -241,7 +245,13 @@ class AppsCalculatorUI:
         e = tk.Entry(parent, textvariable=var, font=FONTS["normal"],
                       width=16, state=state, bg=COLORS["bg_white"],
                       relief="solid", bd=1)
+        if fg_color:
+            e.config(fg=fg_color)
         e.grid(row=row_idx, column=1, sticky="ew", padx=2, pady=0)
+
+        # Store reference for named rows
+        if name:
+            setattr(self, f"{name}_entry", e)
 
         # Add tooltip if provided
         if tooltip:
@@ -421,10 +431,19 @@ class AppsCalculatorUI:
         if q_val is not None:
             if q_val > self.Q_MAX:
                 self._set_warning(self.nt_q_warn, "⚠ Too Large", "red")
+                # Set Qmin value color to red (out of range)
+                if hasattr(self, 'nt_qmin_entry'):
+                    self.nt_qmin_entry.config(fg="#cc0000")
             elif q_val < self.Q_MIN:
                 self._set_warning(self.nt_q_warn, "⚠ Too Small", "orange")
+                # Set Qmin value color to red (out of range)
+                if hasattr(self, 'nt_qmin_entry'):
+                    self.nt_qmin_entry.config(fg="#cc0000")
             else:
+                # Set Qmin value color to green (in range 10-400)
                 self._set_warning(self.nt_q_warn, "", None)
+                if hasattr(self, 'nt_qmin_entry'):
+                    self.nt_qmin_entry.config(fg="#107c10")
         else:
             self._set_warning(self.nt_q_warn, "", None)
 
@@ -487,8 +506,23 @@ class AppsCalculatorUI:
         if f_nt and f_nt > 0:
             min_freq = 16 - (8e6 / f_nt)
             self.nt_min_freq_var.set(f"{min_freq:.2f}")
+
+            # ===== 8. CONV TIME =====
+            # ConvTime = RESP_TIME / (3 × fSENSOR)
+            # Get RESP_TIME from user input (default to 192 if not set)
+            response_str = self.nt_response_var.get()
+            resp_time = safe_float(response_str) if response_str else 192
+
+            # fSENSOR is f_nt (in Hz)
+            # ConvTime in microseconds
+            if f_nt > 0:
+                conv_time_us = (resp_time * 1e-6) / (3 * f_nt) * 1e6  # Convert to microseconds
+                self.nt_convtime_var.set(f"{conv_time_us:.2f}")
+            else:
+                self.nt_convtime_var.set("")
         else:
             self.nt_min_freq_var.set("")
+            self.nt_convtime_var.set("")
 
     def _calculate_max_target(self):
         """Calculate MAX TARGET panel values."""

@@ -71,25 +71,31 @@ class SerialConnection:
         self.connected = False
 
     def write_register(self, address, value):
-        """Write value to register address."""
+        """Write value to register address.
+
+        SPI framing: send address byte, then send value byte.
+        """
         if not self.connected:
             return False
 
         try:
-            # LDC1101 write command format: [address, value]
-            cmd = [address, value]
-            self.serial.write(bytes(cmd))
+            # LDC1101 write: send address first, then value
+            self.serial.write(bytes([address]))
+            self.serial.write(bytes([value]))
             return True
         except serial.SerialException:
             return False
 
     def read_register(self, address):
-        """Read value from register address."""
+        """Read value from register address.
+
+        SPI framing: send (0x80 | address), then read response byte.
+        """
         if not self.connected:
             return None
 
         try:
-            # LDC1101 read command format: [0x80 | address]
+            # LDC1101 read: send 0x80 | address to indicate read operation
             cmd = bytes([0x80 | address])
             self.serial.write(cmd)
             response = self.serial.read(1)

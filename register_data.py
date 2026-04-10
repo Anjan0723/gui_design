@@ -153,17 +153,16 @@ REGISTERS = [
     {
         "name": "LHR_CONFIG",   "address": 0x34, "default": 0x00, "mode": "R/W", "size": 8,
         "description": (
-            "RESERVED[7:3]\nReserved bits\n\n"
-            "LHR_EN\nLHR mode enable\n\n"
-            "LHR_FREQ[2:0]\nLHR conversion frequency"
+            "RESERVED[7:2]\nReserved bits\n\n"
+            "SENSOR_DIV[1:0]\nSensor clock divider\nb00: Divide by 1\nb01: Divide by 2\nb10: Divide by 4\nb11: Divide by 8"
         ),
         "fields": [
-            {"name": "RESERVED[2]", "bit": 7}, {"name": "RESERVED[1]", "bit": 6},
-            {"name": "RESERVED[0]", "bit": 5}, {"name": "LHR_EN",       "bit": 4},
-            {"name": "LHR_FREQ[2]", "bit": 3}, {"name": "LHR_FREQ[1]", "bit": 2},
-            {"name": "LHR_FREQ[0]", "bit": 1},
+            {"name": "RESERVED[7]", "bit": 7}, {"name": "RESERVED[6]", "bit": 6},
+            {"name": "RESERVED[5]", "bit": 5}, {"name": "RESERVED[4]", "bit": 4},
+            {"name": "RESERVED[3]", "bit": 3}, {"name": "RESERVED[2]", "bit": 2},
+            {"name": "SENSOR_DIV[1]", "bit": 1}, {"name": "SENSOR_DIV[0]", "bit": 0},
         ],
-        "readonly_bits": [7, 6, 5],
+        "readonly_bits": [7, 6, 5, 4, 3, 2],
     },
     # ═══════════════════════════════════════════════════════════════
     # Sub-group: "3 data registers (read)"
@@ -201,39 +200,46 @@ REGISTERS = [
     {
         "name": "STATUS",       "address": 0x20, "default": 0x00, "mode": "R", "size": 8,
         "description": (
-            "RP_OK\nRP measurement within thresholds\n\n"
-            "L_OK\nL measurement within thresholds\n\n"
-            "DRDY\nData ready flag\n\n"
-            "LHR_RDY\nLHR conversion complete"
+            "NO_SENSOR_OSC\nNo sensor oscillation flag\n\n"
+            "DRDYB\nData ready (inverted)\n\n"
+            "RP_HIN\nRP high threshold exceeded\n\n"
+            "RP_HI_LON\nRP high threshold latch\n\n"
+            "L_HIN\nL high threshold exceeded\n\n"
+            "L_HI_LON\nL high threshold latch\n\n"
+            "POR_READ\nPower-on reset flag\n\n"
+            "RESERVED[1]\nReserved"
         ),
         "fields": [
-            {"name": "RESERVED[4]", "bit": 7}, {"name": "RESERVED[3]", "bit": 6},
-            {"name": "LHR_RDY",     "bit": 5}, {"name": "RESERVED[2]", "bit": 4},
-            {"name": "DRDY",        "bit": 3}, {"name": "L_OK",         "bit": 2},
-            {"name": "RP_OK",       "bit": 1}, {"name": "RESERVED[0]", "bit": 0},
+            {"name": "NO_SENSOR_OSC", "bit": 7}, {"name": "DRDYB",        "bit": 6},
+            {"name": "RP_HIN",       "bit": 5}, {"name": "RP_HI_LON",    "bit": 4},
+            {"name": "L_HIN",        "bit": 3}, {"name": "L_HI_LON",     "bit": 2},
+            {"name": "RESERVED",     "bit": 1}, {"name": "POR_READ",     "bit": 0},
         ],
         "readonly_bits": [7, 6, 5, 4, 3, 2, 1, 0],
     },
     {
         "name": "LHR_STATUS",   "address": 0x3B, "default": 0x00, "mode": "R", "size": 8,
         "description": (
-            "LHR_ERROR\nLHR measurement error\n\n"
-            "LHR_RDY\nLHR data ready\n\n"
-            "LHR_OFFSET_OK\nOffset calibration valid"
+            "RESERVED[7:5]\nReserved bits\n\n"
+            "ERR_ZC\nZero crossing error\n\n"
+            "ERR_OR\nOut of range error\n\n"
+            "ERR_UR\nUnder range error\n\n"
+            "ERR_OF\nOverflow error\n\n"
+            "LHR_DRDY\nLHR data ready"
         ),
         "fields": [
-            {"name": "RESERVED[4]", "bit": 7}, {"name": "RESERVED[3]", "bit": 6},
-            {"name": "LHR_ERROR",   "bit": 5}, {"name": "LHR_OFFSET_OK", "bit": 4},
-            {"name": "RESERVED[2]", "bit": 3}, {"name": "RESERVED[1]", "bit": 2},
-            {"name": "RESERVED[0]", "bit": 1},
+            {"name": "RESERVED[7]", "bit": 7}, {"name": "RESERVED[6]", "bit": 6},
+            {"name": "RESERVED[5]", "bit": 5}, {"name": "ERR_ZC",       "bit": 4},
+            {"name": "ERR_OR",      "bit": 3}, {"name": "ERR_UR",       "bit": 2},
+            {"name": "ERR_OF",      "bit": 1}, {"name": "LHR_DRDY",     "bit": 0},
         ],
         "readonly_bits": [7, 6, 5, 4, 3, 2, 1, 0],
     },
     {
-        "name": "CHIP_ID",      "address": 0x3F, "default": 0x0D, "mode": "R", "size": 8,
+        "name": "CHIP_ID",      "address": 0x3F, "default": 0xD4, "mode": "R", "size": 8,
         "description": (
             "CHIP_ID[7:0]\nDevice identification\n"
-            "LDC1101: 0x0D"
+            "LDC1101: 0xD4"
         ),
         "fields": [{"name": f"CHIP_ID[{i}]", "bit": i} for i in range(7, -1, -1)],
         "readonly_bits": [7, 6, 5, 4, 3, 2, 1, 0],
