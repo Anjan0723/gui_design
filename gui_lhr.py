@@ -24,12 +24,14 @@ from register_data import REGISTERS
 class LHRPageUI:
     """LHR Page UI with Configuration and Measurement sub-views."""
 
-    def __init__(self, parent, reg_live_values, reg_lw, set_status_callback, reg_map_ui=None):
+    def __init__(self, parent, reg_live_values, reg_lw, set_status_callback, reg_map_ui=None, ser_conn=None, sim_var=None):
         self.parent = parent
         self.reg_live_values = reg_live_values
         self.reg_lw = reg_lw
         self.set_status = set_status_callback
         self.reg_map_ui = reg_map_ui
+        self.ser_conn = ser_conn
+        self.sim_var = sim_var
 
         self.main_frame = tk.Frame(parent, bg=COLORS["bg_main"])
         
@@ -414,24 +416,37 @@ class LHRPageUI:
             time.sleep(0.5)
 
     def _do_read(self):
-        # Simulation: random LHR data or read registers
-        status = self.reg_live_values.get(0x3B, 0x01) # DRDY default 1 for sim
-        # To make it "ready" in sim, periodically set bit 0
-        if time.time() % 2 < 0.5: status |= 0x01
+        # Real Hardware Read or Simulation
+        is_sim = self.sim_var.get() if self.sim_var else False
         
-        msb = self.reg_live_values.get(0x3A, 0)
-        mid = self.reg_live_values.get(0x39, 0)
-        lsb = self.reg_live_values.get(0x38, 0)
-        
-        # If simulation is on (mocked in main), we might want random data
-        # Let's assume the MainGUI handles real serial reads into reg_live_values
-        # For this standalone UI logic:
-        lhr_data = (msb << 16) | (mid << 8) | lsb
-        if lhr_data == 0: # Mock fallback
-             lhr_data = 1000000 + int(math.sin(time.time()) * 5000)
+        if not is_sim and self.ser_conn and self.ser_conn.connected:
+            # Read registers from hardware
+            msb = self.ser_conn.read_register(0x3A)
+            mid = self.ser_conn.read_register(0x39)
+            lsb = self.ser_conn.read_register(0x38)
+            status = self.ser_conn.read_register(0x3B)
+            
+            if msb is not None: self.reg_live_values[0x3A] = msb
+            if mid is not None: self.reg_live_values[0x39] = mid
+            if lsb is not None: self.reg_live_values[0x38] = lsb
+            if status is not None: self.reg_live_values[0x3B] = status
+            
+            lhr_data = (msb << 16) | (mid << 8) | lsb if (msb is not None and mid is not None and lsb is not None) else 0
+        else:
+            # Simulation Mode
+            status = self.reg_live_values.get(0x3B, 0x01) 
+            if time.time() % 2 < 0.5: status |= 0x01
+            
+            msb = self.reg_live_values.get(0x3A, 0)
+            mid = self.reg_live_values.get(0x39, 0)
+            lsb = self.reg_live_values.get(0x38, 0)
+            lhr_data = (msb << 16) | (mid << 8) | lsb
+            
+            if lhr_data == 0: # Mock fallback pattern
+                 lhr_data = 1000000 + int(math.sin(time.time()) * 5000)
 
         # Update UI in main thread
-        self.parent.after(0, lambda: self._update_ui(status, lhr_data))
+        self.parent.after(0, lambda: self._update_ui(status if status is not None else 0, lhr_data))
 
     def _update_ui(self, status, raw_val):
         # Update LEDs

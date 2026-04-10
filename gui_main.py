@@ -23,6 +23,7 @@ from gui_register_map import RegisterMapUI
 from gui_right_panel import RightPanelUI
 from gui_apps_calculator import AppsCalculatorUI
 from gui_lhr import LHRPageUI
+from serial_comm import SerialConnection
 
 
 class MainGUI:
@@ -67,6 +68,8 @@ class MainGUI:
         self.graph_canvas = None
         self.graph_running = False
         self.graph_start_stop_btn = None
+
+        self.ser_conn = SerialConnection()
 
         self._setup_style()
         self._create_menu()
@@ -193,7 +196,7 @@ class MainGUI:
         # LHR Page
         self.lhr_ui = LHRPageUI(
             self.content_area, self.reg_live_values, self.reg_lw, self.set_status,
-            self.reg_map_ui
+            self.reg_map_ui, self.ser_conn, self.sim_var
         )
 
     def _create_right_panel_buttons(self):
@@ -558,34 +561,45 @@ class MainGUI:
             lhr_data = random.randint(0, 16777215)
         else:
             # Real device: read registers
-            # First ensure ALT_CONFIG has SHUTDOWN_EN=0 for active mode
-            alt_config = self.reg_live_values.get(0x05, 0x00)
-            alt_config &= ~0x02  # Clear SHUTDOWN_EN
-            self.reg_live_values[0x05] = alt_config
-
-            # Make sure START_CONFIG is in active mode
-            start_config = self.reg_live_values.get(0x0B, 0x00)
-            start_config &= ~0x03  # Clear FUNC_MODE
-            self.reg_live_values[0x0B] = start_config
+            if not self.ser_conn.connected:
+                return
 
             # Read STATUS (0x20)
-            status_val = self.reg_live_values.get(0x20, 0x00)
+            status_val = self.ser_conn.read_register(0x20)
+            if status_val is not None:
+                self.reg_live_values[0x20] = status_val
 
             # Read RP_DATA_LSB (0x21) first (required by datasheet)
-            rp_lsb = self.reg_live_values.get(0x21, 0x00)
+            rp_lsb = self.ser_conn.read_register(0x21)
             # Then read RP_DATA_MSB (0x22), L_DATA_LSB (0x23), L_DATA_MSB (0x24)
-            rp_msb = self.reg_live_values.get(0x22, 0x00)
-            l_lsb = self.reg_live_values.get(0x23, 0x00)
-            l_msb = self.reg_live_values.get(0x24, 0x00)
+            rp_msb = self.ser_conn.read_register(0x22)
+            l_lsb = self.ser_conn.read_register(0x23)
+            l_msb = self.ser_conn.read_register(0x24)
 
-            rp_data = (rp_msb << 8) | rp_lsb
-            l_data = (l_msb << 8) | l_lsb
+            if rp_lsb is not None: self.reg_live_values[0x21] = rp_lsb
+            if rp_msb is not None: self.reg_live_values[0x22] = rp_msb
+            if l_lsb is not None: self.reg_live_values[0x23] = l_lsb
+            if l_msb is not None: self.reg_live_values[0x24] = l_msb
+
+            rp_data = (rp_msb << 8) | rp_lsb if (rp_msb is not None and rp_lsb is not None) else 0
+            l_data = (l_msb << 8) | l_lsb if (l_msb is not None and l_lsb is not None) else 0
 
             # Read LHR_DATA in order: LSB (0x38), MID (0x39), MSB (0x3A)
-            lhr_lsb = self.reg_live_values.get(0x38, 0x00)
-            lhr_mid = self.reg_live_values.get(0x39, 0x00)
-            lhr_msb = self.reg_live_values.get(0x3A, 0x00)
-            lhr_data = (lhr_msb << 16) | (lhr_mid << 8) | lhr_lsb
+            lhr_lsb = self.ser_conn.read_register(0x38)
+            lhr_mid = self.ser_conn.read_register(0x39)
+            lhr_msb = self.ser_conn.read_register(0x3A)
+            
+            if lhr_lsb is not None: self.reg_live_values[0x38] = lhr_lsb
+            if lhr_mid is not None: self.reg_live_values[0x39] = lhr_mid
+            if lhr_msb is not None: self.reg_live_values[0x3A] = lhr_msb
+            
+            lhr_data = (lhr_msb << 16) | (lhr_mid << 8) | lhr_lsb if (lhr_msb is not None and lhr_mid is not None and lhr_lsb is not None) else 0
+            
+            # Read LHR_STATUS (0x3B)
+            lhr_status = self.ser_conn.read_register(0x3B)
+            if lhr_status is not None:
+                self.reg_live_values[0x3B] = lhr_status
+                status_val = lhr_status # Use LHR_STATUS for the DRDY logic below if needed
 
         # Update UI
         # DRDYB is bit 6, active low (0 = data ready)
@@ -666,7 +680,11 @@ class MainGUI:
     def connect_and_verify(self):
         """Connect to device and verify CHIP_ID."""
         port = self.port_var.get()
-        if not port or "(Mock)" in port:
+        if not port:
+            self.set_status("Please select a COM port.")
+            return
+
+        if "(Mock)" in port:
             # Mock mode - simulate chip verification
             chip_id = self.reg_live_values.get(0x3F, 0xD4)
             if chip_id == 0xD4:
@@ -677,29 +695,23 @@ class MainGUI:
                 self.set_status("Device not recognized")
             return
 
-        # Real device - try to read CHIP_ID
-        try:
-            import serial
-            ser = serial.Serial(port=port, baudrate=115200, timeout=1)
-            # Read CHIP_ID (0x3F): send 0x80 | 0x3F = 0xBF
-            ser.write(bytes([0xBF]))
-            response = ser.read(1)
-            ser.close()
-
-            if response:
-                chip_id = response[0]
-                if chip_id == 0xD4:
-                    self.conn_lbl.config(text="  LDC1101 detected ✓  ", bg=COLORS["success"])
-                    self.set_status("LDC1101 detected - Connection successful")
-                else:
-                    self.conn_lbl.config(text="  Device not recognized  ", bg=COLORS["error"])
-                    self.set_status(f"Device not recognized (CHIP_ID=0x{chip_id:02X})")
+        # Real device - try to connect and read CHIP_ID
+        self.ser_conn.port = port
+        if self.ser_conn.connect():
+            # Read CHIP_ID (0x3F)
+            chip_id = self.ser_conn.read_register(0x3F)
+            if chip_id == 0xD4:
+                self.conn_lbl.config(text="  LDC1101 detected ✓  ", bg=COLORS["success"])
+                self.set_status("LDC1101 detected - Connection successful")
+                # Update CHIP_ID in live values
+                self.reg_live_values[0x3F] = chip_id
             else:
                 self.conn_lbl.config(text="  Device not recognized  ", bg=COLORS["error"])
-                self.set_status("No response from device")
-        except serial.SerialException as e:
+                self.set_status(f"Device not recognized (CHIP_ID=0x{chip_id if chip_id else 0:02X})")
+                self.ser_conn.disconnect()
+        else:
             self.conn_lbl.config(text="  NOT CONNECTED  ", bg=COLORS["error"])
-            self.set_status(f"Connection failed: {e}")
+            self.set_status("Connection failed: Could not open port.")
 
     def set_status(self, msg):
         """Update status bar."""
@@ -837,6 +849,9 @@ class MainGUI:
         self.write_buffer[addr] = val
         self.temp_bit_state = None
 
+        if self.ser_conn.connected:
+            self.ser_conn.write_register(addr, val)
+
         self.reg_map_ui.update_row(reg)
         self.update_bit_panel(reg, val)
         self.set_status(f"Written 0x{val:02X} -> {reg['name']} (0x{addr:02X})")
@@ -858,7 +873,14 @@ class MainGUI:
         if not reg:
             return
         addr = reg["address"]
-        val = self.reg_live_values.get(addr, reg.get("default", 0))
+        
+        if self.ser_conn.connected:
+            val = self.ser_conn.read_register(addr)
+            if val is not None:
+                self.reg_live_values[addr] = val
+        else:
+            val = self.reg_live_values.get(addr, reg.get("default", 0))
+
         self.read_val_var.set(str(val))
         self.reg_lr[addr] = f"0x{val:02X}"
         self.reg_map_ui.update_row(reg)
