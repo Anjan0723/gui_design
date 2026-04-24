@@ -19,6 +19,7 @@ COLORS = {
     "fg_light_gray": "#aaaaaa",
     "fg_label": "#333333",
     "accent_blue": "#0078d7",
+    "accent": "#0078d7",
     "success": "#107c10",
     "error": "#cc0000",
     "warning": "#ff4444",
@@ -54,7 +55,6 @@ TABLE_COLUMNS = (
 
 # Sidebar items
 SIDEBAR_ITEMS = [
-    "RP+L",
     "LHR",
     "Apps Calculator",
     "Register Configuration",
@@ -76,3 +76,27 @@ R2_OPTIONS_COUNT = 64
 
 # Debug flag
 DEBUG = False
+
+# Logging configuration
+import logging
+import os
+
+LOG_DIR = os.path.join(os.getcwd(), "logs")
+LOG_FILE = os.path.join(LOG_DIR, "ldc1101_gui.log")
+LOG_LEVEL = logging.DEBUG if DEBUG else logging.INFO
+
+def setup_logging():
+    """Initialize logging for the application."""
+    os.makedirs(LOG_DIR, exist_ok=True)
+
+    logging.basicConfig(
+        level=LOG_LEVEL,
+        format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
+        handlers=[
+            logging.FileHandler(LOG_FILE, mode="a"),
+            logging.StreamHandler()
+        ]
+    )
+    return logging.getLogger("LDC1101_GUI")
+
+logger = setup_logging()

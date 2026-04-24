@@ -15,10 +15,10 @@ import os
 # Matplotlib imports
 import matplotlib
 matplotlib.use("TkAgg")
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
 from matplotlib.figure import Figure
 
-from config import COLORS, FONTS
+from config import COLORS, FONTS, logger
 from register_data import REGISTERS
 
 class LHRPageUI:
@@ -32,6 +32,13 @@ class LHRPageUI:
         self.reg_map_ui = reg_map_ui
         self.ser_conn = ser_conn
         self.sim_var = sim_var
+        
+        # Thread-safe mirrored variables
+        self._is_sim_mode = sim_var.get() if sim_var else False
+        if sim_var:
+            def sync_sim(*args):
+                self._is_sim_mode = sim_var.get()
+            sim_var.trace_add("write", sync_sim)
 
         self.main_frame = tk.Frame(parent, bg=COLORS["bg_main"])
         
@@ -52,12 +59,23 @@ class LHRPageUI:
         self.stat_avg = tk.StringVar(value="0")
         self.stat_std = tk.StringVar(value="0")
         
+        # Chart control flags
+        self.autoscale_x = tk.BooleanVar(value=True)
+        self.autoscale_y = tk.BooleanVar(value=False)
+        self.smooth_updates = tk.BooleanVar(value=True)
+        self.show_x_scale = tk.BooleanVar(value=True)
+        self.show_y_scale = tk.BooleanVar(value=True)
+        self.show_palette = tk.BooleanVar(value=True)
+        self.show_legend = tk.BooleanVar(value=False)
+        self.marker_spacing = tk.StringVar(value="Uniform")
+        
         # Polling & Graph Data
         self.is_polling = False
         self.poll_thread = None
         self.data_buffer = deque(maxlen=100)
         self.sample_count = 0
         self.raw_data_history = []
+        self.update_counter = 0
         
         # Create sub-view frames
         self.config_frame = tk.Frame(self.main_frame, bg=COLORS["bg_main"])
@@ -264,10 +282,13 @@ class LHRPageUI:
         graph_ctrl.pack(fill="x")
         
         tk.Label(graph_ctrl, text="Data to display:", bg=COLORS["bg_main"]).pack(side="left")
-        ttk.OptionMenu(graph_ctrl, self.data_to_display_var, "Count", "Count", "Inductance (uH)", "Frequency (MHz)").pack(side="left", padx=5)
+        self.display_om = ttk.OptionMenu(graph_ctrl, self.data_to_display_var, "Frequency (MHz)", "Frequency (MHz)", "Count")
+        self.display_om.pack(side="left", padx=5)
+        self.data_to_display_var.trace_add("write", self._on_display_type_change)
         
         tk.Label(graph_ctrl, text="Graph update rate:", bg=COLORS["bg_main"]).pack(side="left", padx=(20, 0))
-        ttk.OptionMenu(graph_ctrl, self.graph_update_rate_var, "1:1", "1:1", "1:2", "1:5", "1:10").pack(side="left", padx=5)
+        self.rate_om = ttk.OptionMenu(graph_ctrl, self.graph_update_rate_var, "1:10", "1:1", "1:2", "1:5", "1:10", "1:20", "1:50")
+        self.rate_om.pack(side="left", padx=5)
         
         # Matplotlib Strip Chart
         self.fig = Figure(figsize=(5, 4), dpi=100)
@@ -275,9 +296,35 @@ class LHRPageUI:
         self.ax.set_xlabel("Samples")
         self.ax.set_ylabel("Count")
         self.ax.grid(True, alpha=0.3)
+        self.ax.set_ylim(0, 1)
+        self.ax.set_xlim(0, 100)
         
         self.canvas = FigureCanvasTkAgg(self.fig, master=right_panel)
         self.canvas.get_tk_widget().pack(fill="both", expand=True)
+        self.canvas.get_tk_widget().bind("<Button-3>", self._show_context_menu)
+
+        # Hidden standard toolbar to reuse its functions
+        self.nav_toolbar = NavigationToolbar2Tk(self.canvas, right_panel)
+        self.nav_toolbar.pack_forget()
+
+        # Custom small toolbar buttons
+        self.btn_frame = tk.Frame(right_panel, bg=COLORS["bg_main"])
+        self.btn_frame.place(relx=1.0, rely=1.0, anchor="se", x=-10, y=-30)
+        
+        # Tooltip for coordinates (simple version)
+        self.coord_label = tk.Label(right_panel, text="", font=FONTS["small"], bg=COLORS["bg_main"], fg="white")
+        self.coord_label.place(relx=0.05, rely=0.95, anchor="sw")
+
+        btn_style = {"width": 3, "font": ("Arial", 10), "bg": "#444444", "fg": "white", "relief": "raised", "bd": 1}
+        self.crosshair_btn = tk.Button(self.btn_frame, text="✛", command=self._toggle_crosshair, **btn_style)
+        self.crosshair_btn.pack(side="left", padx=1)
+        self.zoom_btn = tk.Button(self.btn_frame, text="⊕", command=self._show_zoom_popup, **btn_style)
+        self.zoom_btn.pack(side="left", padx=1)
+        self.pan_btn = tk.Button(self.btn_frame, text="✥", command=self.nav_toolbar.pan, **btn_style)
+        self.pan_btn.pack(side="left", padx=1)
+        
+        self.crosshair_active = False
+        self.cid_motion = None
 
     # ═══════════════════════════════════════════════════════════════
     #  LOGIC & EVENTS
@@ -287,7 +334,14 @@ class LHRPageUI:
         """Sync UI controls with current register values."""
         # FUNC_MODE
         mode = self.reg_live_values.get(0x0B, 0x01) & 0x03
-        self.mode_var.set("Running" if mode == 0 else "Sleep")
+        
+        # Only allow "Running" if actually connected or in sim mode
+        is_connected = self.ser_conn and self.ser_conn.connected
+        is_sim = not is_connected
+        if is_connected or is_sim:
+            self.mode_var.set("Running" if mode == 0 else "Sleep")
+        else:
+            self.mode_var.set("Sleep")   # always Sleep when disconnected
         
         # RID
         rid = self.reg_live_values.get(0x3E, 0x00)
@@ -329,14 +383,19 @@ class LHRPageUI:
         self.rp_min_cb.current(7 - rpmin) # Correct mapping based on RP_OPTIONS
 
     def _on_mode_toggle(self):
-        new_mode = self.mode_var.get()
-        func_mode = 0 if new_mode == "Running" else 1
-        self._write_reg_bits(0x0B, 0, 0x03, func_mode)
-        
-        if new_mode == "Running":
-            self._start_polling()
+        """Handle Sleep/Running toggle button click."""
+        is_connected = bool(self.ser_conn and self.ser_conn.connected)
+        # When not connected, automatically fall back to simulation mode
+        is_sim = self._is_sim_mode or not is_connected
+
+        if self.mode_var.get() == "Running":
+            # Write FUNC_MODE = 0x00 (Active) to register 0x0B
+            val = self.reg_live_values.get(0x0B, 0x01) & ~0x03
+            self._write_reg(0x0B, val)
         else:
-            self._stop_polling()
+            # Write FUNC_MODE = 0x01 (Sleep) to register 0x0B
+            val = (self.reg_live_values.get(0x0B, 0x01) & ~0x03) | 0x01
+            self._write_reg(0x0B, val)
 
     def _browse_log_file(self):
         path = filedialog.asksaveasfilename(defaultextension=".csv", initialfile="lhr_data_log.csv")
@@ -399,64 +458,45 @@ class LHRPageUI:
     #  POLLING & PLOTTING
     # ═══════════════════════════════════════════════════════════════
 
-    def _start_polling(self):
-        if not self.is_polling:
-            self.is_polling = True
-            self.poll_thread = threading.Thread(target=self._poll_loop, daemon=True)
-            self.poll_thread.start()
-            self.set_status("LHR Polling Started")
+    def update_from_main_poll(self, status, lhr_data):
+        """Update LHR UI with data polled from the main thread."""
+        if self.mode_var.get() != "Running":
+            return
+            
+        self.parent.after(100, lambda: self._update_ui(status, lhr_data))
 
     def _stop_polling(self):
-        self.is_polling = False
-        self.set_status("LHR Polling Stopped")
-
-    def _poll_loop(self):
-        while self.is_polling:
-            self._do_read()
-            time.sleep(0.5)
-
-    def _do_read(self):
-        # Real Hardware Read or Simulation
-        is_sim = self.sim_var.get() if self.sim_var else False
-        
-        if not is_sim and self.ser_conn and self.ser_conn.connected:
-            # Read registers from hardware
-            msb = self.ser_conn.read_register(0x3A)
-            mid = self.ser_conn.read_register(0x39)
-            lsb = self.ser_conn.read_register(0x38)
-            status = self.ser_conn.read_register(0x3B)
-            
-            if msb is not None: self.reg_live_values[0x3A] = msb
-            if mid is not None: self.reg_live_values[0x39] = mid
-            if lsb is not None: self.reg_live_values[0x38] = lsb
-            if status is not None: self.reg_live_values[0x3B] = status
-            
-            lhr_data = (msb << 16) | (mid << 8) | lsb if (msb is not None and mid is not None and lsb is not None) else 0
-        else:
-            # Simulation Mode
-            status = self.reg_live_values.get(0x3B, 0x01) 
-            if time.time() % 2 < 0.5: status |= 0x01
-            
-            msb = self.reg_live_values.get(0x3A, 0)
-            mid = self.reg_live_values.get(0x39, 0)
-            lsb = self.reg_live_values.get(0x38, 0)
-            lhr_data = (msb << 16) | (mid << 8) | lsb
-            
-            if lhr_data == 0: # Mock fallback pattern
-                 lhr_data = 1000000 + int(math.sin(time.time()) * 5000)
-
-        # Update UI in main thread
-        self.parent.after(0, lambda: self._update_ui(status if status is not None else 0, lhr_data))
+        """Stopped by main GUI if needed."""
+        pass
 
     def _update_ui(self, status, raw_val):
+        # Check connection status OR simulation mode
+        is_connected = self.ser_conn and self.ser_conn.connected
+        is_sim = not is_connected
+        
         # Update LEDs
         for i, bit_name in enumerate(["LHR_DRDY", "ERR_OF", "ERR_UR", "ERR_OR", "ERR_ZC"]):
             # LHR_STATUS bit mapping: 0=DRDY, 1=OF, 2=UR, 3=OR, 4=ZC
-            state = (status >> i) & 1
-            color = COLORS["success"] if ((i == 0 and state) or (i > 0 and not state)) else COLORS["error"]
+            if is_connected or is_sim:
+                state = (status >> i) & 1
+                color = COLORS["success"] if ((i == 0 and state) or (i > 0 and not state)) else COLORS["error"]
+            else:
+                color = "gray"
             self.leds[bit_name].delete("all")
             self.leds[bit_name].create_rectangle(0, 0, 40, 12, fill=color)
         
+        if not is_connected and not is_sim:
+            # Force statistics to 0 and clear history
+            self.stat_min.set("0")
+            self.stat_max.set("0")
+            self.stat_avg.set("0")
+            self.stat_std.set("0")
+            self.raw_data_history = []
+            self.data_buffer.clear()
+            # Still refresh graph to show flat empty canvas
+            self._refresh_graph(self.data_to_display_var.get())
+            return
+
         # Process Data point
         self.raw_data_history.append(raw_val)
         display_val = raw_val
@@ -464,6 +504,7 @@ class LHRPageUI:
         # Calculation
         f_clkin = self.clkin_freq_var.get() * 1e6
         sdiv_idx = self.clk_div_cb.current()
+        if sdiv_idx < 0: sdiv_idx = 0 # Fallback if not selected
         sdiv = 1 << sdiv_idx
         f_sensor = f_clkin * sdiv * raw_val / (2**24)
         
@@ -501,22 +542,292 @@ class LHRPageUI:
             self._refresh_graph(view_type)
 
     def _refresh_graph(self, ylabel):
+        if not self.smooth_updates.get():
+            # If not smooth, we might want to skip some draws or use different logic
+            # but usually immediate draw is fine for TkAgg
+            pass
+
         self.ax.clear()
         self.ax.set_xlabel("Samples")
         self.ax.set_ylabel(ylabel)
         self.ax.set_title(f"LHR {ylabel} Strip Chart")
+        
+        # Visibility Toggles
+        self.ax.xaxis.set_visible(self.show_x_scale.get())
+        self.ax.yaxis.set_visible(self.show_y_scale.get())
+        self.ax.spines['bottom'].set_visible(self.show_x_scale.get())
+        self.ax.spines['left'].set_visible(self.show_y_scale.get())
+        self.ax.spines['top'].set_visible(False)
+        self.ax.spines['right'].set_visible(False)
+        
         self.ax.grid(True, alpha=0.3)
         
         data = list(self.data_buffer)
-        self.ax.plot(data, color=COLORS["accent_blue"], linewidth=1.5)
-        
-        # Auto-scale Y with some margin
         if data:
-            dmin, dmax = min(data), max(data)
-            margin = (dmax - dmin) * 0.1 or dmax * 0.01 or 1
-            self.ax.set_ylim(dmin - margin, dmax + margin)
+            self.ax.plot(data, color=COLORS["accent_blue"], linewidth=1.5)
             
+            # Auto-scale Y
+            if self.autoscale_y.get():
+                dmin, dmax = min(data), max(data)
+                margin = (dmax - dmin) * 0.1 or dmax * 0.01 or 1
+                self.ax.set_ylim(dmin - margin, dmax + margin)
+            
+            # Auto-scale X (scroll)
+            if self.autoscale_x.get():
+                # X-axis is naturally autoscaled by plot unless we set limits
+                pass
+            else:
+                self.ax.set_xlim(0, 100) # Fixed view
+        else:
+            # Show empty line at 0
+            self.ax.plot([0]*100, color=COLORS["accent_blue"], alpha=0)
+            self.ax.set_ylim(0, 1)
+
         self.canvas.draw()
+
+    def _on_display_type_change(self, *args):
+        """Reset chart and stats when switching display mode."""
+        self.data_buffer.clear()
+        self.raw_data_history = []
+        self.stat_min.set("0")
+        self.stat_max.set("0")
+        self.stat_avg.set("0")
+        self.stat_std.set("0")
+        self._refresh_graph(self.data_to_display_var.get())
+
+    def _show_context_menu(self, event):
+        menu = tk.Menu(self.parent, tearoff=0)
+        
+        menu.add_command(label="Copy Data", command=self._copy_data_to_clipboard)
+        menu.add_command(label="Description and Tip...", command=lambda: messagebox.showinfo("Tip", "LHR Mode provides 24-bit resolution for high-precision inductance sensing."))
+        
+        # Visible Items Sub-menu
+        visible_menu = tk.Menu(menu, tearoff=0)
+        visible_menu.add_checkbutton(label="Plot Legend", variable=self.show_legend, command=self._toggle_legend)
+        visible_menu.add_checkbutton(label="Graph Palette", variable=self.show_palette, command=self._toggle_palette)
+        visible_menu.add_checkbutton(label="X Scale", variable=self.show_x_scale, command=self._toggle_axes)
+        visible_menu.add_checkbutton(label="Y Scale", variable=self.show_y_scale, command=self._toggle_axes)
+        menu.add_cascade(label="Visible Items", menu=visible_menu)
+        
+        menu.add_separator()
+        menu.add_command(label="Clear Graph", command=self._clear_graph)
+        menu.add_command(label="Create Annotation", command=self._feature_not_available)
+        menu.add_command(label="Delete All Annotations", command=self._feature_not_available)
+        
+        menu.add_separator()
+        
+        # Marker Spacing Sub-menu
+        marker_menu = tk.Menu(menu, tearoff=0)
+        marker_menu.add_radiobutton(label="Uniform", variable=self.marker_spacing, value="Uniform")
+        marker_menu.add_radiobutton(label="Arbitrary", variable=self.marker_spacing, value="Arbitrary")
+        menu.add_cascade(label="Marker Spacing", menu=marker_menu)
+        
+        menu.add_checkbutton(label="AutoScale X", variable=self.autoscale_x)
+        menu.add_checkbutton(label="AutoScale Y", variable=self.autoscale_y)
+        menu.add_checkbutton(label="Smooth Updates", variable=self.smooth_updates)
+        
+        # Export Sub-menu
+        export_menu = tk.Menu(menu, tearoff=0)
+        export_menu.add_command(label="Export Data To Clipboard", command=self._copy_data_to_clipboard)
+        export_menu.add_command(label="Export Data To Excel", command=self._export_data_to_excel)
+        export_menu.add_command(label="Export Data To DIAdem", command=self._feature_not_available)
+        menu.add_cascade(label="Export", menu=export_menu)
+        
+        menu.post(event.x_root, event.y_root)
+
+    def _toggle_palette(self):
+        if self.show_palette.get():
+            self.btn_frame.place(relx=1.0, rely=1.0, anchor="se", x=-10, y=-30)
+        else:
+            self.btn_frame.place_forget()
+
+    def _toggle_legend(self):
+        if self.show_legend.get():
+            self.ax.legend(loc="upper right", fontsize=8)
+        else:
+            leg = self.ax.get_legend()
+            if leg: leg.remove()
+        self.canvas.draw_idle()
+
+    def _toggle_axes(self):
+        self.ax.xaxis.set_visible(self.show_x_scale.get())
+        self.ax.yaxis.set_visible(self.show_y_scale.get())
+        self.canvas.draw_idle()
+
+    def _clear_graph(self):
+        self.data_buffer.clear()
+        self.raw_data_history = []
+        self.stat_min.set("0")
+        self.stat_max.set("0")
+        self.stat_avg.set("0")
+        self.stat_std.set("0")
+        self._refresh_graph(self.data_to_display_var.get())
+
+    def _copy_data_to_clipboard(self):
+        data = list(self.data_buffer)
+        if not data:
+            messagebox.showwarning("Warning", "No data to copy.")
+            return
+        text = "Sample\tValue\n"
+        for i, val in enumerate(data):
+            text += f"{i}\t{val}\n"
+        self.parent.clipboard_clear()
+        self.parent.clipboard_append(text)
+        messagebox.showinfo("Success", "Data copied to clipboard.")
+
+    def _export_data_to_excel(self):
+        data = list(self.data_buffer)
+        if not data:
+            messagebox.showwarning("Warning", "No data to export.")
+            return
+        path = filedialog.asksaveasfilename(defaultextension=".csv", filetypes=[("CSV Files", "*.csv")])
+        if path:
+            try:
+                with open(path, 'w', newline='') as f:
+                    writer = csv.writer(f)
+                    writer.writerow(["Sample", "Value"])
+                    for i, val in enumerate(data):
+                        writer.writerow([i, val])
+                messagebox.showinfo("Success", f"Data exported to {path}")
+            except Exception as e:
+                messagebox.showerror("Error", f"Could not export data: {e}")
+
+    def _feature_not_available(self):
+        messagebox.showinfo("Info", "Feature not available in this version.")
+
+    def _toggle_crosshair(self):
+        self.crosshair_active = not self.crosshair_active
+        if self.crosshair_active:
+            self.crosshair_btn.config(relief="sunken", bg="#666666")
+            self.cid_motion = self.canvas.mpl_connect("motion_notify_event", self._on_mouse_move)
+        else:
+            self.crosshair_btn.config(relief="raised", bg="#444444")
+            if self.cid_motion:
+                self.canvas.mpl_disconnect(self.cid_motion)
+                self.cid_motion = None
+            self.coord_label.config(text="")
+
+    def _on_mouse_move(self, event):
+        if event.inaxes:
+            x, y = event.xdata, event.ydata
+            self.coord_label.config(text=f"x={x:.1f}  y={y:.4f}")
+        else:
+            self.coord_label.config(text="")
+
+    def _show_zoom_popup(self):
+        """Show zoom/interaction mode popup panel above the zoom button."""
+        # Destroy any existing popup
+        if hasattr(self, '_zoom_popup') and self._zoom_popup and self._zoom_popup.winfo_exists():
+            self._zoom_popup.destroy()
+            return
+
+        popup = tk.Toplevel()
+        popup.overrideredirect(True)        # no title bar / decorations
+        popup.configure(bg="#2b2b2b")
+        popup.attributes("-topmost", True)
+
+        # Position popup above the zoom button
+        self.zoom_btn.update_idletasks()
+        bx = self.zoom_btn.winfo_rootx()
+        by = self.zoom_btn.winfo_rooty()
+        popup.geometry(f"138x92+{bx - 50}+{by - 98}")
+
+        self._zoom_popup = popup
+
+        # Track active mode (default = "zoom_xy")
+        if not hasattr(self, '_active_zoom_mode'):
+            self._active_zoom_mode = "zoom_xy"
+
+        BTN_W = 40
+        BTN_H = 36
+        INACTIVE_BG = "#3c3f41"
+        ACTIVE_BG   = "#2d6a9f"
+        BTN_FG      = "white"
+        FONT        = ("Arial", 14)
+
+        def make_mode_btn(parent, symbol, mode, tooltip_text, row, col):
+            bg = ACTIVE_BG if mode == self._active_zoom_mode else INACTIVE_BG
+
+            def on_click():
+                self._active_zoom_mode = mode
+                self._apply_zoom_mode(mode)
+                popup.destroy()
+
+            btn = tk.Button(
+                parent, text=symbol, width=3, height=1,
+                font=FONT, bg=bg, fg=BTN_FG,
+                relief="flat", bd=0, cursor="hand2",
+                command=on_click
+            )
+            btn.grid(row=row, column=col, padx=2, pady=2, ipadx=2, ipady=2)
+
+            # Simple tooltip on hover
+            def show_tip(e):
+                tip = tk.Toplevel()
+                tip.overrideredirect(True)
+                tip.geometry(f"+{e.x_root+10}+{e.y_root+10}")
+                tk.Label(tip, text=tooltip_text, bg="#ffffe0", relief="solid", bd=1,
+                         font=("Arial", 8)).pack()
+                btn._tip = tip
+                btn.after(1500, lambda: tip.destroy() if tip.winfo_exists() else None)
+            def hide_tip(e):
+                if hasattr(btn, '_tip') and btn._tip.winfo_exists():
+                    btn._tip.destroy()
+            btn.bind("<Enter>", show_tip)
+            btn.bind("<Leave>", hide_tip)
+            return btn
+
+        grid_frame = tk.Frame(popup, bg="#2b2b2b")
+        grid_frame.pack(padx=4, pady=4)
+
+        # Row 0: AutoFit | Zoom X | Zoom XY
+        make_mode_btn(grid_frame, "⤢", "autofit",  "Auto-fit / Reset view",  0, 0)
+        make_mode_btn(grid_frame, "↔", "zoom_x",   "Zoom X axis only",       0, 1)
+        make_mode_btn(grid_frame, "⤡", "zoom_xy",  "Zoom X and Y (default)", 0, 2)
+        # Row 1: Zoom Y | Pan XY | Pan Free
+        make_mode_btn(grid_frame, "↕", "zoom_y",   "Zoom Y axis only",       1, 0)
+        make_mode_btn(grid_frame, "✛", "pan_xy",   "Pan X and Y",            1, 1)
+        make_mode_btn(grid_frame, "✥", "pan_free", "Pan freely",             1, 2)
+
+        # Close popup when it loses focus
+        popup.focus_set()
+        popup.bind("<FocusOut>", lambda e: popup.destroy() if popup.winfo_exists() else None)
+        popup.bind("<Escape>",   lambda e: popup.destroy())
+
+    def _apply_zoom_mode(self, mode):
+        """Apply the selected zoom/pan mode to the matplotlib toolbar."""
+        # Always reset toolbar to neutral state first
+        # (calling zoom/pan a second time on an active mode toggles it off)
+        try:
+            current = self.nav_toolbar.mode.name if hasattr(self.nav_toolbar.mode, 'name') else str(self.nav_toolbar.mode)
+        except Exception:
+            current = ""
+
+        if mode == "autofit":
+            self.nav_toolbar.home()
+
+        elif mode == "zoom_xy":
+            # Standard XY zoom — engage zoom mode
+            if "ZOOM" not in current.upper():
+                self.nav_toolbar.zoom()
+
+        elif mode == "zoom_x":
+            # Zoom mode then lock Y: after user draws zoom box, restore Y limits
+            if "ZOOM" not in current.upper():
+                self.nav_toolbar.zoom()
+            self._zoom_x_only = True   # flag checked in _on_zoom_complete (optional enhancement)
+
+        elif mode == "zoom_y":
+            if "ZOOM" not in current.upper():
+                self.nav_toolbar.zoom()
+            self._zoom_y_only = True
+
+        elif mode in ("pan_xy", "pan_free"):
+            if "PAN" not in current.upper():
+                self.nav_toolbar.pan()
+
+        # Redraw
+        self.canvas.draw_idle()
 
     def _log_to_file(self, raw, freq, ind):
         file_path = self.log_path_var.get()
@@ -528,4 +839,4 @@ class LHRPageUI:
                     writer.writerow(["Timestamp", "LHR_Count", "Freq_MHz", "Inductance_uH"])
                 writer.writerow([time.strftime("%Y-%m-%d %H:%M:%S"), raw, f"{freq/1e6:.6f}", f"{ind:.6f}"])
         except Exception as e:
-            print(f"Logging error: {e}")
+            logger.error(f"Failed to write log: {e}")

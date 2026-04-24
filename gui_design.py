@@ -280,7 +280,7 @@ left_sb = ttk.LabelFrame(body, text="Selection", width=140)
 left_sb.pack(side="left", fill="y", padx=(0, 4), pady=0)
 left_sb.pack_propagate(False)
 
-sel_items = ["RP+L", "LHR", "Apps Calculator", "Register Configuration", "About"]
+sel_items = ["LHR", "Apps Calculator", "Register Configuration", "About"]
 sel_var   = tk.StringVar(value="Register Configuration")
 
 # ── CONTENT AREA (center + right) ────────────────────────────
@@ -960,8 +960,6 @@ tk.Label(status_bar, text="Version: 1.0.0.7", bg="#333333", fg="#aaaaaa",
 conn_lbl = tk.Label(status_bar, text="  NOT CONNECTED  ",
                      bg="#cc0000", fg="white", font=("Arial", 8, "bold"))
 conn_lbl.pack(side="right", padx=4, pady=2)
-tk.Label(status_bar, text="Texas Instruments",
-         bg="#c8102e", fg="white", font=("Arial", 8, "bold")).pack(side="right", padx=2, pady=2)
 
 # ═══════════════════════════════════════════════════════════════
 #  SIDEBAR SELECTION — show/hide panels

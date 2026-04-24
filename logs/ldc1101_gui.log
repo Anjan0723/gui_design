@@ -1,0 +1,90 @@
+2026-04-24 13:09:07,195 [INFO] LDC1101_GUI: Initializing LDC1101 GUI application
+2026-04-24 13:09:07,847 [INFO] LDC1101_GUI: Starting main event loop
+2026-04-24 13:09:20,848 [ERROR] LDC1101_Serial: Failed to connect to COM4: could not open port 'COM4': OSError(22, 'The semaphore timeout period has expired.', None, 121)
+2026-04-24 13:09:20,849 [INFO] LDC1101_GUI: Connection attempt 1 failed, retrying...
+2026-04-24 13:09:34,162 [ERROR] LDC1101_Serial: Failed to connect to COM4: could not open port 'COM4': OSError(22, 'The semaphore timeout period has expired.', None, 121)
+2026-04-24 13:09:34,162 [INFO] LDC1101_GUI: Connection attempt 2 failed, retrying...
+2026-04-24 13:09:47,476 [ERROR] LDC1101_Serial: Failed to connect to COM4: could not open port 'COM4': OSError(22, 'The semaphore timeout period has expired.', None, 121)
+2026-04-24 13:09:47,484 [ERROR] LDC1101_GUI: Connection failed after 3 attempts
+2026-04-24 13:11:03,819 [INFO] LDC1101_GUI: Application closing - cleaning up resources
+2026-04-24 13:11:03,951 [INFO] LDC1101_GUI: Application closed
+2026-04-24 13:11:10,771 [INFO] LDC1101_GUI: Initializing LDC1101 GUI application
+2026-04-24 13:11:10,919 [INFO] LDC1101_GUI: Starting main event loop
+2026-04-24 13:11:23,920 [ERROR] LDC1101_Serial: Failed to connect to COM4: could not open port 'COM4': OSError(22, 'The semaphore timeout period has expired.', None, 121)
+2026-04-24 13:11:23,920 [INFO] LDC1101_GUI: Connection attempt 1 failed, retrying...
+2026-04-24 13:11:37,234 [ERROR] LDC1101_Serial: Failed to connect to COM4: could not open port 'COM4': OSError(22, 'The semaphore timeout period has expired.', None, 121)
+2026-04-24 13:11:37,235 [INFO] LDC1101_GUI: Connection attempt 2 failed, retrying...
+2026-04-24 13:11:42,203 [INFO] LDC1101_GUI: Application closing - cleaning up resources
+2026-04-24 13:11:42,362 [INFO] LDC1101_GUI: Application closed
+2026-04-24 13:11:54,582 [INFO] LDC1101_GUI: Initializing LDC1101 GUI application
+2026-04-24 13:11:54,738 [INFO] LDC1101_GUI: Starting main event loop
+2026-04-24 13:12:07,745 [ERROR] LDC1101_Serial: Failed to connect to COM4: could not open port 'COM4': OSError(22, 'The semaphore timeout period has expired.', None, 121)
+2026-04-24 13:12:07,746 [INFO] LDC1101_GUI: Connection attempt 1 failed, retrying...
+2026-04-24 13:12:21,060 [ERROR] LDC1101_Serial: Failed to connect to COM4: could not open port 'COM4': OSError(22, 'The semaphore timeout period has expired.', None, 121)
+2026-04-24 13:12:21,060 [INFO] LDC1101_GUI: Connection attempt 2 failed, retrying...
+2026-04-24 13:12:34,374 [ERROR] LDC1101_Serial: Failed to connect to COM4: could not open port 'COM4': OSError(22, 'The semaphore timeout period has expired.', None, 121)
+2026-04-24 13:12:34,376 [ERROR] LDC1101_GUI: Connection failed after 3 attempts
+2026-04-24 14:01:16,764 [ERROR] LDC1101_Serial: Failed to connect to COM4: could not open port 'COM4': OSError(22, 'The semaphore timeout period has expired.', None, 121)
+2026-04-24 14:01:16,764 [INFO] LDC1101_GUI: Connection attempt 1 failed, retrying...
+2026-04-24 14:01:30,078 [ERROR] LDC1101_Serial: Failed to connect to COM4: could not open port 'COM4': OSError(22, 'The semaphore timeout period has expired.', None, 121)
+2026-04-24 14:01:30,078 [INFO] LDC1101_GUI: Connection attempt 2 failed, retrying...
+2026-04-24 14:01:43,391 [ERROR] LDC1101_Serial: Failed to connect to COM4: could not open port 'COM4': OSError(22, 'The semaphore timeout period has expired.', None, 121)
+2026-04-24 14:01:43,391 [ERROR] LDC1101_GUI: Connection failed after 3 attempts
+2026-04-24 14:08:01,260 [INFO] LDC1101_GUI: Initializing LDC1101 GUI application
+2026-04-24 14:08:01,406 [INFO] LDC1101_GUI: Starting main event loop
+2026-04-24 14:08:14,410 [ERROR] LDC1101_Serial: Failed to connect to COM4: could not open port 'COM4': OSError(22, 'The semaphore timeout period has expired.', None, 121)
+2026-04-24 14:08:14,410 [INFO] LDC1101_GUI: Connection attempt 1 failed, retrying...
+2026-04-24 14:08:27,724 [ERROR] LDC1101_Serial: Failed to connect to COM4: could not open port 'COM4': OSError(22, 'The semaphore timeout period has expired.', None, 121)
+2026-04-24 14:08:27,725 [INFO] LDC1101_GUI: Connection attempt 2 failed, retrying...
+2026-04-24 14:08:41,038 [ERROR] LDC1101_Serial: Failed to connect to COM4: could not open port 'COM4': OSError(22, 'The semaphore timeout period has expired.', None, 121)
+2026-04-24 14:08:41,039 [ERROR] LDC1101_GUI: Connection failed after 3 attempts
+2026-04-24 15:07:58,286 [INFO] LDC1101_GUI: Initializing LDC1101 GUI application
+2026-04-24 15:07:58,429 [INFO] LDC1101_GUI: Starting main event loop
+2026-04-24 15:08:11,423 [ERROR] LDC1101_Serial: Failed to connect to COM4: could not open port 'COM4': OSError(22, 'The semaphore timeout period has expired.', None, 121)
+2026-04-24 15:08:11,423 [INFO] LDC1101_GUI: Connection attempt 1 failed, retrying...
+2026-04-24 15:08:24,736 [ERROR] LDC1101_Serial: Failed to connect to COM4: could not open port 'COM4': OSError(22, 'The semaphore timeout period has expired.', None, 121)
+2026-04-24 15:08:24,736 [INFO] LDC1101_GUI: Connection attempt 2 failed, retrying...
+2026-04-24 15:08:38,050 [ERROR] LDC1101_Serial: Failed to connect to COM4: could not open port 'COM4': OSError(22, 'The semaphore timeout period has expired.', None, 121)
+2026-04-24 15:08:38,050 [ERROR] LDC1101_GUI: Connection failed after 3 attempts
+2026-04-24 15:24:35,000 [INFO] LDC1101_GUI: Initializing LDC1101 GUI application
+2026-04-24 15:24:35,187 [INFO] LDC1101_GUI: Starting main event loop
+2026-04-24 16:02:35,514 [INFO] LDC1101_GUI: Initializing LDC1101 GUI application
+2026-04-24 16:05:05,271 [INFO] LDC1101_GUI: Initializing LDC1101 GUI application
+2026-04-24 16:06:40,649 [INFO] LDC1101_GUI: Initializing LDC1101 GUI application
+2026-04-24 16:06:40,911 [INFO] LDC1101_GUI: Starting main event loop
+2026-04-24 16:06:53,910 [ERROR] LDC1101_Serial: Failed to connect to COM4: could not open port 'COM4': OSError(22, 'The semaphore timeout period has expired.', None, 121)
+2026-04-24 16:06:53,910 [INFO] LDC1101_GUI: Connection attempt 1 failed, retrying...
+2026-04-24 16:07:07,223 [ERROR] LDC1101_Serial: Failed to connect to COM4: could not open port 'COM4': OSError(22, 'The semaphore timeout period has expired.', None, 121)
+2026-04-24 16:07:07,224 [INFO] LDC1101_GUI: Connection attempt 2 failed, retrying...
+2026-04-24 16:07:20,536 [ERROR] LDC1101_Serial: Failed to connect to COM4: could not open port 'COM4': OSError(22, 'The semaphore timeout period has expired.', None, 121)
+2026-04-24 16:07:20,537 [ERROR] LDC1101_GUI: Connection failed after 3 attempts
+2026-04-24 16:14:24,408 [ERROR] LDC1101_Serial: Failed to connect to COM4: could not open port 'COM4': OSError(22, 'The semaphore timeout period has expired.', None, 121)
+2026-04-24 16:14:24,409 [INFO] LDC1101_GUI: Connection attempt 1 failed, retrying...
+2026-04-24 16:14:37,722 [ERROR] LDC1101_Serial: Failed to connect to COM4: could not open port 'COM4': OSError(22, 'The semaphore timeout period has expired.', None, 121)
+2026-04-24 16:14:37,723 [INFO] LDC1101_GUI: Connection attempt 2 failed, retrying...
+2026-04-24 16:14:51,036 [ERROR] LDC1101_Serial: Failed to connect to COM4: could not open port 'COM4': OSError(22, 'The semaphore timeout period has expired.', None, 121)
+2026-04-24 16:14:51,036 [ERROR] LDC1101_GUI: Connection failed after 3 attempts
+2026-04-24 16:15:15,052 [INFO] LDC1101_Serial: Connected to COM3 at 115200 baud
+2026-04-24 16:15:15,660 [ERROR] LDC1101_Serial: Serial read error: addr=0x3F, error=Write timeout
+2026-04-24 16:15:15,660 [INFO] LDC1101_GUI: Connection attempt 1 failed, retrying...
+2026-04-24 16:15:16,163 [INFO] LDC1101_Serial: Connected to COM3 at 115200 baud
+2026-04-24 16:15:16,778 [ERROR] LDC1101_Serial: Serial read error: addr=0x3F, error=Write timeout
+2026-04-24 16:15:16,779 [INFO] LDC1101_GUI: Connection attempt 2 failed, retrying...
+2026-04-24 16:15:17,280 [INFO] LDC1101_Serial: Connected to COM3 at 115200 baud
+2026-04-24 16:15:17,896 [ERROR] LDC1101_Serial: Serial read error: addr=0x3F, error=Write timeout
+2026-04-24 16:15:17,896 [ERROR] LDC1101_GUI: Connection failed after 3 attempts
+2026-04-24 16:15:17,897 [INFO] LDC1101_Serial: Disconnected from COM3
+2026-04-24 16:15:37,224 [ERROR] LDC1101_Serial: Failed to connect to COM4: could not open port 'COM4': OSError(22, 'The semaphore timeout period has expired.', None, 121)
+2026-04-24 16:15:37,225 [INFO] LDC1101_GUI: Connection attempt 1 failed, retrying...
+2026-04-24 16:15:50,539 [ERROR] LDC1101_Serial: Failed to connect to COM4: could not open port 'COM4': OSError(22, 'The semaphore timeout period has expired.', None, 121)
+2026-04-24 16:15:50,539 [INFO] LDC1101_GUI: Connection attempt 2 failed, retrying...
+2026-04-24 16:16:03,852 [ERROR] LDC1101_Serial: Failed to connect to COM4: could not open port 'COM4': OSError(22, 'The semaphore timeout period has expired.', None, 121)
+2026-04-24 16:16:03,852 [ERROR] LDC1101_GUI: Connection failed after 3 attempts
+2026-04-24 16:28:16,066 [INFO] LDC1101_GUI: Application closing - cleaning up resources
+2026-04-24 16:28:16,214 [INFO] LDC1101_GUI: Application closed
+2026-04-24 16:28:29,677 [INFO] LDC1101_GUI: Initializing LDC1101 GUI application
+2026-04-24 16:28:29,843 [INFO] LDC1101_GUI: Starting main event loop
+2026-04-24 16:28:42,852 [ERROR] LDC1101_Serial: Failed to connect to COM4: could not open port 'COM4': OSError(22, 'The semaphore timeout period has expired.', None, 121)
+2026-04-24 16:28:42,852 [INFO] LDC1101_GUI: Connection attempt 1 failed, retrying...
+2026-04-24 16:28:49,914 [INFO] LDC1101_GUI: Application closing - cleaning up resources
+2026-04-24 16:28:50,042 [INFO] LDC1101_GUI: Application closed

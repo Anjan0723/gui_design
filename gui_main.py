@@ -8,6 +8,7 @@ import json
 import serial.tools.list_ports
 import threading
 import random
+import time
 from collections import deque
 
 # Matplotlib imports for strip chart
@@ -17,7 +18,7 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
 
 from config import COLORS, FONTS, VERSION, WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE
-from config import SIDEBAR_ITEMS, DEFAULT_SIDEBAR, MENU_ITEMS
+from config import SIDEBAR_ITEMS, DEFAULT_SIDEBAR, MENU_ITEMS, logger
 from register_data import REGISTERS
 from gui_register_map import RegisterMapUI
 from gui_right_panel import RightPanelUI
@@ -30,19 +31,26 @@ class MainGUI:
     """Main GUI window that assembles all panels."""
 
     def __init__(self):
+        logger.info("Initializing LDC1101 GUI application")
         self.root = tk.Tk()
         self.root.title(WINDOW_TITLE)
         self.root.geometry(f"{WINDOW_WIDTH}x{WINDOW_HEIGHT}")
         self.root.configure(bg=COLORS["bg_main"])
         self.root.resizable(True, True)
 
-        # Application state
         self.reg_live_values = {r["address"]: r["default"] for r in REGISTERS}
         self.reg_lw = {r["address"]: "0x00" for r in REGISTERS}
         self.reg_lr = {r["address"]: "0x00" for r in REGISTERS}
         self.selected_reg = [REGISTERS[0]]
         self.write_buffer = {}
         self.temp_bit_state = None
+
+        # Thread safety for serial communication
+        self.serial_lock = threading.Lock()
+        
+        # Thread-safe mirrored variables
+        self._is_active_mode = True
+        self._is_sim_mode = False
 
         # UI variables
         self.sim_var = tk.BooleanVar(value=False)
@@ -70,6 +78,7 @@ class MainGUI:
         self.graph_start_stop_btn = None
 
         self.ser_conn = SerialConnection()
+        self.is_connecting = False
 
         self._setup_style()
         self._create_menu()
@@ -114,11 +123,6 @@ class MainGUI:
                  bg=COLORS["bg_dark"], fg=COLORS["fg_white"],
                  font=FONTS["title"]).pack(side="left", padx=20, pady=8)
 
-        tk.Checkbutton(title_bar, text="Simulate Communication",
-                      variable=self.sim_var, bg=COLORS["bg_dark"], fg=COLORS["fg_white"],
-                      selectcolor=COLORS["bg_dark"], activebackground=COLORS["bg_dark"],
-                      font=FONTS["normal"]).pack(side="right", padx=16)
-
     def _create_top_bar(self):
         """Create COM port and Save/Load bar."""
         top_bar = tk.Frame(self.root, bg=COLORS["bg_top_bar"], pady=5, bd=1, relief="groove")
@@ -133,13 +137,12 @@ class MainGUI:
 
         def refresh_ports():
             ports = [p.device for p in serial.tools.list_ports.comports()]
-            if not ports:
-                ports = ["COM3 (Mock)", "COM4 (Mock)"]
-                self.conn_lbl.config(text="  NOT CONNECTED  ", bg=COLORS["error"])
-            else:
-                self.conn_lbl.config(text="  CONNECTED  ", bg=COLORS["success"])
+            # Always include mock ports for testing/simulation
+            ports += ["COM3 (Mock)", "COM4 (Mock)"]
+            
             self.port_cb["values"] = ports
-            self.port_var.set(ports[0])
+            if ports:
+                self.port_var.set(ports[0])
 
         tk.Button(top_bar, text="Refresh", command=refresh_ports,
                   font=FONTS["normal"], width=8).pack(side="left", padx=2)
@@ -308,7 +311,7 @@ class MainGUI:
         status_bar.pack_propagate(False)
 
         self.status_lbl = tk.Label(status_bar, text="idle", bg="#333333",
-                                  fg="white", font=FONTS["small"], anchor="w")
+                                  fg="white", font=FONTS["small"], anchor="w", width=40)
         self.status_lbl.pack(side="left", padx=8)
 
         tk.Label(status_bar, text=f"Version: {VERSION}", bg="#333333",
@@ -318,9 +321,6 @@ class MainGUI:
                                 bg=COLORS["error"], fg="white", font=FONTS["small_bold"])
         self.conn_lbl.pack(side="right", padx=4, pady=2)
 
-        tk.Label(status_bar, text="Texas Instruments",
-                bg=COLORS["ti_red"], fg="white", font=FONTS["small_bold"]).pack(
-                    side="right", padx=2, pady=2)
 
     # ═══════════════════════════════════════════════════════════════
     #  DEVICE MODE CONTROL PANEL
@@ -355,6 +355,7 @@ class MainGUI:
         self.reg_lw[0x0B] = "0x01"
         self.reg_map_ui.update_row(self._get_reg_by_addr(0x0B))
         self.device_mode.set("SLEEP")
+        self._is_active_mode = False
         self.mode_status_lbl.config(text="SLEEP", bg="#FFA500")  # Orange/yellow
         self.set_status("Device mode: Sleep (0x01 -> START_CONFIG)")
         self.stop_live_data_polling()
@@ -366,6 +367,7 @@ class MainGUI:
         self.reg_lw[0x0B] = "0x00"
         self.reg_map_ui.update_row(self._get_reg_by_addr(0x0B))
         self.device_mode.set("ACTIVE")
+        self._is_active_mode = True
         self.mode_status_lbl.config(text="ACTIVE", bg=COLORS["success"])
         self.set_status("Device mode: Active (0x00 -> START_CONFIG)")
         self.start_live_data_polling()
@@ -384,6 +386,7 @@ class MainGUI:
         self.reg_lw[0x0B] = "0x02"
         self.reg_map_ui.update_row(self._get_reg_by_addr(0x0B))
         self.device_mode.set("SHUTDOWN")
+        self._is_active_mode = False
         self.mode_status_lbl.config(text="SHUTDOWN", bg=COLORS["error"])
         self.set_status("Device mode: Shutdown (SHUTDOWN_EN=1, 0x02 -> START_CONFIG)")
         self.stop_live_data_polling()
@@ -545,25 +548,26 @@ class MainGUI:
     def _live_data_poll_loop(self):
         """Background thread for live data polling."""
         while self.live_data_running:
-            self.root.after(0, self._read_live_data)
+            self._read_live_data()
             threading.Event().wait(0.5)  # 500ms interval
 
     def _read_live_data(self):
-        """Read live data from device."""
-        if self.device_mode.get() != "ACTIVE":
+        """Read live data from device or simulate if not connected."""
+        if not getattr(self, '_is_active_mode', True):
             return
 
-        if self.sim_var.get():
-            # Mock mode: generate random values
+        # Determine if we should use real hardware or simulate
+        # We simulate if not connected OR if connected to a "Mock" port (no real serial object)
+        is_hardware_ready = self.ser_conn.connected and self.ser_conn.serial is not None
+
+        if not is_hardware_ready:
+            # Auto-Simulation Mode: generate random values
             status_val = random.randint(0, 0xFF)
             rp_data = random.randint(0, 65535)
             l_data = random.randint(0, 65535)
             lhr_data = random.randint(0, 16777215)
         else:
-            # Real device: read registers
-            if not self.ser_conn.connected:
-                return
-
+            # Real hardware: read registers
             # Read STATUS (0x20)
             status_val = self.ser_conn.read_register(0x20)
             if status_val is not None:
@@ -601,6 +605,14 @@ class MainGUI:
                 self.reg_live_values[0x3B] = lhr_status
                 status_val = lhr_status # Use LHR_STATUS for the DRDY logic below if needed
 
+        # Schedule UI update safely on the main thread with a delay to prevent flooding
+        self.root.after(100, lambda: self._update_ui_with_data(status_val, rp_data, l_data, lhr_data))
+
+    def _update_ui_with_data(self, status_val, rp_data, l_data, lhr_data):
+        """Safely update UI with read data."""
+        if status_val is None:
+            status_val = 0
+            
         # Update UI
         # DRDYB is bit 6, active low (0 = data ready)
         drdyb = (status_val >> 6) & 1
@@ -612,6 +624,10 @@ class MainGUI:
         self.rp_data_lbl.config(text=f"{rp_data} / 0x{rp_data:04X}")
         self.l_data_lbl.config(text=f"{l_data} / 0x{l_data:04X}")
         self.lhr_data_lbl.config(text=f"{lhr_data} / 0x{lhr_data:06X}")
+
+        # Update LHR page if it's the current view
+        if hasattr(self, 'lhr_ui'):
+            self.lhr_ui.update_from_main_poll(status_val, lhr_data)
 
         # Calculate fSENSOR: (fCLKIN × RESP_TIME) / (3 × L_DATA)
         # fCLKIN = 8MHz (internal clock)
@@ -654,8 +670,26 @@ class MainGUI:
         self.tree.see(first_iid)
         self.load_reg_into_ui(REGISTERS[0])
 
+        # Setup simulation variable tracing
+        self._is_sim_mode = self.sim_var.get()
+        def on_sim_change(*args):
+            self._is_sim_mode = self.sim_var.get()
+        self.sim_var.trace_add("write", on_sim_change)
+
         # Refresh ports
         self.refresh_ports()
+
+        # Auto-detection: if there are real COM ports, try to connect to the first one automatically
+        ports_real = [p.device for p in serial.tools.list_ports.comports()]
+        ports_all = ports_real + ["COM3 (Mock)", "COM4 (Mock)"]
+        self.port_cb["values"] = ports_all
+
+        if ports_real:
+            self.port_var.set(ports_real[0])
+            self.connect_and_verify()
+        else:
+            # No real ports found, use Mock ports
+            self.port_var.set("COM3 (Mock)")
 
         # Bind Apps Calculator (recalculate + sync parameters)
         self.apps_calc_ui.bind_traces(
@@ -669,53 +703,168 @@ class MainGUI:
     def refresh_ports(self):
         """Refresh COM ports."""
         ports = [p.device for p in serial.tools.list_ports.comports()]
-        if not ports:
-            ports = ["COM3 (Mock)", "COM4 (Mock)"]
-            self.conn_lbl.config(text="  NOT CONNECTED  ", bg=COLORS["error"])
-        else:
-            self.conn_lbl.config(text="  CONNECTED  ", bg=COLORS["success"])
+        # Always include mock ports for testing
+        ports += ["COM3 (Mock)", "COM4 (Mock)"]
+            
         self.port_cb["values"] = ports
-        self.port_var.set(ports[0])
+        if ports:
+            self.port_var.set(ports[0])
 
-    def connect_and_verify(self):
-        """Connect to device and verify CHIP_ID."""
+    def connect_and_verify(self, retry=False):
+        """Connect to device and verify CHIP_ID in a background thread."""
+        if self.is_connecting:
+            self.set_status("Connection attempt already in progress...")
+            return
+
         port = self.port_var.get()
         if not port:
             self.set_status("Please select a COM port.")
             return
 
         if "(Mock)" in port:
-            # Mock mode - simulate chip verification
-            chip_id = self.reg_live_values.get(0x3F, 0xD4)
-            if chip_id == 0xD4:
-                self.conn_lbl.config(text="  LDC1101 detected ✓  ", bg=COLORS["success"])
-                self.set_status("LDC1101 detected (Mock mode)")
-            else:
-                self.conn_lbl.config(text="  Device not recognized  ", bg=COLORS["error"])
-                self.set_status("Device not recognized")
+            # No retry needed for mock ports
+            self.is_connecting = True
+            self.set_status(f"Connecting to {port}...")
+            self.conn_lbl.config(text="  CONNECTING...  ", bg=COLORS["warning"])
+            threading.Thread(target=self._bg_connect, args=(port,), daemon=True).start()
             return
 
-        # Real device - try to connect and read CHIP_ID
-        self.ser_conn.port = port
-        if self.ser_conn.connect():
-            # Read CHIP_ID (0x3F)
-            chip_id = self.ser_conn.read_register(0x3F)
-            if chip_id == 0xD4:
-                self.conn_lbl.config(text="  LDC1101 detected ✓  ", bg=COLORS["success"])
-                self.set_status("LDC1101 detected - Connection successful")
-                # Update CHIP_ID in live values
-                self.reg_live_values[0x3F] = chip_id
-            else:
-                self.conn_lbl.config(text="  Device not recognized  ", bg=COLORS["error"])
-                self.set_status(f"Device not recognized (CHIP_ID=0x{chip_id if chip_id else 0:02X})")
-                self.ser_conn.disconnect()
-        else:
-            self.conn_lbl.config(text="  NOT CONNECTED  ", bg=COLORS["error"])
-            self.set_status("Connection failed: Could not open port.")
+        # For real ports, allow retry on failure
+        self.is_connecting = True
+        self.set_status(f"Connecting to {port}...")
+        self.conn_lbl.config(text="  CONNECTING...  ", bg=COLORS["warning"])
 
-    def set_status(self, msg):
+        # Run connection in background thread to avoid UI freeze
+        threading.Thread(target=self._bg_connect_with_retry, args=(port, retry), daemon=True).start()
+
+    def _bg_connect_with_retry(self, port, retry):
+        """Background thread for connection with retry logic."""
+        max_retries = 3
+        retry_delay = 0.5  # seconds
+
+        for attempt in range(max_retries):
+            success = False
+            chip_id = None
+
+            try:
+                # Stop ALL polling before attempting connection
+                self.root.after(0, self.stop_live_data_polling)
+
+                if "(Mock)" in port:
+                    time.sleep(0.5)
+                    chip_id = self.reg_live_values.get(0x3F, 0xD4)
+                    success = (chip_id == 0xD4)
+                else:
+                    self.ser_conn.port = port
+                    if self.ser_conn.connect():
+                        chip_id = self.ser_conn.read_register(0x3F)
+                        success = (chip_id == 0xD4)
+                    else:
+                        success = False
+                        chip_id = None
+
+                if success:
+                    break
+
+                # Retry if failed and more attempts left
+                if attempt < max_retries - 1:
+                    logger.info(f"Connection attempt {attempt + 1} failed, retrying...")
+                    time.sleep(retry_delay)
+                else:
+                    logger.error(f"Connection failed after {max_retries} attempts")
+
+            except Exception as e:
+                logger.error(f"Connection error: {e}", exc_info=True)
+
+        self.root.after(0, lambda: self._post_connect(success, chip_id, port))
+
+    def _bg_connect(self, port):
+        """Background thread for connection and verification."""
+        success = False
+        chip_id = None
+
+        try:
+            # Stop ALL polling before attempting connection
+            self.stop_live_data_polling()
+            if hasattr(self, 'lhr_ui'):
+                self.lhr_ui._stop_polling()
+
+            if "(Mock)" in port:
+                # Mock mode
+                time.sleep(0.5) # Simulate delay
+                chip_id = self.reg_live_values.get(0x3F, 0xD4)
+                success = (chip_id == 0xD4)
+            else:
+                # Real device
+                self.ser_conn.port = port
+                if self.ser_conn.connect():
+                    # Read CHIP_ID (0x3F)
+                    chip_id = self.ser_conn.read_register(0x3F)
+                    success = (chip_id == 0xD4)
+                else:
+                    success = False
+                    chip_id = None
+        except Exception as e:
+            logger.error(f"Connection error: {e}", exc_info=True)
+            success = False
+            chip_id = None
+
+        # Update UI safely on main thread
+        self.root.after(0, lambda: self._post_connect(success, chip_id, port))
+
+    def _check_connection_health(self):
+        """Check if serial connection is still healthy."""
+        if not self.ser_conn.connected:
+            return False
+
+        if self.ser_conn.serial is None:
+            return False
+
+        try:
+            # Try a quick read to verify connection
+            if self.ser_conn.serial.in_waiting > 0:
+                self.ser_conn.serial.read(self.ser_conn.serial.in_waiting)
+            return True
+        except Exception as e:
+            logger.warning(f"Connection health check failed: {e}")
+            self._handle_connection_lost()
+            return False
+
+    def _handle_connection_lost(self):
+        """Handle unexpected connection loss."""
+        logger.warning("Connection lost - updating UI")
+        self.ser_conn.connected = False
+        self.conn_lbl.config(text="  CONNECTION LOST  ", bg=COLORS["error"])
+        self.set_status("Connection lost. Please reconnect.", color="#ff6666")
+        self.stop_live_data_polling()
+
+    def _post_connect(self, success, chip_id, port):
+        """Handle UI updates after connection attempt."""
+        self.is_connecting = False
+        
+        if success:
+            self.conn_lbl.config(text="  LDC1101 detected ✓  ", bg=COLORS["success"])
+            self.set_status(f"Connected to {port} - LDC1101 detected")
+            if chip_id:
+                self.reg_live_values[0x3F] = chip_id
+            self.ser_conn.connected = True
+        else:
+            if chip_id is not None:
+                self.conn_lbl.config(text="  Device not recognized  ", bg=COLORS["error"])
+                self.set_status(f"Device not recognized (CHIP_ID=0x{chip_id:02X})")
+            else:
+                self.conn_lbl.config(text="  NOT CONNECTED  ", bg=COLORS["error"])
+                self.set_status(f"Connection failed on {port}")
+            self.ser_conn.disconnect()
+
+        # Sync reference and restart polling
+        if hasattr(self, 'lhr_ui'):
+            self.lhr_ui.ser_conn = self.ser_conn
+        self.start_live_data_polling()
+
+    def set_status(self, msg, color="white"):
         """Update status bar."""
-        self.status_lbl.config(text=msg)
+        self.status_lbl.config(text=msg, fg=color)
 
     def refresh_apps_calc_registers(self):
         """Refresh register map table rows after Apps Calculator update."""
@@ -738,6 +887,7 @@ class MainGUI:
             self.center.pack_forget()
             self.right_panel.pack_forget()
             self.apps_calc_ui.get_frame().pack_forget()
+            self.lhr_ui._sync_config_with_registers()
             self.lhr_ui.get_frame().pack(fill="both", expand=True)
         else:
             self.apps_calc_ui.get_frame().pack_forget()
@@ -835,14 +985,28 @@ class MainGUI:
         reg = self.selected_reg[0]
         if not reg:
             return
+
         addr = reg["address"]
         if self.temp_bit_state is not None:
             val = self.temp_bit_state
         else:
+            input_str = self.write_var.get().strip()
             try:
-                val = int(self.write_var.get() or 0) & 0xFF
+                # Support both decimal (0-255) and hex (0x00-0xFF)
+                if input_str.lower().startswith("0x"):
+                    val = int(input_str, 16) & 0xFF
+                else:
+                    val = int(input_str) & 0xFF
             except ValueError:
-                val = 0
+                messagebox.showerror("Invalid Input",
+                    f"Invalid value: '{input_str}'. Enter 0-255 or 0x00-0xFF.")
+                logger.warning(f"Invalid write input: '{input_str}' for register 0x{addr:02X}")
+                return
+
+        # Additional bounds check
+        if val < 0 or val > 255:
+            messagebox.showerror("Invalid Range", "Value must be 0-255 (0x00-0xFF)")
+            return
 
         self.reg_live_values[addr] = val
         self.reg_lw[addr] = f"0x{val:02X}"
@@ -850,22 +1014,37 @@ class MainGUI:
         self.temp_bit_state = None
 
         if self.ser_conn.connected:
-            self.ser_conn.write_register(addr, val)
+            with self.serial_lock:
+                success = self.ser_conn.write_register(addr, val)
+                if not success:
+                    messagebox.showwarning("Write Warning",
+                        "Failed to write to device. Connection may be lost.")
+                    logger.error(f"Failed to write 0x{val:02X} to register 0x{addr:02X}")
 
         self.reg_map_ui.update_row(reg)
         self.update_bit_panel(reg, val)
         self.set_status(f"Written 0x{val:02X} -> {reg['name']} (0x{addr:02X})")
+        logger.info(f"Register {reg['name']} (0x{addr:02X}) written: 0x{val:02X}")
 
     def write_all_cmd(self):
         """Write all registers."""
+        input_str = self.write_var.get().strip()
+        try:
+            if input_str.lower().startswith("0x"):
+                val = int(input_str, 16) & 0xFF
+            else:
+                val = int(input_str) & 0xFF
+        except ValueError:
+            messagebox.showerror("Invalid Input",
+                f"Invalid value: '{input_str}'. Enter 0-255 or 0x00-0xFF.")
+            return
+
         for reg in REGISTERS:
-            try:
-                val = int(self.write_var.get().strip()) & 0xFF
-            except ValueError:
-                val = reg["default"]
             self.reg_live_values[reg["address"]] = val
             self.reg_map_ui.update_row(reg, lw_val=val)
-        self.set_status("Write All complete.")
+
+        logger.info(f"Write All: set all registers to 0x{val:02X}")
+        self.set_status(f"Write All complete (0x{val:02X}).")
 
     def read_register_cmd(self):
         """Read register command."""
@@ -873,11 +1052,16 @@ class MainGUI:
         if not reg:
             return
         addr = reg["address"]
-        
+
         if self.ser_conn.connected:
-            val = self.ser_conn.read_register(addr)
-            if val is not None:
-                self.reg_live_values[addr] = val
+            with self.serial_lock:
+                val = self.ser_conn.read_register(addr)
+            if val is None:
+                messagebox.showwarning("Read Warning",
+                    "Failed to read from device. Connection may be lost.")
+                logger.error(f"Failed to read register 0x{addr:02X}")
+                return
+            self.reg_live_values[addr] = val
         else:
             val = self.reg_live_values.get(addr, reg.get("default", 0))
 
@@ -885,6 +1069,7 @@ class MainGUI:
         self.reg_lr[addr] = f"0x{val:02X}"
         self.reg_map_ui.update_row(reg)
         self.set_status(f"Read 0x{val:02X} <- {reg['name']} (0x{addr:02X})")
+        logger.debug(f"Register {reg['name']} (0x{addr:02X}) read: 0x{val:02X}")
 
     def read_all_cmd(self):
         """Read all registers."""
@@ -942,4 +1127,38 @@ class MainGUI:
 
     def run(self):
         """Run the main loop."""
+        # Add cleanup handler for window close
+        self.root.protocol("WM_DELETE_WINDOW", self._on_closing)
+        logger.info("Starting main event loop")
         self.root.mainloop()
+
+    def _on_closing(self):
+        """Clean up resources before closing the application."""
+        logger.info("Application closing - cleaning up resources")
+
+        # Stop live data polling
+        if self.live_data_running:
+            self.live_data_running = False
+            logger.debug("Stopped live data polling")
+
+        # Stop LHR polling if running
+        if hasattr(self, 'lhr_ui'):
+            try:
+                self.lhr_ui._stop_polling()
+                logger.debug("Stopped LHR polling")
+            except Exception as e:
+                logger.warning(f"Error stopping LHR polling: {e}")
+
+        # Stop graph if running
+        if self.graph_running:
+            self.graph_running = False
+            logger.debug("Stopped graph")
+
+        # Close serial connection
+        if self.ser_conn and self.ser_conn.connected:
+            self.ser_conn.disconnect()
+            logger.info("Serial connection closed")
+
+        # Destroy window
+        self.root.destroy()
+        logger.info("Application closed")
