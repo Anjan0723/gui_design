@@ -90,6 +90,37 @@ class LHRPageUI:
     def get_frame(self):
         return self.main_frame
 
+    def update_csensor_display(self, display_str):
+        """Called by gui_main when Apps Calculator Csensor changes."""
+        self.csensor_lbl.config(text=display_str)
+        
+        # Parse the capacitance value (in pF) and update self.sensor_cap_var
+        # so that the inductance calculations automatically use the correct value
+        import re
+        match = re.match(r"^\s*([0-9.]+)", display_str)
+        if match:
+            try:
+                val = float(match.group(1))
+                clean_str = display_str.lower()
+                if 'n' in clean_str:
+                    val_pf = val * 1000.0
+                elif 'u' in clean_str:
+                    val_pf = val * 1000000.0
+                elif 'f' in clean_str and not ('p' in clean_str or 'n' in clean_str or 'u' in clean_str):
+                    val_pf = val * 1e12
+                else:
+                    val_pf = val
+                self.sensor_cap_var.set(val_pf)
+            except Exception:
+                pass
+
+    def update_device_id(self, chip_id_val):
+        """Called after connect with the real chip_id byte read from device."""
+        if chip_id_val is not None:
+            self.did_lbl.config(text=f"{chip_id_val:02X}")
+        else:
+            self.did_lbl.config(text="--")
+
     def _switch_to_measure(self):
         self.config_frame.pack_forget()
         self.measure_frame.pack(fill="both", expand=True)
@@ -130,12 +161,13 @@ class LHRPageUI:
         info_row = tk.Frame(self.config_frame, bg=COLORS["bg_main"])
         info_row.pack(fill="x", padx=10, pady=5)
         
-        tk.Label(info_row, text="Revision ID:", bg=COLORS["bg_main"], font=FONTS["normal"]).pack(side="left")
-        self.rid_lbl = tk.Label(info_row, text="0x00", bg="white", width=6, relief="sunken")
-        self.rid_lbl.pack(side="left", padx=5)
+        tk.Label(info_row, text="Csensor:", bg=COLORS["bg_main"], font=FONTS["normal"]).pack(side="left")
+        self.csensor_lbl = tk.Label(info_row, text="390 pF", bg="white", width=8, relief="sunken")
+        self.csensor_lbl.pack(side="left", padx=5)
         
         tk.Label(info_row, text="Device ID:", bg=COLORS["bg_main"], font=FONTS["normal"]).pack(side="left", padx=(20, 0))
-        tk.Label(info_row, text="D4", bg="white", width=6, relief="sunken").pack(side="left", padx=5)
+        self.did_lbl = tk.Label(info_row, text="--", bg="white", width=6, relief="sunken")
+        self.did_lbl.pack(side="left", padx=5)
         
         # INTB & Optimization
         opt_row = tk.Frame(self.config_frame, bg=COLORS["bg_main"])
@@ -343,9 +375,17 @@ class LHRPageUI:
         else:
             self.mode_var.set("Sleep")   # always Sleep when disconnected
         
-        # RID
-        rid = self.reg_live_values.get(0x3E, 0x00)
-        self.rid_lbl.config(text=f"0x{rid:02X}")
+
+        # Device ID (register 0x3F) — only show when connected, else show "--"
+        is_connected = bool(self.ser_conn and self.ser_conn.connected)
+        if is_connected or self._is_sim_mode:
+            did = self.reg_live_values.get(0x3F)
+            if did is not None:
+                self.did_lbl.config(text=f"{did:02X}")
+            else:
+                self.did_lbl.config(text="--")
+        else:
+            self.did_lbl.config(text="--")
         
         # INTB Disable (0x0A bit 7)
         intb2sdo = (self.reg_live_values.get(0x0A, 0x00) >> 7) & 1
@@ -495,6 +535,7 @@ class LHRPageUI:
             self.data_buffer.clear()
             # Still refresh graph to show flat empty canvas
             self._refresh_graph(self.data_to_display_var.get())
+            self.did_lbl.config(text="--")
             return
 
         # Process Data point

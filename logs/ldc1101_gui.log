@@ -88,3 +88,1290 @@
 2026-04-24 16:28:42,852 [INFO] LDC1101_GUI: Connection attempt 1 failed, retrying...
 2026-04-24 16:28:49,914 [INFO] LDC1101_GUI: Application closing - cleaning up resources
 2026-04-24 16:28:50,042 [INFO] LDC1101_GUI: Application closed
+2026-05-03 13:23:48,288 [INFO] LDC1101_GUI: Initializing LDC1101 GUI application
+2026-05-03 13:23:48,992 [INFO] LDC1101_GUI: Starting main event loop
+2026-05-03 13:24:47,942 [INFO] LDC1101_GUI: Application closing - cleaning up resources
+2026-05-03 13:24:47,942 [INFO] LDC1101_GUI: Serial connection closed
+2026-05-03 13:24:48,165 [INFO] LDC1101_GUI: Application closed
+2026-05-06 10:30:04,420 [INFO] LDC1101_GUI: Initializing LDC1101 GUI application
+2026-05-06 10:30:05,119 [INFO] LDC1101_GUI: Starting main event loop
+2026-05-06 10:44:44,239 [INFO] LDC1101_GUI: Application closing - cleaning up resources
+2026-05-06 10:44:44,353 [INFO] LDC1101_GUI: Application closed
+2026-05-07 10:45:47,221 [INFO] LDC1101_GUI: Initializing LDC1101 GUI application
+2026-05-07 10:45:47,550 [INFO] LDC1101_GUI: Starting main event loop
+2026-05-07 13:14:00,394 [INFO] LDC1101_GUI: Initializing LDC1101 GUI application
+2026-05-07 13:14:00,747 [INFO] LDC1101_GUI: Starting main event loop
+2026-05-07 15:23:29,115 [INFO] LDC1101_GUI: Application closing - cleaning up resources
+2026-05-07 15:23:29,317 [INFO] LDC1101_GUI: Application closed
+2026-05-19 10:14:14,823 [INFO] LDC1101_GUI: Initializing LDC1101 GUI application
+2026-05-19 10:14:15,472 [INFO] LDC1101_GUI: Starting main event loop
+2026-05-19 10:57:50,140 [INFO] LDC1101_GUI: Initializing LDC1101 GUI application
+2026-05-19 10:57:50,338 [INFO] LDC1101_GUI: Starting main event loop
+2026-05-19 11:08:28,229 [INFO] LDC1101_GUI: Initializing LDC1101 GUI application
+2026-05-19 11:08:28,395 [INFO] LDC1101_GUI: Starting main event loop
+2026-05-19 11:10:48,522 [INFO] LDC1101_GUI: Initializing LDC1101 GUI application
+2026-05-19 11:10:48,684 [INFO] LDC1101_GUI: Starting main event loop
+2026-05-19 11:11:07,840 [INFO] LDC1101_GUI: Application closing - cleaning up resources
+2026-05-19 11:11:07,840 [INFO] LDC1101_GUI: Serial connection closed
+2026-05-19 11:11:08,021 [INFO] LDC1101_GUI: Application closed
+2026-05-19 11:11:16,451 [INFO] LDC1101_GUI: Initializing LDC1101 GUI application
+2026-05-19 11:11:16,607 [INFO] LDC1101_GUI: Starting main event loop
+2026-05-19 11:22:25,740 [INFO] LDC1101_GUI: Application closing - cleaning up resources
+2026-05-19 11:22:25,740 [INFO] LDC1101_GUI: Serial connection closed
+2026-05-19 11:22:25,953 [INFO] LDC1101_GUI: Application closed
+2026-05-19 11:22:31,012 [INFO] LDC1101_GUI: Initializing LDC1101 GUI application
+2026-05-19 11:22:31,188 [INFO] LDC1101_GUI: Starting main event loop
+2026-05-19 11:27:54,360 [INFO] LDC1101_GUI: Application closing - cleaning up resources
+2026-05-19 11:27:54,579 [INFO] LDC1101_GUI: Application closed
+2026-05-19 11:27:58,190 [INFO] LDC1101_GUI: Initializing LDC1101 GUI application
+2026-05-19 11:27:58,393 [INFO] LDC1101_GUI: Starting main event loop
+2026-05-19 11:33:28,748 [INFO] LDC1101_GUI: Initializing LDC1101 GUI application
+2026-05-19 11:33:28,936 [INFO] LDC1101_GUI: Starting main event loop
+2026-05-19 11:34:13,069 [INFO] LDC1101_GUI: Application closing - cleaning up resources
+2026-05-19 11:34:13,414 [INFO] LDC1101_GUI: Application closed
+2026-05-19 11:34:19,292 [INFO] LDC1101_GUI: Initializing LDC1101 GUI application
+2026-05-19 11:34:19,465 [INFO] LDC1101_GUI: Starting main event loop
+2026-05-19 12:13:49,741 [INFO] LDC1101_GUI: Application closing - cleaning up resources
+2026-05-19 12:13:49,741 [INFO] LDC1101_GUI: Serial connection closed
+2026-05-19 12:13:49,915 [INFO] LDC1101_GUI: Application closed
+2026-05-19 12:13:54,931 [INFO] LDC1101_GUI: Initializing LDC1101 GUI application
+2026-05-19 12:13:55,090 [INFO] LDC1101_GUI: Starting main event loop
+2026-05-19 12:13:55,345 [INFO] LDC1101_Serial: Connected to COM4 at 115200 baud
+2026-05-19 12:13:55,449 [WARNING] LDC1101_Serial: No response for read: addr=0x3F
+2026-05-19 12:13:55,450 [INFO] LDC1101_GUI: Connection attempt 1 failed, retrying...
+2026-05-19 12:13:55,956 [INFO] LDC1101_Serial: Connected to COM4 at 115200 baud
+2026-05-19 12:13:56,063 [WARNING] LDC1101_Serial: No response for read: addr=0x3F
+2026-05-19 12:13:56,063 [INFO] LDC1101_GUI: Connection attempt 2 failed, retrying...
+2026-05-19 12:13:56,564 [INFO] LDC1101_Serial: Connected to COM4 at 115200 baud
+2026-05-19 12:13:56,666 [WARNING] LDC1101_Serial: No response for read: addr=0x3F
+2026-05-19 12:13:56,667 [ERROR] LDC1101_GUI: Connection failed after 3 attempts
+2026-05-19 12:13:56,667 [INFO] LDC1101_Serial: Disconnected from COM4
+2026-05-19 12:14:15,519 [INFO] LDC1101_Serial: Connected to COM4 at 115200 baud
+2026-05-19 12:14:15,621 [WARNING] LDC1101_Serial: No response for read: addr=0x3F
+2026-05-19 12:14:15,622 [INFO] LDC1101_GUI: Connection attempt 1 failed, retrying...
+2026-05-19 12:14:16,123 [INFO] LDC1101_Serial: Connected to COM4 at 115200 baud
+2026-05-19 12:14:16,235 [WARNING] LDC1101_Serial: No response for read: addr=0x3F
+2026-05-19 12:14:16,235 [INFO] LDC1101_GUI: Connection attempt 2 failed, retrying...
+2026-05-19 12:14:16,741 [INFO] LDC1101_Serial: Connected to COM4 at 115200 baud
+2026-05-19 12:14:16,843 [WARNING] LDC1101_Serial: No response for read: addr=0x3F
+2026-05-19 12:14:16,844 [ERROR] LDC1101_GUI: Connection failed after 3 attempts
+2026-05-19 12:14:16,847 [INFO] LDC1101_Serial: Disconnected from COM4
+2026-05-19 12:14:17,236 [INFO] LDC1101_Serial: Connected to COM4 at 115200 baud
+2026-05-19 12:14:17,346 [WARNING] LDC1101_Serial: No response for read: addr=0x3F
+2026-05-19 12:14:17,346 [INFO] LDC1101_GUI: Connection attempt 1 failed, retrying...
+2026-05-19 12:14:17,847 [INFO] LDC1101_Serial: Connected to COM4 at 115200 baud
+2026-05-19 12:14:17,954 [WARNING] LDC1101_Serial: No response for read: addr=0x3F
+2026-05-19 12:14:17,955 [INFO] LDC1101_GUI: Connection attempt 2 failed, retrying...
+2026-05-19 12:14:18,461 [INFO] LDC1101_Serial: Connected to COM4 at 115200 baud
+2026-05-19 12:14:18,576 [WARNING] LDC1101_Serial: No response for read: addr=0x3F
+2026-05-19 12:14:18,576 [ERROR] LDC1101_GUI: Connection failed after 3 attempts
+2026-05-19 12:14:18,578 [INFO] LDC1101_Serial: Disconnected from COM4
+2026-05-19 12:14:51,391 [INFO] LDC1101_Serial: Connected to COM4 at 115200 baud
+2026-05-19 12:14:51,504 [WARNING] LDC1101_Serial: No response for read: addr=0x3F
+2026-05-19 12:14:51,508 [INFO] LDC1101_GUI: Connection attempt 1 failed, retrying...
+2026-05-19 12:14:52,012 [INFO] LDC1101_Serial: Connected to COM4 at 115200 baud
+2026-05-19 12:14:52,117 [WARNING] LDC1101_Serial: No response for read: addr=0x3F
+2026-05-19 12:14:52,119 [INFO] LDC1101_GUI: Connection attempt 2 failed, retrying...
+2026-05-19 12:14:52,621 [INFO] LDC1101_Serial: Connected to COM4 at 115200 baud
+2026-05-19 12:14:52,722 [WARNING] LDC1101_Serial: No response for read: addr=0x3F
+2026-05-19 12:14:52,723 [ERROR] LDC1101_GUI: Connection failed after 3 attempts
+2026-05-19 12:14:52,723 [INFO] LDC1101_Serial: Disconnected from COM4
+2026-05-19 12:14:53,610 [INFO] LDC1101_Serial: Connected to COM4 at 115200 baud
+2026-05-19 12:14:53,720 [WARNING] LDC1101_Serial: No response for read: addr=0x3F
+2026-05-19 12:14:53,727 [INFO] LDC1101_GUI: Connection attempt 1 failed, retrying...
+2026-05-19 12:14:54,231 [INFO] LDC1101_Serial: Connected to COM4 at 115200 baud
+2026-05-19 12:14:54,332 [WARNING] LDC1101_Serial: No response for read: addr=0x3F
+2026-05-19 12:14:54,332 [INFO] LDC1101_GUI: Connection attempt 2 failed, retrying...
+2026-05-19 12:14:54,839 [INFO] LDC1101_Serial: Connected to COM4 at 115200 baud
+2026-05-19 12:14:54,945 [WARNING] LDC1101_Serial: No response for read: addr=0x3F
+2026-05-19 12:14:54,946 [ERROR] LDC1101_GUI: Connection failed after 3 attempts
+2026-05-19 12:14:54,946 [INFO] LDC1101_Serial: Disconnected from COM4
+2026-05-19 12:15:06,549 [INFO] LDC1101_Serial: Connected to COM3 at 115200 baud
+2026-05-19 12:15:06,652 [WARNING] LDC1101_Serial: No response for read: addr=0x3F
+2026-05-19 12:15:06,652 [INFO] LDC1101_GUI: Connection attempt 1 failed, retrying...
+2026-05-19 12:15:07,158 [INFO] LDC1101_Serial: Connected to COM3 at 115200 baud
+2026-05-19 12:15:07,267 [WARNING] LDC1101_Serial: No response for read: addr=0x3F
+2026-05-19 12:15:07,269 [INFO] LDC1101_GUI: Connection attempt 2 failed, retrying...
+2026-05-19 12:15:07,771 [INFO] LDC1101_Serial: Connected to COM3 at 115200 baud
+2026-05-19 12:15:07,880 [WARNING] LDC1101_Serial: No response for read: addr=0x3F
+2026-05-19 12:15:07,880 [ERROR] LDC1101_GUI: Connection failed after 3 attempts
+2026-05-19 12:15:07,880 [INFO] LDC1101_Serial: Disconnected from COM3
+2026-05-19 12:15:07,919 [INFO] LDC1101_Serial: Connected to COM3 at 115200 baud
+2026-05-19 12:15:08,019 [WARNING] LDC1101_Serial: No response for read: addr=0x3F
+2026-05-19 12:15:08,020 [INFO] LDC1101_GUI: Connection attempt 1 failed, retrying...
+2026-05-19 12:15:08,521 [INFO] LDC1101_Serial: Connected to COM3 at 115200 baud
+2026-05-19 12:15:08,633 [WARNING] LDC1101_Serial: No response for read: addr=0x3F
+2026-05-19 12:15:08,633 [INFO] LDC1101_GUI: Connection attempt 2 failed, retrying...
+2026-05-19 12:15:09,140 [INFO] LDC1101_Serial: Connected to COM3 at 115200 baud
+2026-05-19 12:15:09,242 [WARNING] LDC1101_Serial: No response for read: addr=0x3F
+2026-05-19 12:15:09,243 [ERROR] LDC1101_GUI: Connection failed after 3 attempts
+2026-05-19 12:15:09,243 [INFO] LDC1101_Serial: Disconnected from COM3
+2026-05-19 12:15:14,775 [ERROR] LDC1101_Serial: Serial read error: addr=0x20, error=Attempting to use a port that is not open
+2026-05-19 12:15:14,777 [WARNING] LDC1101_Serial: Read attempt while not connected: addr=0x21
+2026-05-19 12:15:14,778 [WARNING] LDC1101_Serial: Read attempt while not connected: addr=0x22
+2026-05-19 12:15:14,778 [WARNING] LDC1101_Serial: Read attempt while not connected: addr=0x23
+2026-05-19 12:15:14,778 [WARNING] LDC1101_Serial: Read attempt while not connected: addr=0x24
+2026-05-19 12:15:14,778 [WARNING] LDC1101_Serial: Read attempt while not connected: addr=0x38
+2026-05-19 12:15:14,778 [WARNING] LDC1101_Serial: Read attempt while not connected: addr=0x39
+2026-05-19 12:15:14,778 [WARNING] LDC1101_Serial: Read attempt while not connected: addr=0x3A
+2026-05-19 12:15:14,782 [WARNING] LDC1101_Serial: Read attempt while not connected: addr=0x3B
+2026-05-19 12:15:23,941 [ERROR] LDC1101_Serial: Serial read error: addr=0x20, error=Attempting to use a port that is not open
+2026-05-19 12:15:23,941 [WARNING] LDC1101_Serial: Read attempt while not connected: addr=0x21
+2026-05-19 12:15:23,944 [WARNING] LDC1101_Serial: Read attempt while not connected: addr=0x22
+2026-05-19 12:15:23,944 [WARNING] LDC1101_Serial: Read attempt while not connected: addr=0x23
+2026-05-19 12:15:23,946 [WARNING] LDC1101_Serial: Read attempt while not connected: addr=0x24
+2026-05-19 12:15:23,946 [WARNING] LDC1101_Serial: Read attempt while not connected: addr=0x38
+2026-05-19 12:15:23,946 [WARNING] LDC1101_Serial: Read attempt while not connected: addr=0x39
+2026-05-19 12:15:23,953 [WARNING] LDC1101_Serial: Read attempt while not connected: addr=0x3A
+2026-05-19 12:15:23,953 [WARNING] LDC1101_Serial: Read attempt while not connected: addr=0x3B
+2026-05-19 12:15:28,114 [ERROR] LDC1101_Serial: Serial read error: addr=0x20, error=Attempting to use a port that is not open
+2026-05-19 12:15:28,114 [WARNING] LDC1101_Serial: Read attempt while not connected: addr=0x21
+2026-05-19 12:15:28,114 [WARNING] LDC1101_Serial: Read attempt while not connected: addr=0x22
+2026-05-19 12:15:28,114 [WARNING] LDC1101_Serial: Read attempt while not connected: addr=0x23
+2026-05-19 12:15:28,114 [WARNING] LDC1101_Serial: Read attempt while not connected: addr=0x24
+2026-05-19 12:15:28,116 [WARNING] LDC1101_Serial: Read attempt while not connected: addr=0x38
+2026-05-19 12:15:28,116 [WARNING] LDC1101_Serial: Read attempt while not connected: addr=0x39
+2026-05-19 12:15:28,116 [WARNING] LDC1101_Serial: Read attempt while not connected: addr=0x3A
+2026-05-19 12:15:28,116 [WARNING] LDC1101_Serial: Read attempt while not connected: addr=0x3B
+2026-05-19 12:15:46,545 [INFO] LDC1101_Serial: Connected to COM3 at 115200 baud
+2026-05-19 12:15:46,657 [WARNING] LDC1101_Serial: No response for read: addr=0x3F
+2026-05-19 12:15:46,658 [INFO] LDC1101_GUI: Connection attempt 1 failed, retrying...
+2026-05-19 12:15:47,160 [INFO] LDC1101_Serial: Connected to COM3 at 115200 baud
+2026-05-19 12:15:47,262 [WARNING] LDC1101_Serial: No response for read: addr=0x3F
+2026-05-19 12:15:47,263 [INFO] LDC1101_GUI: Connection attempt 2 failed, retrying...
+2026-05-19 12:15:47,769 [INFO] LDC1101_Serial: Connected to COM3 at 115200 baud
+2026-05-19 12:15:47,872 [WARNING] LDC1101_Serial: No response for read: addr=0x3F
+2026-05-19 12:15:47,873 [ERROR] LDC1101_GUI: Connection failed after 3 attempts
+2026-05-19 12:15:47,873 [INFO] LDC1101_Serial: Disconnected from COM3
+2026-05-19 12:15:57,460 [INFO] LDC1101_Serial: Connected to COM3 at 115200 baud
+2026-05-19 12:15:57,503 [INFO] LDC1101_GUI: Connection attempt 1 failed, retrying...
+2026-05-19 12:15:58,011 [INFO] LDC1101_Serial: Connected to COM3 at 115200 baud
+2026-05-19 12:15:58,113 [WARNING] LDC1101_Serial: No response for read: addr=0x3F
+2026-05-19 12:15:58,113 [INFO] LDC1101_GUI: Connection attempt 2 failed, retrying...
+2026-05-19 12:15:58,622 [INFO] LDC1101_Serial: Connected to COM3 at 115200 baud
+2026-05-19 12:15:58,729 [WARNING] LDC1101_Serial: No response for read: addr=0x3F
+2026-05-19 12:15:58,729 [ERROR] LDC1101_GUI: Connection failed after 3 attempts
+2026-05-19 12:15:58,729 [INFO] LDC1101_Serial: Disconnected from COM3
+2026-05-19 12:16:02,137 [ERROR] LDC1101_Serial: Serial read error: addr=0x20, error=Attempting to use a port that is not open
+2026-05-19 12:16:02,140 [WARNING] LDC1101_Serial: Read attempt while not connected: addr=0x21
+2026-05-19 12:16:02,143 [WARNING] LDC1101_Serial: Read attempt while not connected: addr=0x22
+2026-05-19 12:16:02,143 [WARNING] LDC1101_Serial: Read attempt while not connected: addr=0x23
+2026-05-19 12:16:02,143 [WARNING] LDC1101_Serial: Read attempt while not connected: addr=0x24
+2026-05-19 12:16:02,143 [WARNING] LDC1101_Serial: Read attempt while not connected: addr=0x38
+2026-05-19 12:16:02,143 [WARNING] LDC1101_Serial: Read attempt while not connected: addr=0x39
+2026-05-19 12:16:02,145 [WARNING] LDC1101_Serial: Read attempt while not connected: addr=0x3A
+2026-05-19 12:16:02,145 [WARNING] LDC1101_Serial: Read attempt while not connected: addr=0x3B
+2026-05-19 12:16:07,128 [ERROR] LDC1101_Serial: Serial read error: addr=0x20, error=Attempting to use a port that is not open
+2026-05-19 12:16:07,128 [WARNING] LDC1101_Serial: Read attempt while not connected: addr=0x21
+2026-05-19 12:16:07,128 [WARNING] LDC1101_Serial: Read attempt while not connected: addr=0x22
+2026-05-19 12:16:07,133 [WARNING] LDC1101_Serial: Read attempt while not connected: addr=0x23
+2026-05-19 12:16:07,133 [WARNING] LDC1101_Serial: Read attempt while not connected: addr=0x24
+2026-05-19 12:16:07,133 [WARNING] LDC1101_Serial: Read attempt while not connected: addr=0x38
+2026-05-19 12:16:07,133 [WARNING] LDC1101_Serial: Read attempt while not connected: addr=0x39
+2026-05-19 12:16:07,133 [WARNING] LDC1101_Serial: Read attempt while not connected: addr=0x3A
+2026-05-19 12:16:07,133 [WARNING] LDC1101_Serial: Read attempt while not connected: addr=0x3B
+2026-05-19 12:16:08,108 [ERROR] LDC1101_Serial: Serial read error: addr=0x20, error=Attempting to use a port that is not open
+2026-05-19 12:16:08,108 [WARNING] LDC1101_Serial: Read attempt while not connected: addr=0x21
+2026-05-19 12:16:08,108 [WARNING] LDC1101_Serial: Read attempt while not connected: addr=0x22
+2026-05-19 12:16:08,111 [WARNING] LDC1101_Serial: Read attempt while not connected: addr=0x23
+2026-05-19 12:16:08,111 [WARNING] LDC1101_Serial: Read attempt while not connected: addr=0x24
+2026-05-19 12:16:08,111 [WARNING] LDC1101_Serial: Read attempt while not connected: addr=0x38
+2026-05-19 12:16:08,114 [WARNING] LDC1101_Serial: Read attempt while not connected: addr=0x39
+2026-05-19 12:16:08,115 [WARNING] LDC1101_Serial: Read attempt while not connected: addr=0x3A
+2026-05-19 12:16:08,118 [WARNING] LDC1101_Serial: Read attempt while not connected: addr=0x3B
+2026-05-19 12:18:30,436 [ERROR] LDC1101_Serial: Serial read error: addr=0x20, error=Attempting to use a port that is not open
+2026-05-19 12:18:30,440 [WARNING] LDC1101_Serial: Read attempt while not connected: addr=0x21
+2026-05-19 12:18:30,440 [WARNING] LDC1101_Serial: Read attempt while not connected: addr=0x22
+2026-05-19 12:18:30,440 [WARNING] LDC1101_Serial: Read attempt while not connected: addr=0x23
+2026-05-19 12:18:30,442 [WARNING] LDC1101_Serial: Read attempt while not connected: addr=0x24
+2026-05-19 12:18:30,442 [WARNING] LDC1101_Serial: Read attempt while not connected: addr=0x38
+2026-05-19 12:18:30,442 [WARNING] LDC1101_Serial: Read attempt while not connected: addr=0x39
+2026-05-19 12:18:30,442 [WARNING] LDC1101_Serial: Read attempt while not connected: addr=0x3A
+2026-05-19 12:18:30,442 [WARNING] LDC1101_Serial: Read attempt while not connected: addr=0x3B
+2026-05-19 12:19:12,603 [ERROR] LDC1101_Serial: Serial read error: addr=0x20, error=Attempting to use a port that is not open
+2026-05-19 12:19:12,603 [WARNING] LDC1101_Serial: Read attempt while not connected: addr=0x21
+2026-05-19 12:19:12,606 [WARNING] LDC1101_Serial: Read attempt while not connected: addr=0x22
+2026-05-19 12:19:12,607 [WARNING] LDC1101_Serial: Read attempt while not connected: addr=0x23
+2026-05-19 12:19:12,607 [WARNING] LDC1101_Serial: Read attempt while not connected: addr=0x24
+2026-05-19 12:19:12,607 [WARNING] LDC1101_Serial: Read attempt while not connected: addr=0x38
+2026-05-19 12:19:12,607 [WARNING] LDC1101_Serial: Read attempt while not connected: addr=0x39
+2026-05-19 12:19:12,607 [WARNING] LDC1101_Serial: Read attempt while not connected: addr=0x3A
+2026-05-19 12:19:12,607 [WARNING] LDC1101_Serial: Read attempt while not connected: addr=0x3B
+2026-05-19 13:49:40,181 [INFO] LDC1101_GUI: Initializing LDC1101 GUI application
+2026-05-19 13:49:40,344 [INFO] LDC1101_GUI: Starting main event loop
+2026-05-19 13:53:25,014 [INFO] LDC1101_GUI: Initializing LDC1101 GUI application
+2026-05-19 13:53:25,166 [INFO] LDC1101_GUI: Starting main event loop
+2026-05-19 13:53:34,214 [INFO] LDC1101_Serial: Connected to COM3 at 115200 baud
+2026-05-19 13:53:34,220 [INFO] LDC1101_GUI: Connection attempt 1 failed, retrying...
+2026-05-19 13:53:34,728 [INFO] LDC1101_Serial: Connected to COM3 at 115200 baud
+2026-05-19 13:53:34,831 [WARNING] LDC1101_Serial: No response for read: addr=0x3F
+2026-05-19 13:53:34,831 [INFO] LDC1101_GUI: Connection attempt 2 failed, retrying...
+2026-05-19 13:53:35,333 [INFO] LDC1101_Serial: Connected to COM3 at 115200 baud
+2026-05-19 13:53:35,434 [WARNING] LDC1101_Serial: No response for read: addr=0x3F
+2026-05-19 13:53:35,434 [ERROR] LDC1101_GUI: Connection failed after 3 attempts
+2026-05-19 13:53:35,481 [INFO] LDC1101_Serial: Disconnected from COM3
+2026-05-19 13:53:38,713 [INFO] LDC1101_Serial: Connected to COM3 at 115200 baud
+2026-05-19 13:53:38,817 [WARNING] LDC1101_Serial: No response for read: addr=0x3F
+2026-05-19 13:53:38,819 [INFO] LDC1101_GUI: Connection attempt 1 failed, retrying...
+2026-05-19 13:53:39,322 [INFO] LDC1101_Serial: Connected to COM3 at 115200 baud
+2026-05-19 13:53:39,428 [WARNING] LDC1101_Serial: No response for read: addr=0x3F
+2026-05-19 13:53:39,428 [INFO] LDC1101_GUI: Connection attempt 2 failed, retrying...
+2026-05-19 13:53:39,931 [INFO] LDC1101_Serial: Connected to COM3 at 115200 baud
+2026-05-19 13:53:40,033 [WARNING] LDC1101_Serial: No response for read: addr=0x3F
+2026-05-19 13:53:40,033 [ERROR] LDC1101_GUI: Connection failed after 3 attempts
+2026-05-19 13:53:40,033 [INFO] LDC1101_Serial: Disconnected from COM3
+2026-05-19 13:53:56,703 [INFO] LDC1101_Serial: Connected to COM3 at 115200 baud
+2026-05-19 13:53:56,772 [INFO] LDC1101_GUI: Connection attempt 1 failed, retrying...
+2026-05-19 13:53:57,273 [INFO] LDC1101_Serial: Connected to COM3 at 115200 baud
+2026-05-19 13:53:57,377 [WARNING] LDC1101_Serial: No response for read: addr=0x3F
+2026-05-19 13:53:57,379 [INFO] LDC1101_GUI: Connection attempt 2 failed, retrying...
+2026-05-19 13:53:57,883 [INFO] LDC1101_Serial: Connected to COM3 at 115200 baud
+2026-05-19 13:53:57,989 [WARNING] LDC1101_Serial: No response for read: addr=0x3F
+2026-05-19 13:53:57,989 [ERROR] LDC1101_GUI: Connection failed after 3 attempts
+2026-05-19 13:53:57,991 [INFO] LDC1101_Serial: Disconnected from COM3
+2026-05-19 13:54:04,479 [INFO] LDC1101_Serial: Connected to COM4 at 115200 baud
+2026-05-19 13:54:04,586 [WARNING] LDC1101_Serial: No response for read: addr=0x3F
+2026-05-19 13:54:04,586 [INFO] LDC1101_GUI: Connection attempt 1 failed, retrying...
+2026-05-19 13:54:05,093 [INFO] LDC1101_Serial: Connected to COM4 at 115200 baud
+2026-05-19 13:54:05,193 [WARNING] LDC1101_Serial: No response for read: addr=0x3F
+2026-05-19 13:54:05,195 [INFO] LDC1101_GUI: Connection attempt 2 failed, retrying...
+2026-05-19 13:54:05,705 [INFO] LDC1101_Serial: Connected to COM4 at 115200 baud
+2026-05-19 13:54:05,822 [WARNING] LDC1101_Serial: No response for read: addr=0x3F
+2026-05-19 13:54:05,823 [ERROR] LDC1101_GUI: Connection failed after 3 attempts
+2026-05-19 13:54:05,823 [INFO] LDC1101_Serial: Disconnected from COM4
+2026-05-19 13:54:39,991 [INFO] LDC1101_Serial: Connected to COM3 at 115200 baud
+2026-05-19 13:54:40,031 [INFO] LDC1101_GUI: Connection attempt 1 failed, retrying...
+2026-05-19 13:54:40,537 [INFO] LDC1101_Serial: Connected to COM3 at 115200 baud
+2026-05-19 13:54:40,637 [WARNING] LDC1101_Serial: No response for read: addr=0x3F
+2026-05-19 13:54:40,637 [INFO] LDC1101_GUI: Connection attempt 2 failed, retrying...
+2026-05-19 13:54:41,143 [INFO] LDC1101_Serial: Connected to COM3 at 115200 baud
+2026-05-19 13:54:41,251 [WARNING] LDC1101_Serial: No response for read: addr=0x3F
+2026-05-19 13:54:41,253 [ERROR] LDC1101_GUI: Connection failed after 3 attempts
+2026-05-19 13:54:41,253 [INFO] LDC1101_Serial: Disconnected from COM3
+2026-05-19 14:02:06,388 [INFO] LDC1101_GUI: Initializing LDC1101 GUI application
+2026-05-19 14:02:06,532 [INFO] LDC1101_GUI: Starting main event loop
+2026-05-19 14:02:16,095 [INFO] LDC1101_Serial: Connected to COM3 at 115200 baud
+2026-05-19 14:02:16,209 [WARNING] LDC1101_Serial: No response for read: addr=0x3F
+2026-05-19 14:02:16,209 [INFO] LDC1101_GUI: Connection attempt 1 failed, retrying...
+2026-05-19 14:02:16,711 [INFO] LDC1101_Serial: Connected to COM3 at 115200 baud
+2026-05-19 14:02:16,824 [WARNING] LDC1101_Serial: No response for read: addr=0x3F
+2026-05-19 14:02:16,825 [INFO] LDC1101_GUI: Connection attempt 2 failed, retrying...
+2026-05-19 14:02:17,326 [INFO] LDC1101_Serial: Connected to COM3 at 115200 baud
+2026-05-19 14:02:17,437 [WARNING] LDC1101_Serial: No response for read: addr=0x3F
+2026-05-19 14:02:17,437 [ERROR] LDC1101_GUI: Connection failed after 3 attempts
+2026-05-19 14:02:17,437 [INFO] LDC1101_Serial: Disconnected from COM3
+2026-05-19 14:02:56,668 [INFO] LDC1101_Serial: Connected to COM4 at 115200 baud
+2026-05-19 14:02:56,775 [WARNING] LDC1101_Serial: No response for read: addr=0x3F
+2026-05-19 14:02:56,775 [INFO] LDC1101_GUI: Connection attempt 1 failed, retrying...
+2026-05-19 14:02:57,285 [INFO] LDC1101_Serial: Connected to COM4 at 115200 baud
+2026-05-19 14:02:57,400 [WARNING] LDC1101_Serial: No response for read: addr=0x3F
+2026-05-19 14:02:57,401 [INFO] LDC1101_GUI: Connection attempt 2 failed, retrying...
+2026-05-19 14:02:57,907 [INFO] LDC1101_Serial: Connected to COM4 at 115200 baud
+2026-05-19 14:02:58,011 [WARNING] LDC1101_Serial: No response for read: addr=0x3F
+2026-05-19 14:02:58,016 [ERROR] LDC1101_GUI: Connection failed after 3 attempts
+2026-05-19 14:02:58,016 [INFO] LDC1101_Serial: Disconnected from COM4
+2026-05-19 14:11:18,957 [INFO] LDC1101_GUI: Initializing LDC1101 GUI application
+2026-05-19 14:11:19,109 [INFO] LDC1101_GUI: Starting main event loop
+2026-05-19 14:11:30,935 [INFO] LDC1101_Serial: Connected to COM3 at 115200 baud
+2026-05-19 14:11:33,821 [WARNING] LDC1101_Serial: No CHIP_ID line received from firmware
+2026-05-19 14:11:33,821 [INFO] LDC1101_GUI: Connection attempt 1 failed, retrying...
+2026-05-19 14:11:34,325 [INFO] LDC1101_Serial: Connected to COM3 at 115200 baud
+2026-05-19 14:11:37,218 [WARNING] LDC1101_Serial: No CHIP_ID line received from firmware
+2026-05-19 14:11:37,218 [INFO] LDC1101_GUI: Connection attempt 2 failed, retrying...
+2026-05-19 14:11:37,733 [INFO] LDC1101_Serial: Connected to COM3 at 115200 baud
+2026-05-19 14:11:40,621 [WARNING] LDC1101_Serial: No CHIP_ID line received from firmware
+2026-05-19 14:11:40,621 [ERROR] LDC1101_GUI: Connection failed after 3 attempts
+2026-05-19 14:11:40,621 [INFO] LDC1101_Serial: Disconnected from COM3
+2026-05-19 14:15:21,119 [INFO] LDC1101_GUI: Initializing LDC1101 GUI application
+2026-05-19 14:15:21,285 [INFO] LDC1101_GUI: Starting main event loop
+2026-05-19 14:15:36,393 [INFO] LDC1101_Serial: Connected to COM3 at 115200 baud
+2026-05-19 14:15:39,345 [WARNING] LDC1101_Serial: No CHIP_ID line received from firmware
+2026-05-19 14:15:39,345 [INFO] LDC1101_GUI: Connection attempt 1 failed, retrying...
+2026-05-19 14:15:39,850 [INFO] LDC1101_Serial: Connected to COM3 at 115200 baud
+2026-05-19 14:15:42,747 [WARNING] LDC1101_Serial: No CHIP_ID line received from firmware
+2026-05-19 14:15:42,763 [INFO] LDC1101_GUI: Connection attempt 2 failed, retrying...
+2026-05-19 14:15:43,269 [INFO] LDC1101_Serial: Connected to COM3 at 115200 baud
+2026-05-19 14:15:46,145 [WARNING] LDC1101_Serial: No CHIP_ID line received from firmware
+2026-05-19 14:15:46,145 [ERROR] LDC1101_GUI: Connection failed after 3 attempts
+2026-05-19 14:15:46,145 [INFO] LDC1101_Serial: Disconnected from COM3
+2026-05-19 14:17:12,254 [INFO] LDC1101_Serial: Connected to COM3 at 115200 baud
+2026-05-19 14:17:15,198 [WARNING] LDC1101_Serial: No CHIP_ID line received from firmware
+2026-05-19 14:17:15,199 [INFO] LDC1101_GUI: Connection attempt 1 failed, retrying...
+2026-05-19 14:17:15,707 [INFO] LDC1101_Serial: Connected to COM3 at 115200 baud
+2026-05-19 14:17:18,604 [WARNING] LDC1101_Serial: No CHIP_ID line received from firmware
+2026-05-19 14:17:18,606 [INFO] LDC1101_GUI: Connection attempt 2 failed, retrying...
+2026-05-19 14:17:19,110 [INFO] LDC1101_Serial: Connected to COM3 at 115200 baud
+2026-05-19 14:17:22,001 [WARNING] LDC1101_Serial: No CHIP_ID line received from firmware
+2026-05-19 14:17:22,002 [ERROR] LDC1101_GUI: Connection failed after 3 attempts
+2026-05-19 14:17:22,005 [INFO] LDC1101_Serial: Disconnected from COM3
+2026-05-19 14:19:48,592 [INFO] LDC1101_GUI: Application closing - cleaning up resources
+2026-05-19 14:19:48,733 [INFO] LDC1101_GUI: Application closed
+2026-05-19 14:19:54,391 [INFO] LDC1101_GUI: Initializing LDC1101 GUI application
+2026-05-19 14:19:54,534 [INFO] LDC1101_GUI: Starting main event loop
+2026-05-19 14:19:59,975 [INFO] LDC1101_Serial: Connected to COM3 at 115200 baud
+2026-05-19 14:20:00,022 [INFO] LDC1101_Serial: Detected active LDC1101 streaming: 'LHR_LSB (0x38): 0xE7' -> returning CHIP_ID 0xD4
+2026-05-19 14:20:24,239 [INFO] LDC1101_Serial: Connected to COM4 at 115200 baud
+2026-05-19 14:21:24,446 [WARNING] LDC1101_Serial: No connection indicators found in UART stream
+2026-05-19 14:21:24,448 [INFO] LDC1101_GUI: Connection attempt 1 failed, retrying...
+2026-05-19 14:21:24,956 [INFO] LDC1101_Serial: Connected to COM4 at 115200 baud
+2026-05-19 14:21:41,587 [INFO] LDC1101_GUI: Application closing - cleaning up resources
+2026-05-19 14:22:25,834 [INFO] LDC1101_GUI: Initializing LDC1101 GUI application
+2026-05-19 14:22:25,994 [INFO] LDC1101_GUI: Starting main event loop
+2026-05-19 14:22:31,758 [INFO] LDC1101_Serial: Connected to COM3 at 115200 baud
+2026-05-19 14:22:32,151 [INFO] LDC1101_Serial: Detected active LDC1101 streaming: 'LHR_LSB (0x38): 0x53' -> returning CHIP_ID 0xD4
+2026-05-19 14:22:37,357 [INFO] LDC1101_GUI: Application closing - cleaning up resources
+2026-05-19 14:22:37,357 [INFO] LDC1101_Serial: Disconnected from COM3
+2026-05-19 14:22:37,357 [INFO] LDC1101_GUI: Serial connection closed
+2026-05-19 14:22:37,535 [INFO] LDC1101_GUI: Application closed
+2026-05-19 14:22:50,365 [INFO] LDC1101_GUI: Initializing LDC1101 GUI application
+2026-05-19 14:22:50,534 [INFO] LDC1101_GUI: Starting main event loop
+2026-05-19 14:22:55,195 [INFO] LDC1101_Serial: Connected to COM4 at 115200 baud
+2026-05-19 14:23:09,358 [INFO] LDC1101_GUI: Application closing - cleaning up resources
+2026-05-19 14:24:11,165 [INFO] LDC1101_GUI: Initializing LDC1101 GUI application
+2026-05-19 14:24:11,315 [INFO] LDC1101_GUI: Starting main event loop
+2026-05-19 14:24:23,717 [INFO] LDC1101_Serial: Connected to COM3 at 115200 baud
+2026-05-19 14:24:24,077 [INFO] LDC1101_Serial: Detected active LDC1101 streaming: 'LHR_LSB (0x38): 0x60' -> returning CHIP_ID 0xD4
+2026-05-19 14:27:24,477 [INFO] LDC1101_GUI: Initializing LDC1101 GUI application
+2026-05-19 14:27:24,637 [INFO] LDC1101_GUI: Starting main event loop
+2026-05-19 14:27:35,315 [INFO] LDC1101_Serial: Connected to COM3 at 115200 baud
+2026-05-19 14:27:35,793 [INFO] LDC1101_Serial: Detected active LDC1101 streaming: 'LHR_LSB (0x38): 0x86' -> returning CHIP_ID 0xD4
+2026-05-19 14:28:01,119 [INFO] LDC1101_Serial: Connected to COM4 at 115200 baud
+2026-05-19 14:28:35,593 [INFO] LDC1101_GUI: Application closing - cleaning up resources
+2026-05-19 14:29:16,616 [INFO] LDC1101_GUI: Initializing LDC1101 GUI application
+2026-05-19 14:29:16,758 [INFO] LDC1101_GUI: Starting main event loop
+2026-05-19 14:29:27,685 [INFO] LDC1101_Serial: Connected to COM3 at 115200 baud
+2026-05-19 14:29:27,727 [INFO] LDC1101_Serial: Detected active LDC1101 streaming: 'LHR_LSB (0x38): 0x48' -> returning CHIP_ID 0xD4
+2026-05-19 15:01:59,438 [INFO] LDC1101_GUI: Initializing LDC1101 GUI application
+2026-05-19 15:01:59,612 [INFO] LDC1101_GUI: Starting main event loop
+2026-05-19 15:02:08,133 [INFO] LDC1101_Serial: Connected to COM3 at 115200 baud
+2026-05-19 15:02:08,174 [INFO] LDC1101_Serial: Detected active LDC1101 streaming: 'LHR_LSB (0x38): 0x9F' -> returning CHIP_ID 0xD4
+2026-05-19 15:02:12,714 [INFO] LDC1101_GUI: Application closing - cleaning up resources
+2026-05-19 15:02:12,719 [INFO] LDC1101_Serial: Disconnected from COM3
+2026-05-19 15:02:12,719 [INFO] LDC1101_GUI: Serial connection closed
+2026-05-19 15:02:12,851 [INFO] LDC1101_GUI: Application closed
+2026-05-19 15:02:16,118 [INFO] LDC1101_GUI: Initializing LDC1101 GUI application
+2026-05-19 15:02:16,286 [INFO] LDC1101_GUI: Starting main event loop
+2026-05-19 15:02:35,811 [ERROR] LDC1101_Serial: Failed to connect to COM3: could not open port 'COM3': FileNotFoundError(2, 'The system cannot find the file specified.', None, 2)
+2026-05-19 15:02:35,814 [INFO] LDC1101_GUI: Connection attempt 1 failed, retrying...
+2026-05-19 15:02:36,315 [ERROR] LDC1101_Serial: Failed to connect to COM3: could not open port 'COM3': FileNotFoundError(2, 'The system cannot find the file specified.', None, 2)
+2026-05-19 15:02:36,317 [INFO] LDC1101_GUI: Connection attempt 2 failed, retrying...
+2026-05-19 15:02:36,818 [ERROR] LDC1101_Serial: Failed to connect to COM3: could not open port 'COM3': FileNotFoundError(2, 'The system cannot find the file specified.', None, 2)
+2026-05-19 15:02:36,820 [ERROR] LDC1101_GUI: Connection failed after 3 attempts
+2026-05-19 15:02:47,358 [INFO] LDC1101_Serial: Connected to COM3 at 115200 baud
+2026-05-19 15:02:47,428 [INFO] LDC1101_Serial: Detected active LDC1101 streaming: 'LHR_LSB (0x38): 0x62' -> returning CHIP_ID 0xD4
+2026-05-19 15:19:29,751 [INFO] LDC1101_GUI: Initializing LDC1101 GUI application
+2026-05-19 15:19:29,907 [INFO] LDC1101_GUI: Starting main event loop
+2026-05-19 15:19:38,569 [INFO] LDC1101_Serial: Connected to COM3 at 115200 baud
+2026-05-19 15:19:38,774 [INFO] LDC1101_Serial: Detected active LDC1101 streaming: 'LHR_LSB (0x38): 0x87' -> returning CHIP_ID 0xD4
+2026-05-19 15:24:18,911 [INFO] LDC1101_GUI: Initializing LDC1101 GUI application
+2026-05-19 15:24:19,123 [INFO] LDC1101_GUI: Starting main event loop
+2026-05-19 15:28:09,664 [INFO] LDC1101_GUI: Application closing - cleaning up resources
+2026-05-19 15:28:09,856 [INFO] LDC1101_GUI: Application closed
+2026-05-19 15:28:12,936 [INFO] LDC1101_GUI: Initializing LDC1101 GUI application
+2026-05-19 15:28:13,148 [INFO] LDC1101_GUI: Starting main event loop
+2026-05-19 15:28:41,076 [INFO] LDC1101_GUI: Application closing - cleaning up resources
+2026-05-19 15:28:41,245 [INFO] LDC1101_GUI: Application closed
+2026-05-19 15:28:45,306 [INFO] LDC1101_GUI: Initializing LDC1101 GUI application
+2026-05-19 15:28:45,528 [INFO] LDC1101_GUI: Starting main event loop
+2026-05-19 15:29:02,683 [INFO] LDC1101_GUI: Application closing - cleaning up resources
+2026-05-19 15:29:02,822 [INFO] LDC1101_GUI: Application closed
+2026-05-19 15:30:41,491 [INFO] LDC1101_GUI: Initializing LDC1101 GUI application
+2026-05-19 15:30:41,666 [INFO] LDC1101_GUI: Starting main event loop
+2026-05-19 15:30:47,306 [INFO] LDC1101_Serial: Connected to COM3 at 115200 baud
+2026-05-19 15:30:47,589 [INFO] LDC1101_Serial: Detected active LDC1101 streaming: 'LHR_LSB (0x38): 0x7B' -> returning CHIP_ID 0xD4
+2026-05-19 15:31:01,815 [INFO] LDC1101_Serial: Connected to COM3 at 115200 baud
+2026-05-19 15:31:01,858 [INFO] LDC1101_Serial: Detected active LDC1101 streaming: 'LHR_LSB (0x38): 0xE9' -> returning CHIP_ID 0xD4
+2026-05-19 15:32:19,536 [WARNING] LDC1101_Serial: No CSENSOR_ACK received from MCU
+2026-05-19 15:32:20,464 [WARNING] LDC1101_Serial: No CSENSOR_ACK received from MCU
+2026-05-19 15:32:20,773 [INFO] LDC1101_Serial: MCU confirmed Csensor: CSENSOR_ACK:10000000pF
+2026-05-19 15:32:21,392 [INFO] LDC1101_Serial: MCU confirmed Csensor: CSENSOR_ACK:1000pF
+2026-05-19 15:35:01,159 [INFO] LDC1101_Serial: Connected to COM3 at 115200 baud
+2026-05-19 15:35:01,314 [INFO] LDC1101_Serial: Detected active LDC1101 streaming: 'LHR_LSB (0x38): 0x3A' -> returning CHIP_ID 0xD4
+2026-05-19 15:38:08,063 [WARNING] LDC1101_Serial: No CSENSOR_ACK received from MCU
+2026-05-19 15:38:08,675 [INFO] LDC1101_Serial: MCU confirmed Csensor: CSENSOR_ACK:3000pF
+2026-05-19 15:50:46,034 [WARNING] LDC1101_Serial: No CSENSOR_ACK received from MCU
+2026-05-19 15:50:46,963 [WARNING] LDC1101_Serial: No CSENSOR_ACK received from MCU
+2026-05-19 15:50:47,892 [WARNING] LDC1101_Serial: No CSENSOR_ACK received from MCU
+2026-05-19 15:50:48,516 [WARNING] LDC1101_Serial: No CSENSOR_ACK received from MCU
+2026-05-19 15:51:21,387 [WARNING] LDC1101_Serial: No CSENSOR_ACK received from MCU
+2026-05-19 15:51:22,315 [WARNING] LDC1101_Serial: No CSENSOR_ACK received from MCU
+2026-05-19 15:51:26,352 [WARNING] LDC1101_Serial: No CSENSOR_ACK received from MCU
+2026-05-19 15:51:27,280 [WARNING] LDC1101_Serial: No CSENSOR_ACK received from MCU
+2026-05-19 15:51:28,210 [WARNING] LDC1101_Serial: No CSENSOR_ACK received from MCU
+2026-05-19 15:51:28,836 [WARNING] LDC1101_Serial: No CSENSOR_ACK received from MCU
+2026-05-19 15:51:29,445 [INFO] LDC1101_Serial: MCU confirmed Csensor: CSENSOR_ACK:10000000pF
+2026-05-19 15:51:29,587 [ERROR] LDC1101_Serial: send_csensor error: byref() argument must be a ctypes instance, not 'NoneType'
+2026-05-19 15:51:29,594 [INFO] LDC1101_Serial: Connected to COM3 at 115200 baud
+2026-05-19 15:51:30,070 [INFO] LDC1101_Serial: Detected active LDC1101 streaming: 'LHR_LSB (0x38): 0x94' -> returning CHIP_ID 0xD4
+2026-05-19 15:52:37,240 [INFO] LDC1101_Serial: Connected to COM3 at 115200 baud
+2026-05-19 15:52:37,676 [INFO] LDC1101_Serial: Detected active LDC1101 streaming: 'LHR_LSB (0x38): 0x18' -> returning CHIP_ID 0xD4
+2026-05-19 16:05:51,363 [INFO] LDC1101_Serial: Connected to COM3 at 115200 baud
+2026-05-19 16:05:51,694 [INFO] LDC1101_Serial: Detected active LDC1101 streaming: 'LHR_LSB (0x38): 0x20' -> returning CHIP_ID 0xD4
+2026-05-19 16:05:59,847 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:06:00,359 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:06:00,874 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:06:01,376 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:06:01,893 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:06:02,309 [ERROR] LDC1101_Serial: Failed to connect to COM3: could not open port 'COM3': FileNotFoundError(2, 'The system cannot find the file specified.', None, 2)
+2026-05-19 16:06:02,309 [INFO] LDC1101_GUI: Connection attempt 1 failed, retrying...
+2026-05-19 16:06:02,813 [ERROR] LDC1101_Serial: Failed to connect to COM3: could not open port 'COM3': FileNotFoundError(2, 'The system cannot find the file specified.', None, 2)
+2026-05-19 16:06:02,815 [INFO] LDC1101_GUI: Connection attempt 2 failed, retrying...
+2026-05-19 16:06:03,317 [ERROR] LDC1101_Serial: Failed to connect to COM3: could not open port 'COM3': FileNotFoundError(2, 'The system cannot find the file specified.', None, 2)
+2026-05-19 16:06:03,317 [ERROR] LDC1101_GUI: Connection failed after 3 attempts
+2026-05-19 16:06:12,426 [INFO] LDC1101_Serial: Connected to COM3 at 115200 baud
+2026-05-19 16:06:12,892 [INFO] LDC1101_Serial: Detected active LDC1101 streaming: 'LHR_LSB (0x38): 0xFC' -> returning CHIP_ID 0xD4
+2026-05-19 16:13:10,107 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:13:10,624 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:13:11,129 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:13:11,633 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:13:12,138 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:13:12,642 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:13:13,148 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:13:13,655 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:13:14,165 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:13:14,678 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:13:15,183 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:13:15,687 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:13:16,207 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:13:16,715 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:13:17,220 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:13:17,724 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:13:18,229 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:13:18,735 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:13:19,239 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:13:19,747 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:13:20,254 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:13:20,760 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:13:21,278 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:13:21,788 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:13:22,298 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:13:22,809 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:13:23,314 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:13:23,825 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:13:24,334 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:13:24,855 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:13:25,364 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:13:25,866 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:13:26,374 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:13:26,879 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:13:27,387 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:13:27,896 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:13:28,401 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:13:28,906 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:13:29,414 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:13:29,921 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:13:30,432 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:13:30,944 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:13:31,453 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:13:31,958 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:13:32,467 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:13:32,975 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:13:33,484 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:13:33,987 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:13:34,496 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:13:35,005 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:13:35,510 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:13:36,766 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:13:37,273 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:13:37,787 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:16:36,563 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:16:37,861 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:16:38,382 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:16:38,886 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:16:39,407 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:16:39,910 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:16:41,720 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:16:42,229 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:16:42,737 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:16:43,245 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:16:43,755 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:16:44,256 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:16:44,763 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:16:45,273 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:16:45,794 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:16:46,299 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:16:46,804 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:16:47,316 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:16:47,825 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:16:48,330 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:16:48,845 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:16:49,350 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:16:49,857 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:16:50,368 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:16:50,879 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:16:51,385 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:16:51,899 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:16:52,413 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:16:52,921 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:16:53,429 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:16:53,933 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:16:54,443 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:16:54,953 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:16:55,461 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:16:55,966 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:16:56,471 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:16:56,976 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:16:57,483 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:16:57,987 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:16:58,495 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:16:59,001 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:16:59,509 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:00,017 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:00,523 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:01,029 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:01,539 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:02,045 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:02,552 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:03,057 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:03,566 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:04,077 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:04,582 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:05,087 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:05,597 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:06,116 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:06,620 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:07,123 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:07,630 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:08,140 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:08,646 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:09,155 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:09,675 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:10,179 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:10,687 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:11,194 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:11,700 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:12,207 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:12,714 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:13,227 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:13,732 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:14,238 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:14,743 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:15,251 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:15,759 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:16,268 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:16,780 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:17,296 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:17,809 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:18,323 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:18,836 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:19,350 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:19,865 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:20,383 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:20,894 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:21,409 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:21,921 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:22,433 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:22,948 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:23,460 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:23,973 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:24,490 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:25,005 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:25,516 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:26,030 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:26,545 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:27,059 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:27,568 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:28,080 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:28,593 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:29,104 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:29,617 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:30,130 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:30,649 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:31,164 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:31,675 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:32,191 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:32,704 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:33,219 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:33,734 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:34,248 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:34,758 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:35,273 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:35,786 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:36,301 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:36,814 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:37,320 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:39,225 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:39,759 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:40,275 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:40,780 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:41,288 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:41,796 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:42,304 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:42,809 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:43,317 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:43,840 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:44,344 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:44,853 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:45,359 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:45,864 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:46,373 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:46,885 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:47,411 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:47,915 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:48,436 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:48,943 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:49,453 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:49,957 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:50,467 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:50,972 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:51,490 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:51,992 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:52,504 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:53,025 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:53,533 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:54,039 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:54,545 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:55,054 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:55,563 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:56,068 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:56,579 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:57,090 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:57,595 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:58,106 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:58,610 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:59,113 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:17:59,619 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:00,123 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:00,629 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:01,137 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:01,645 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:02,166 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:02,679 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:03,187 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:03,697 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:04,207 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:04,711 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:05,217 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:05,723 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:06,230 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:06,750 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:07,253 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:07,758 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:08,264 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:08,777 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:09,287 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:09,792 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:10,297 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:10,809 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:11,318 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:11,824 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:12,336 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:12,844 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:13,349 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:13,859 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:14,365 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:14,877 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:15,381 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:15,887 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:16,395 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:16,902 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:17,412 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:17,919 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:18,426 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:18,934 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:19,442 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:19,950 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:20,455 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:20,965 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:21,475 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:21,982 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:22,494 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:23,004 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:23,512 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:24,017 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:24,528 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:25,040 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:25,558 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:26,064 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:26,568 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:27,086 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:27,597 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:28,107 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:28,637 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:29,161 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:29,670 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:30,173 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:30,679 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:31,186 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:31,700 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:32,210 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:32,720 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:33,234 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:33,745 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:34,251 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:34,759 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:35,268 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:35,780 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:36,299 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:36,815 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:37,320 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:37,834 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:38,338 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:38,855 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:39,372 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:39,888 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:40,401 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:40,922 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:41,437 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:41,951 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:42,465 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:42,984 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:43,491 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:44,009 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:44,514 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:45,019 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:45,537 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:46,043 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:46,551 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:47,065 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:47,580 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:48,099 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:48,616 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:49,130 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:49,632 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:50,140 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:50,655 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:51,170 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:51,680 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:52,198 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:52,703 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:53,218 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:53,734 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:54,238 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:54,742 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:55,246 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:55,765 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:56,271 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:56,779 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:57,281 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:57,786 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:58,294 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:58,798 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:59,308 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:18:59,815 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:00,321 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:00,831 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:01,352 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:01,860 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:02,378 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:02,892 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:03,399 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:03,915 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:04,425 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:04,930 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:05,450 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:05,966 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:06,473 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:06,990 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:07,509 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:08,012 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:08,529 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:09,046 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:09,551 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:10,058 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:10,577 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:11,083 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:11,589 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:12,100 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:12,615 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:13,120 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:13,632 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:14,150 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:14,655 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:15,162 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:15,675 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:16,188 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:16,692 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:17,201 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:17,715 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:18,223 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:18,731 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:19,238 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:19,745 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:20,249 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:20,763 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:21,270 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:21,775 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:22,281 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:22,792 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:23,298 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:23,808 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:24,317 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:24,824 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:25,327 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:25,835 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:26,344 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:26,854 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:27,363 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:27,873 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:28,384 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:28,892 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:29,405 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:29,921 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:30,429 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:30,940 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:31,453 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:31,958 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:32,466 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:32,978 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:33,500 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:34,008 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:34,517 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:35,031 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:35,550 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:36,055 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:36,561 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:37,079 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:37,596 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:38,114 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:38,622 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:39,155 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:39,673 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:40,181 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:40,687 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:41,205 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:41,719 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:42,229 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:42,736 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:43,252 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:43,759 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:44,265 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:44,770 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:45,288 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:45,795 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:46,307 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:46,819 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:47,331 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:47,847 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:48,349 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:48,858 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:49,374 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:49,893 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:50,407 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:50,914 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:51,418 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:51,921 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:52,424 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:52,928 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:53,430 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:53,938 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:54,455 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:54,964 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:55,482 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:55,987 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:56,490 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:56,995 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:57,513 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:58,032 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:58,539 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:59,050 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:19:59,566 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:00,071 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:00,575 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:01,080 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:01,585 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:02,090 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:02,590 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:03,105 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:03,621 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:04,138 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:04,647 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:05,166 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:05,675 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:06,178 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:06,680 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:07,195 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:07,698 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:08,217 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:08,730 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:09,234 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:09,742 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:10,246 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:10,764 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:11,281 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:11,784 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:12,301 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:12,808 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:13,317 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:13,819 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:14,333 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:14,847 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:15,363 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:15,871 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:16,385 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:16,891 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:17,398 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:17,914 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:18,424 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:18,933 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:19,438 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:19,946 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:20,459 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:20,970 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:21,482 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:21,991 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:22,493 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:23,011 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:23,521 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:24,031 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:24,545 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:25,059 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:25,564 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:26,073 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:26,583 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:27,092 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:27,598 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:28,106 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:28,615 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:29,124 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:29,635 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:30,143 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:30,653 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:31,173 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:31,686 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:32,195 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:32,702 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:33,207 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:33,719 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:34,223 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:34,736 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:35,246 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:35,757 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:36,269 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:36,779 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:37,289 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:37,799 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:38,309 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:38,824 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:39,336 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:39,845 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:40,357 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:40,869 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:41,381 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:41,896 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:42,409 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:42,923 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:43,436 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:43,946 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:44,462 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:44,976 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:45,492 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:46,001 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:46,513 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:47,026 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:47,538 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:48,050 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:48,565 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:49,082 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:49,600 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:50,110 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:50,621 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:51,132 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:51,643 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:52,150 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:52,654 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:53,164 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:53,681 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:54,182 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:54,699 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:55,216 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:55,731 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:56,247 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:56,762 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:57,272 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:57,788 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:58,299 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:58,814 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:59,317 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:20:59,831 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:00,343 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:00,858 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:01,368 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:01,870 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:02,382 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:02,892 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:03,398 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:03,905 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:04,415 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:04,925 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:05,434 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:05,942 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:06,453 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:06,960 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:07,468 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:07,978 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:08,490 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:08,998 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:09,505 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:10,015 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:10,525 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:11,036 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:11,548 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:12,058 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:12,567 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:13,074 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:13,579 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:14,086 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:14,597 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:15,104 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:15,613 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:16,124 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:16,628 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:17,136 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:17,639 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:18,145 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:18,654 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:19,158 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:19,664 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:20,175 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:20,696 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:21,200 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:21,707 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:22,213 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:22,723 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:23,230 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:23,737 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:24,243 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:24,751 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:25,259 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:25,768 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:26,277 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:26,786 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:27,293 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:27,798 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:28,305 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:28,813 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:29,319 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:29,825 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:30,333 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:30,839 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:31,345 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:31,855 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:32,365 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:32,872 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:33,378 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:33,886 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:34,395 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:34,904 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:35,411 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:35,917 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:36,428 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:36,933 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:37,439 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:37,948 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:38,459 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:38,969 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:39,494 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:40,015 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:40,524 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:41,030 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:41,535 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:42,038 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:42,543 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:43,045 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:43,551 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:44,058 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:44,578 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:45,125 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:46,148 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:46,661 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:51,611 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:52,120 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:52,628 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:53,161 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:53,663 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:54,715 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:55,224 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:55,733 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:56,244 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:56,753 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:57,268 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:57,773 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:58,277 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:58,794 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:59,300 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:21:59,806 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:22:00,313 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:22:00,818 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:22:01,327 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:22:01,832 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:22:02,340 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:22:02,848 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:22:03,370 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:22:03,876 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:22:04,378 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:22:04,883 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:22:05,389 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:22:05,895 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:22:06,402 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:22:06,908 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:22:07,414 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:22:07,922 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:22:08,429 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:22:08,939 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:22:09,448 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:22:09,953 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:22:10,462 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:22:10,980 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:22:11,491 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:22:12,003 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:22:12,513 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:22:13,026 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:22:13,540 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:22:14,050 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:22:14,562 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:22:15,067 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:22:15,579 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:22:16,087 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:22:16,592 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:22:17,101 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:22:17,607 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:22:18,113 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:22:18,620 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:22:19,131 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:22:19,636 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:22:20,142 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:22:20,650 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:22:21,157 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:22:21,667 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:22:22,173 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:22:22,680 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:22:23,190 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:22:23,711 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:22:24,217 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:22:24,727 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:22:25,236 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:22:25,741 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:22:26,244 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:22:26,749 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:22:27,258 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:22:27,763 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:22:28,273 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:22:28,777 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:22:29,284 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:22:29,793 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:22:30,298 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:22:30,801 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:22:31,309 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:22:31,818 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:22:32,326 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:22:32,835 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:22:33,341 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:22:33,846 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:22:34,351 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:22:34,857 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:22:35,363 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:22:35,871 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:22:36,374 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:22:36,890 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:22:37,400 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:22:37,907 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:22:38,411 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:22:38,915 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:22:39,425 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:22:40,845 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:22:41,350 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:22:51,548 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:22:52,050 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:22:52,858 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:22:53,377 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:22:54,520 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:22:55,023 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:22:55,530 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:22:56,038 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:22:56,558 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:22:57,094 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:22:57,601 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:22:58,110 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:22:58,617 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:22:59,122 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:22:59,626 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:23:00,133 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:23:00,641 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:23:01,150 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:23:01,656 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:23:02,161 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:23:02,666 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:23:03,188 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:23:03,692 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:23:04,201 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:23:04,712 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:23:05,231 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:23:05,742 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:23:06,245 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:23:06,751 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:23:07,259 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:23:07,767 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:23:08,273 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:23:08,780 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:23:09,286 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:23:09,793 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:23:10,301 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:23:10,808 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:23:11,315 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:23:11,820 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:23:12,332 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:23:12,844 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:23:13,349 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:23:13,854 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:23:14,364 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:23:14,866 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:23:15,385 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:23:15,892 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:23:16,395 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:23:16,901 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:23:17,409 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:23:17,916 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:23:18,423 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:23:18,943 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:23:19,445 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:23:19,953 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:23:20,459 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:23:20,964 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:23:21,469 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:23:21,974 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:23:22,482 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:23:22,994 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:23:23,513 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:23:24,023 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:23:24,529 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:23:25,038 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:23:25,543 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:23:26,053 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:23:26,557 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:23:27,062 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:23:27,567 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:23:28,070 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:23:28,576 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:23:29,083 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:23:29,591 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:23:30,098 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:23:30,608 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:23:31,111 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:23:31,615 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:23:32,119 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:23:32,623 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:23:33,131 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:23:33,637 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:23:34,142 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:23:34,651 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:23:35,158 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:23:35,666 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:23:37,057 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:23:37,569 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:23:38,077 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:23:51,867 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:23:52,861 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:23:53,363 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:23:53,873 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:23:54,572 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:23:55,078 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:23:55,589 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:23:56,098 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:23:56,605 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:23:57,115 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:23:57,635 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:23:58,159 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:23:58,675 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:23:59,182 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-05-19 16:23:59,688 [ERROR] LDC1101_GUI: Error parsing live UART data: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))

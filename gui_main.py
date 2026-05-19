@@ -136,10 +136,13 @@ class MainGUI:
         self.port_cb.pack(side="left", padx=4)
 
         def refresh_ports():
-            ports = [p.device for p in serial.tools.list_ports.comports()]
-            # Always include mock ports for testing/simulation
-            ports += ["COM3 (Mock)", "COM4 (Mock)"]
-            
+            real_ports = [p.device for p in serial.tools.list_ports.comports()]
+            if real_ports:
+                # Sort so COM3 comes before COM4 — Application UART is always the lower port
+                real_ports = sorted(real_ports, key=lambda p: int(''.join(filter(str.isdigit, p)) or 0))
+                ports = real_ports          # Only real ports if any exist
+            else:
+                ports = ["COM3 (Mock)", "COM4 (Mock)"]   # Fall back to mock only if nothing real
             self.port_cb["values"] = ports
             if ports:
                 self.port_var.set(ports[0])
@@ -567,45 +570,76 @@ class MainGUI:
             l_data = random.randint(0, 65535)
             lhr_data = random.randint(0, 16777215)
         else:
-            # Real hardware: read registers
-            # Read STATUS (0x20)
-            status_val = self.ser_conn.read_register(0x20)
-            if status_val is not None:
-                self.reg_live_values[0x20] = status_val
+            # Real hardware: parse continuous UART text stream in a non-blocking way
+            status_val = self.reg_live_values.get(0x20, 0x00)
+            lhr_data = (self.reg_live_values.get(0x3A, 0) << 16) | (self.reg_live_values.get(0x39, 0) << 8) | self.reg_live_values.get(0x38, 0)
+            rp_data = 0
+            l_data = 0
 
-            # Read RP_DATA_LSB (0x21) first (required by datasheet)
-            rp_lsb = self.ser_conn.read_register(0x21)
-            # Then read RP_DATA_MSB (0x22), L_DATA_LSB (0x23), L_DATA_MSB (0x24)
-            rp_msb = self.ser_conn.read_register(0x22)
-            l_lsb = self.ser_conn.read_register(0x23)
-            l_msb = self.ser_conn.read_register(0x24)
+            try:
+                # Read all lines currently available in the receive buffer
+                while self.ser_conn.serial.in_waiting > 0:
+                    line = self.ser_conn.serial.readline().decode("ascii", errors="ignore").strip()
+                    if not line:
+                        continue
+                    
+                    if "LHR VALUE:" in line:
+                        parts = line.split("0x")
+                        if len(parts) > 1:
+                            try:
+                                lhr_data = int(parts[-1].strip(), 16)
+                            except ValueError:
+                                pass
+                    elif "LHR_LSB" in line:
+                        parts = line.split("0x")
+                        if len(parts) > 1:
+                            try:
+                                val = int(parts[-1].strip(), 16)
+                                self.reg_live_values[0x38] = val
+                            except ValueError:
+                                pass
+                    elif "LHR_MID" in line:
+                        parts = line.split("0x")
+                        if len(parts) > 1:
+                            try:
+                                val = int(parts[-1].strip(), 16)
+                                self.reg_live_values[0x39] = val
+                            except ValueError:
+                                pass
+                    elif "LHR_MSB" in line:
+                        parts = line.split("0x")
+                        if len(parts) > 1:
+                            try:
+                                val = int(parts[-1].strip(), 16)
+                                self.reg_live_values[0x3A] = val
+                            except ValueError:
+                                pass
+                    elif "Status: 0x" in line:
+                        parts = line.split("0x")
+                        if len(parts) > 1:
+                            try:
+                                status_val = int(parts[-1].strip(), 16)
+                                self.reg_live_values[0x20] = status_val
+                            except ValueError:
+                                pass
+                    elif "ERROR:" in line:
+                        status_val = 0x80
+                        self.reg_live_values[0x20] = status_val
+                    elif "SUCCESS:" in line:
+                        status_val = 0x00
+                        self.reg_live_values[0x20] = status_val
+                    elif "Chip ID:" in line:
+                        parts = line.split("0x")
+                        if len(parts) > 1:
+                            try:
+                                val = int(parts[-1].strip(), 16)
+                                self.reg_live_values[0x3F] = val
+                            except ValueError:
+                                pass
+            except Exception as e:
+                logger.error(f"Error parsing live UART data: {e}")
 
-            if rp_lsb is not None: self.reg_live_values[0x21] = rp_lsb
-            if rp_msb is not None: self.reg_live_values[0x22] = rp_msb
-            if l_lsb is not None: self.reg_live_values[0x23] = l_lsb
-            if l_msb is not None: self.reg_live_values[0x24] = l_msb
-
-            rp_data = (rp_msb << 8) | rp_lsb if (rp_msb is not None and rp_lsb is not None) else 0
-            l_data = (l_msb << 8) | l_lsb if (l_msb is not None and l_lsb is not None) else 0
-
-            # Read LHR_DATA in order: LSB (0x38), MID (0x39), MSB (0x3A)
-            lhr_lsb = self.ser_conn.read_register(0x38)
-            lhr_mid = self.ser_conn.read_register(0x39)
-            lhr_msb = self.ser_conn.read_register(0x3A)
-            
-            if lhr_lsb is not None: self.reg_live_values[0x38] = lhr_lsb
-            if lhr_mid is not None: self.reg_live_values[0x39] = lhr_mid
-            if lhr_msb is not None: self.reg_live_values[0x3A] = lhr_msb
-            
-            lhr_data = (lhr_msb << 16) | (lhr_mid << 8) | lhr_lsb if (lhr_msb is not None and lhr_mid is not None and lhr_lsb is not None) else 0
-            
-            # Read LHR_STATUS (0x3B)
-            lhr_status = self.ser_conn.read_register(0x3B)
-            if lhr_status is not None:
-                self.reg_live_values[0x3B] = lhr_status
-                status_val = lhr_status # Use LHR_STATUS for the DRDY logic below if needed
-
-        # Schedule UI update safely on the main thread with a delay to prevent flooding
+        # Schedule UI update safely on the main thread
         self.root.after(100, lambda: self._update_ui_with_data(status_val, rp_data, l_data, lhr_data))
 
     def _update_ui_with_data(self, status_val, rp_data, l_data, lhr_data):
@@ -629,19 +663,26 @@ class MainGUI:
         if hasattr(self, 'lhr_ui'):
             self.lhr_ui.update_from_main_poll(status_val, lhr_data)
 
-        # Calculate fSENSOR: (fCLKIN × RESP_TIME) / (3 × L_DATA)
-        # fCLKIN = 8MHz (internal clock)
-        # RESP_TIME is from DIG_CONF (0x04) bits[2:0]
-        fCLKIN = 8e6  # 8 MHz
-        dig_conf = self.reg_live_values.get(0x04, 0x03)
-        resp_time_bits = dig_conf & 0x07
-        # RESP_TIME values: b010=192us, b011=384us, b100=768us, b101=1536us, b110=3072us, b111=6144us
-        resp_time_map = {2: 192e-6, 3: 384e-6, 4: 768e-6, 5: 1536e-6, 6: 3072e-6, 7: 6144e-6}
-        resp_time = resp_time_map.get(resp_time_bits, 192e-6)
-
-        if l_data > 0:
+        # Calculate fSENSOR
+        if lhr_data > 0:
+            # LHR mode: fSENSOR = (fCLKIN * SENSOR_DIV * LHR_DATA) / 2^24
+            # We assume fCLKIN is 16MHz (standard for the MSP432 firmware)
+            fCLKIN = 16e6
+            sdiv_bits = self.reg_live_values.get(0x34, 0x00) & 0x03
+            sdiv = 1 << sdiv_bits
+            fsensor = (fCLKIN * sdiv * lhr_data) / 16777216.0
+        elif l_data > 0:
+            # Normal mode
+            fCLKIN = 8e6  # 8 MHz (internal clock)
+            dig_conf = self.reg_live_values.get(0x04, 0x03)
+            resp_time_bits = dig_conf & 0x07
+            resp_time_map = {2: 192e-6, 3: 384e-6, 4: 768e-6, 5: 1536e-6, 6: 3072e-6, 7: 6144e-6}
+            resp_time = resp_time_map.get(resp_time_bits, 192e-6)
             fsensor = (fCLKIN * resp_time) / (3 * l_data)
-            # Format nicely
+        else:
+            fsensor = 0
+
+        if fsensor > 0:
             if fsensor >= 1e6:
                 self.fsensor_lbl.config(text=f"{fsensor/1e6:.2f} MHz")
             elif fsensor >= 1e3:
@@ -679,16 +720,14 @@ class MainGUI:
         # Refresh ports
         self.refresh_ports()
 
-        # Auto-detection: if there are real COM ports, try to connect to the first one automatically
         ports_real = [p.device for p in serial.tools.list_ports.comports()]
-        ports_all = ports_real + ["COM3 (Mock)", "COM4 (Mock)"]
-        self.port_cb["values"] = ports_all
-
         if ports_real:
-            self.port_var.set(ports_real[0])
-            self.connect_and_verify()
+            # Sort so COM3 comes before COM4 — Application UART is always the lower port
+            ports_real = sorted(ports_real, key=lambda p: int(''.join(filter(str.isdigit, p)) or 0))
+            self.port_cb["values"] = ports_real
+            self.port_var.set(ports_real[0])   # COM3 selected by default
         else:
-            # No real ports found, use Mock ports
+            self.port_cb["values"] = ["COM3 (Mock)", "COM4 (Mock)"]
             self.port_var.set("COM3 (Mock)")
 
         # Bind Apps Calculator (recalculate + sync parameters)
@@ -697,14 +736,62 @@ class MainGUI:
             self.apps_calc_ui.sync_parameters
         )
 
+        def _on_csensor_changed(*args):
+            raw = self.apps_calc_ui.nt_csensor_var.get()
+            display = raw if raw else "390 pF"
+
+            # Update LHR tab display
+            self.lhr_ui.update_csensor_display(display)
+
+            # Send to MCU via UART if connected
+            from calculations import parse_capacitance
+            c_farads, _ = parse_capacitance(raw)
+            if c_farads is not None and self.ser_conn and self.ser_conn.connected:
+                pf_value = c_farads * 1e12
+                def _send_and_confirm():
+                    ok = self.ser_conn.send_csensor(pf_value)
+                    if ok:
+                        self.root.after(0, lambda: self.set_status(
+                            f"Csensor updated to {int(pf_value)}pF on MCU ✓"))
+                    else:
+                        self.root.after(0, lambda: self.set_status(
+                            f"Csensor send failed — MCU not responding", color="#ff6666"))
+                import threading
+                threading.Thread(target=_send_and_confirm, daemon=True).start()
+
+        self.apps_calc_ui.nt_csensor_var.trace_add("write", _on_csensor_changed)
+
+        def _on_lhr_csensor_changed(*args):
+            try:
+                val = self.lhr_ui.sensor_cap_var.get()
+                if val > 0 and self.ser_conn and self.ser_conn.connected:
+                    def _send_and_confirm_lhr():
+                        ok = self.ser_conn.send_csensor(val)
+                        if ok:
+                            self.root.after(0, lambda: self.set_status(
+                                f"Csensor updated to {int(val)}pF on MCU ✓"))
+                        else:
+                            self.root.after(0, lambda: self.set_status(
+                                f"Csensor send failed — MCU not responding", color="#ff6666"))
+                    import threading
+                    threading.Thread(target=_send_and_confirm_lhr, daemon=True).start()
+            except Exception:
+                pass
+
+        self.lhr_ui.sensor_cap_var.trace_add("write", _on_lhr_csensor_changed)
+
         # Start live data polling (starts in Active mode by default)
         self.start_live_data_polling()
 
     def refresh_ports(self):
         """Refresh COM ports."""
-        ports = [p.device for p in serial.tools.list_ports.comports()]
-        # Always include mock ports for testing
-        ports += ["COM3 (Mock)", "COM4 (Mock)"]
+        real_ports = [p.device for p in serial.tools.list_ports.comports()]
+        if real_ports:
+            # Sort so COM3 comes before COM4 — Application UART is always the lower port
+            real_ports = sorted(real_ports, key=lambda p: int(''.join(filter(str.isdigit, p)) or 0))
+            ports = real_ports
+        else:
+            ports = ["COM3 (Mock)", "COM4 (Mock)"]
             
         self.port_cb["values"] = ports
         if ports:
@@ -837,18 +924,26 @@ class MainGUI:
         self.conn_lbl.config(text="  CONNECTION LOST  ", bg=COLORS["error"])
         self.set_status("Connection lost. Please reconnect.", color="#ff6666")
         self.stop_live_data_polling()
+        if hasattr(self, 'lhr_ui'):
+            self.lhr_ui.update_device_id(None)
 
     def _post_connect(self, success, chip_id, port):
         """Handle UI updates after connection attempt."""
         self.is_connecting = False
-        
+
         if success:
             self.conn_lbl.config(text="  LDC1101 detected ✓  ", bg=COLORS["success"])
             self.set_status(f"Connected to {port} - LDC1101 detected")
-            if chip_id:
+            if chip_id is not None:
                 self.reg_live_values[0x3F] = chip_id
+            # push real read value to Device ID label
+            if hasattr(self, 'lhr_ui'):
+                self.lhr_ui.update_device_id(chip_id)
             self.ser_conn.connected = True
         else:
+            # reset Device ID label on failed connect
+            if hasattr(self, 'lhr_ui'):
+                self.lhr_ui.update_device_id(None)
             if chip_id is not None:
                 self.conn_lbl.config(text="  Device not recognized  ", bg=COLORS["error"])
                 self.set_status(f"Device not recognized (CHIP_ID=0x{chip_id:02X})")
@@ -860,6 +955,7 @@ class MainGUI:
         # Sync reference and restart polling
         if hasattr(self, 'lhr_ui'):
             self.lhr_ui.ser_conn = self.ser_conn
+            self.lhr_ui._sync_config_with_registers()
         self.start_live_data_polling()
 
     def set_status(self, msg, color="white"):
