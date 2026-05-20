@@ -940,6 +940,11 @@ class MainGUI:
             if hasattr(self, 'lhr_ui'):
                 self.lhr_ui.update_device_id(chip_id)
             self.ser_conn.connected = True
+            
+            # reset LW* column since MCU booted fresh with LMode() defaults
+            if hasattr(self, 'reg_map_ui'):
+                self.root.after(100, self.reg_map_ui.reset_lw_column_to_defaults)
+                self.root.after(150, lambda: self.set_status("MCU reconnected — register state reset to factory defaults"))
         else:
             # reset Device ID label on failed connect
             if hasattr(self, 'lhr_ui'):
@@ -1086,17 +1091,12 @@ class MainGUI:
         if self.temp_bit_state is not None:
             val = self.temp_bit_state
         else:
-            input_str = self.write_var.get().strip()
+            raw = self.write_var.get().strip().lstrip("0x").lstrip("0X")
             try:
-                # Support both decimal (0-255) and hex (0x00-0xFF)
-                if input_str.lower().startswith("0x"):
-                    val = int(input_str, 16) & 0xFF
-                else:
-                    val = int(input_str) & 0xFF
+                val = int(raw, 16)   # Always parse as hex
+                val &= 0xFF
             except ValueError:
-                messagebox.showerror("Invalid Input",
-                    f"Invalid value: '{input_str}'. Enter 0-255 or 0x00-0xFF.")
-                logger.warning(f"Invalid write input: '{input_str}' for register 0x{addr:02X}")
+                self.set_status("Invalid hex value in Write Data field", color="#ff6666")
                 return
 
         # Additional bounds check
@@ -1112,15 +1112,15 @@ class MainGUI:
         if self.ser_conn.connected:
             with self.serial_lock:
                 success = self.ser_conn.write_register(addr, val)
-                if not success:
-                    messagebox.showwarning("Write Warning",
-                        "Failed to write to device. Connection may be lost.")
+                if success:
+                    self.set_status(f"Written 0x{val:02X} → reg 0x{addr:02X} on MCU ✓ (readback verified)")
+                    logger.info(f"Register {reg['name']} (0x{addr:02X}) written: 0x{val:02X}")
+                else:
+                    self.set_status(f"Write FAILED or readback mismatch for reg 0x{addr:02X} — SPI may have a timing issue", color="#ff6666")
                     logger.error(f"Failed to write 0x{val:02X} to register 0x{addr:02X}")
 
         self.reg_map_ui.update_row(reg)
         self.update_bit_panel(reg, val)
-        self.set_status(f"Written 0x{val:02X} -> {reg['name']} (0x{addr:02X})")
-        logger.info(f"Register {reg['name']} (0x{addr:02X}) written: 0x{val:02X}")
 
     def write_all_cmd(self):
         """Write all registers."""
@@ -1152,20 +1152,22 @@ class MainGUI:
         if self.ser_conn.connected:
             with self.serial_lock:
                 val = self.ser_conn.read_register(addr)
-            if val is None:
-                messagebox.showwarning("Read Warning",
-                    "Failed to read from device. Connection may be lost.")
+            if val is not None:
+                self.reg_live_values[addr] = val
+                self.set_status(f"Read 0x{val:02X} ← reg 0x{addr:02X} from MCU ✓")
+                self.read_val_var.set(f"{val:02X}")
+                logger.debug(f"Register {reg['name']} (0x{addr:02X}) read: 0x{val:02X}")
+            else:
+                self.set_status(f"Read failed for reg 0x{addr:02X}", color="#ff6666")
                 logger.error(f"Failed to read register 0x{addr:02X}")
                 return
-            self.reg_live_values[addr] = val
         else:
             val = self.reg_live_values.get(addr, reg.get("default", 0))
+            self.read_val_var.set(str(val))
+            self.set_status(f"Read 0x{val:02X} <- {reg['name']} (0x{addr:02X})")
 
-        self.read_val_var.set(str(val))
         self.reg_lr[addr] = f"0x{val:02X}"
         self.reg_map_ui.update_row(reg)
-        self.set_status(f"Read 0x{val:02X} <- {reg['name']} (0x{addr:02X})")
-        logger.debug(f"Register {reg['name']} (0x{addr:02X}) read: 0x{val:02X}")
 
     def read_all_cmd(self):
         """Read all registers."""

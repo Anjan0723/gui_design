@@ -228,3 +228,20 @@ class RegisterMapUI:
     def get_tree(self):
         """Return the treeview widget."""
         return self.tree
+
+    def reset_lw_column_to_defaults(self):
+        """
+        Called after MCU reset/reconnect.
+        Clears LW* column — MCU has re-run LMode() with factory defaults.
+        Do NOT re-apply any old GUI-written values.
+        """
+        import logging
+        logger = logging.getLogger("LDC1101_GUI")
+        for row in self.tree.get_children():
+            values = list(self.tree.item(row, "values"))
+            if len(values) > 5:
+                values[5] = "0x00"   # LW* column index 5
+                self.tree.item(row, values=tuple(values))
+        
+        self.reg_lw.clear()
+        logger.info("LW* column reset to defaults after MCU reconnect")

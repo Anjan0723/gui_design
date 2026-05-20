@@ -50,7 +50,7 @@ class LHRPageUI:
         # Measurement parameters
         self.sensor_cap_var = tk.DoubleVar(value=330.0) # pF
         self.clkin_freq_var = tk.DoubleVar(value=16.0)  # MHz
-        self.data_to_display_var = tk.StringVar(value="Count")
+        self.data_to_display_var = tk.StringVar(value="Frequency (MHz)")
         self.graph_update_rate_var = tk.StringVar(value="1:1")
         
         # Statistics variables
@@ -296,6 +296,8 @@ class LHRPageUI:
         stat_sec = ttk.LabelFrame(left_panel, text="Statistics")
         stat_sec.pack(fill="both", expand=True)
         
+        self.stats_unit_var = tk.StringVar(value="MHz")
+
         for label, var in [("Minimum", self.stat_min), ("Maximum", self.stat_max), 
                           ("Average", self.stat_avg), ("Std.dev", self.stat_std)]:
             row = tk.Frame(stat_sec, bg=COLORS["bg_main"])
@@ -304,7 +306,7 @@ class LHRPageUI:
             val_frame = tk.Frame(row, bg="white", relief="sunken", bd=1)
             val_frame.pack(fill="x")
             tk.Label(val_frame, textvariable=var, bg="white", font=FONTS["courier"]).pack(side="left", padx=2)
-            tk.Label(val_frame, text="Counts", bg="white", fg="blue", font=FONTS["tiny_italic"]).pack(side="right", padx=2)
+            tk.Label(val_frame, textvariable=self.stats_unit_var, bg="white", fg="blue", font=FONTS["tiny_italic"]).pack(side="right", padx=2)
             
         # Right Graph Panel
         right_panel = tk.Frame(body, bg=COLORS["bg_main"])
@@ -314,7 +316,7 @@ class LHRPageUI:
         graph_ctrl.pack(fill="x")
         
         tk.Label(graph_ctrl, text="Data to display:", bg=COLORS["bg_main"]).pack(side="left")
-        self.display_om = ttk.OptionMenu(graph_ctrl, self.data_to_display_var, "Frequency (MHz)", "Frequency (MHz)", "Count")
+        self.display_om = ttk.OptionMenu(graph_ctrl, self.data_to_display_var, "Frequency (MHz)", "Frequency (MHz)", "Inductance (µH)")
         self.display_om.pack(side="left", padx=5)
         self.data_to_display_var.trace_add("write", self._on_display_type_change)
         
@@ -556,31 +558,79 @@ class LHRPageUI:
             inductance = 0
             
         view_type = self.data_to_display_var.get()
-        if "Inductance" in view_type:
-            display_val = inductance
-        elif "Frequency" in view_type:
-            display_val = f_sensor / 1e6 # MHz
             
-        self.data_buffer.append(display_val)
+        self.data_buffer.append(raw_val)
         self.sample_count += 1
         
         # Logging
         if self.enable_log_var.get():
             self._log_to_file(raw_val, f_sensor, inductance)
             
-        # Update Stats (on raw data as per standard)
-        relevant_data = self.raw_data_history[-100:] # Last 100 points
-        self.stat_min.set(f"{min(relevant_data):,}")
-        self.stat_max.set(f"{max(relevant_data):,}")
-        self.stat_avg.set(f"{int(statistics.mean(relevant_data)):,}")
-        if len(relevant_data) > 1:
-            self.stat_std.set(f"{int(statistics.stdev(relevant_data)):,}")
+        self._update_stats_display()
             
         # Update Graph with rate control
         rate_str = self.graph_update_rate_var.get()
         rate = int(rate_str.split(":")[-1])
         if self.sample_count % rate == 0:
             self._refresh_graph(view_type)
+
+    def _get_display_values(self):
+        """Convert data_buffer to display units based on selected type."""
+        selected = self.data_to_display_var.get()
+        if "Frequency" in selected:
+            return [(16000000.0 * v) / 16777216.0 / 1e6 for v in self.data_buffer]
+        elif "Inductance" in selected:
+            import math
+            c_f = self.sensor_cap_var.get() * 1e-12
+            result = []
+            for v in self.data_buffer:
+                f = (16000000.0 * v) / 16777216.0
+                if f > 0 and c_f > 0:
+                    result.append((1.0 / (4.0 * math.pi**2 * f**2 * c_f)) * 1e6)
+                else:
+                    result.append(0.0)
+            return result
+        return list(self.data_buffer)
+
+    def _update_stats_display(self):
+        """Update statistics panel based on currently selected data type."""
+        selected = self.data_to_display_var.get()
+    
+        if not self.data_buffer:
+            return
+    
+        if "Frequency" in selected:
+            # Convert LHR counts to MHz
+            values = [
+                (16000000.0 * v) / 16777216.0 / 1e6
+                for v in self.data_buffer
+            ]
+            self.stats_unit_var.set("MHz")
+            fmt = "{:.4f}"
+        elif "Inductance" in selected:
+            # Convert LHR counts -> frequency -> inductance
+            c_pf = self.sensor_cap_var.get()   # pF from Sensor Capacitor field
+            c_f  = c_pf * 1e-12
+            values = []
+            for v in self.data_buffer:
+                f = (16000000.0 * v) / 16777216.0
+                if f > 0 and c_f > 0:
+                    import math
+                    L = 1.0 / (4.0 * math.pi * math.pi * f * f * c_f)
+                    values.append(L * 1e6)   # Convert to uH
+                else:
+                    values.append(0.0)
+            self.stats_unit_var.set("µH")
+            fmt = "{:.4f}"
+        else:
+            return
+    
+        if values:
+            self.stat_min.set(fmt.format(min(values)))
+            self.stat_max.set(fmt.format(max(values)))
+            self.stat_avg.set(fmt.format(sum(values) / len(values)))
+            std = (sum((x - sum(values)/len(values))**2 for x in values) / len(values)) ** 0.5
+            self.stat_std.set(fmt.format(std))
 
     def _refresh_graph(self, ylabel):
         if not self.smooth_updates.get():
@@ -603,7 +653,7 @@ class LHRPageUI:
         
         self.ax.grid(True, alpha=0.3)
         
-        data = list(self.data_buffer)
+        data = self._get_display_values()
         if data:
             self.ax.plot(data, color=COLORS["accent_blue"], linewidth=1.5)
             
@@ -627,14 +677,15 @@ class LHRPageUI:
         self.canvas.draw()
 
     def _on_display_type_change(self, *args):
-        """Reset chart and stats when switching display mode."""
-        self.data_buffer.clear()
-        self.raw_data_history = []
-        self.stat_min.set("0")
-        self.stat_max.set("0")
-        self.stat_avg.set("0")
-        self.stat_std.set("0")
-        self._refresh_graph(self.data_to_display_var.get())
+        selected = self.data_to_display_var.get()
+        if "Frequency" in selected:
+            self.ax.set_ylabel("Frequency (MHz)")
+            self.stats_unit_var.set("MHz")
+        elif "Inductance" in selected:
+            self.ax.set_ylabel("Inductance (µH)")
+            self.stats_unit_var.set("µH")
+        self.canvas.draw_idle()
+        self._update_stats_display()
 
     def _show_context_menu(self, event):
         menu = tk.Menu(self.parent, tearoff=0)

@@ -28,6 +28,7 @@ void PWM_Init_16MHz(void);
 void Delay_ms(uint32_t ms);
 uint8_t LDC_ReadReg(uint8_t reg);
 uint8_t SPI_Transfer(uint8_t data);
+uint8_t parse_hex2(char *s);
 void  LMode(void);
 void LDC_WriteReg(uint8_t reg, uint8_t val);
 uint8_t LDC_READ_STATUS(void);
@@ -45,7 +46,22 @@ double Frequency_to_Inductance(double f_sensor);
 double Inductance_to_Distance(double L_sensor);
 void UART_ProcessByte(uint8_t byte);
 
+extern volatile uint8_t current_rp_set;
+extern volatile uint8_t current_dig_config;
+extern volatile uint8_t current_alt_config;
+extern volatile uint8_t current_d_conf;
+extern volatile uint8_t current_rcount_lsb;
+extern volatile uint8_t current_rcount_msb;
+
 //Global variables
+// Tracking globals — updated whenever GUI writes a register
+volatile uint8_t current_rp_set     = 0x74;  // mirrors RP_SET
+volatile uint8_t current_dig_config = 0xC7;  // mirrors DIG_CONFIG
+volatile uint8_t current_alt_config = 0x01;  // mirrors ALT_CONFIG
+volatile uint8_t current_d_conf     = 0x01;  // mirrors D_CONF
+volatile uint8_t current_rcount_lsb = 0xE8;  // mirrors LHR_RCOUNT_LSB
+volatile uint8_t current_rcount_msb = 0x03;  // mirrors LHR_RCOUNT_MSB
+
 uint32_t system_clk;
 volatile uint8_t chipId;
 volatile uint8_t status;
@@ -97,11 +113,81 @@ void UART_ProcessByte(uint8_t byte) {
                 }
             }
             
+            // WREG:AA:VV - Write register
+            else if(cmd_buf[0]=='W' && cmd_buf[1]=='R' && cmd_buf[2]=='E' &&
+                    cmd_buf[3]=='G' && cmd_buf[4]==':' && cmd_buf[7]==':') {
+                uint8_t addr = parse_hex2(&cmd_buf[5]);
+                uint8_t val  = parse_hex2(&cmd_buf[8]);
+
+                // Safety: ensure CS is HIGH before starting new SPI transaction
+                GPIOPinWrite(SPI_CS_PORT, SPI_CS_PIN, SPI_CS_PIN);
+                volatile uint32_t i;
+                for(i = 0; i < 1000; i++);   // Small settling delay
+
+                // LDC1101 requires being in Sleep Mode (0x01) to write most config registers
+                if (addr != LDC1101_START_CONFIG) {
+                    LDC_WriteReg(LDC1101_START_CONFIG, 0x01); // Sleep mode
+                    for(i = 0; i < 1000; i++);
+                }
+
+                LDC_WriteReg(addr, val);
+
+                if (addr != LDC1101_START_CONFIG) {
+                    LDC_WriteReg(LDC1101_START_CONFIG, 0x00); // Active mode
+                    for(i = 0; i < 1000; i++);
+                }
+
+                // Update tracking globals so CCS Expressions shows live values
+                switch(addr) {
+                    case 0x01: current_rp_set     = val; break;
+                    case 0x04: current_dig_config = val; break;
+                    case 0x05: current_alt_config = val; break;
+                    case 0x0C: current_d_conf     = val; break;
+                    case 0x30: current_rcount_lsb = val; break;
+                    case 0x31: current_rcount_msb = val; break;
+                    default: break;
+                }
+
+                // Immediately read back to verify
+                uint8_t readback = LDC_ReadReg(addr);
+                UART_WriteString("WREG_ACK:");
+                UART_Write_Hex(addr);
+                UART_WriteString(":");
+                UART_Write_Hex(val);
+                UART_WriteString(":RB:");
+                UART_Write_Hex(readback);   // Send readback so GUI can verify
+                UART_WriteString("\r\n");
+            }
+            // RREG:AA - Read register
+            else if(cmd_buf[0]=='R' && cmd_buf[1]=='R' && cmd_buf[2]=='E' &&
+                    cmd_buf[3]=='G' && cmd_buf[4]==':') {
+                uint8_t addr = parse_hex2(&cmd_buf[5]);
+                uint8_t val  = LDC_ReadReg(addr);
+                UART_WriteString("RREG_ACK:");
+                UART_Write_Hex(addr);
+                UART_WriteString(":");
+                UART_Write_Hex(val);
+                UART_WriteString("\r\n");
+            }
+            
             cmd_idx = 0;
         }
     } else if (cmd_idx < CMD_BUF_SIZE - 1) {
         cmd_buf[cmd_idx++] = (char)byte;
     }
+}
+
+// Helper: parse 2-char hex string to uint8
+uint8_t parse_hex2(char *s) {
+    uint8_t val = 0;
+    int i;
+    for(i = 0; i < 2; i++) {
+        val <<= 4;
+        if(s[i] >= '0' && s[i] <= '9') val |= s[i] - '0';
+        else if(s[i] >= 'A' && s[i] <= 'F') val |= s[i] - 'A' + 10;
+        else if(s[i] >= 'a' && s[i] <= 'f') val |= s[i] - 'a' + 10;
+    }
+    return val;
 }
 
 int main(void)
@@ -131,6 +217,7 @@ int main(void)
     //printf("%d", chipId );
     //configure LMODE
     LMode();
+
     status = LDC_READ_STATUS();
 
     UART_WriteString("Chip ID: 0x");
@@ -367,11 +454,27 @@ void  LMode(void)
     Delay_ms(10);
 
     LDC_WriteReg(LDC1101_RP_SET , 0x74);
+    
+    // Readback verify
+    uint8_t rb = LDC_ReadReg(LDC1101_RP_SET);
+    UART_WriteString("RP_SET readback: 0x");
+    UART_Write_Hex(rb);
+    UART_WriteString("\r\n");
+
     LDC_WriteReg(LDC1101_DIG_CONFIG, 0xC7);//4Mhz
     LDC_WriteReg(LDC1101_ALT_CONFIG, 0x01);//l only
     LDC_WriteReg(LDC1101_D_CONF, 0x01);
     LDC_WriteReg(LDC1101_LHR_RCOUNT_LSB, 0xE8);
     LDC_WriteReg(LDC1101_LHR_RCOUNT_MSB, 0x03);
+
+    // Read actual values back from LDC1101 hardware into tracking globals
+    // Done here while still in Sleep Mode to avoid disrupting oscillation startup!
+    current_rp_set     = LDC_ReadReg(0x01);
+    current_dig_config = LDC_ReadReg(0x04);
+    current_alt_config = LDC_ReadReg(0x05);
+    current_d_conf     = LDC_ReadReg(0x0C);
+    current_rcount_lsb = LDC_ReadReg(0x30);
+    current_rcount_msb = LDC_ReadReg(0x31);
 
     //exit sleep mode, start config = Active (start conversation)
     LDC_WriteReg(LDC1101_START_CONFIG, 0x00);

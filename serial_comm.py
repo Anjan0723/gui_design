@@ -98,51 +98,92 @@ class SerialConnection:
                 self.connected = False
 
     def write_register(self, address, value):
-        """Log register write — actual SPI writes happen on MCU side."""
-        if not self.connected:
+        if not self.connected or not self.serial:
             return False
-        logger.debug(f"[GUI] Register write noted: 0x{address:02X} = 0x{value:02X}")
-        return True
+        with self.lock:
+            try:
+                cmd = f"WREG:{address:02X}:{value:02X}\r\n"
+                self.serial.write(cmd.encode("ascii"))
+                self.serial.flush()
+                self.serial.timeout = 1.5
+                for _ in range(15):
+                    line = self.serial.readline().decode("ascii", errors="ignore").strip()
+                    if "WREG_ACK" in line:
+                        logger.info(f"Write ACK: {line}")
+                        # Parse readback: WREG_ACK:AA:VV:RB:RR
+                        parts = line.split(":")
+                        if len(parts) >= 5:
+                            try:
+                                readback = int(parts[4], 16)
+                                if readback == value:
+                                    logger.info(f"Readback verified: 0x{readback:02X} ✓")
+                                    return True
+                                else:
+                                    logger.warning(
+                                        f"Readback MISMATCH: wrote 0x{value:02X}, "
+                                        f"got 0x{readback:02X}"
+                                    )
+                                    return False   # Write failed silently
+                            except ValueError:
+                                pass
+                        return True
+                logger.warning(f"No WREG_ACK for addr=0x{address:02X}")
+                return False
+            except Exception as e:
+                logger.error(f"write_register error: {e}")
+                self.connected = False
+                return False
 
     def read_register(self, address):
-        """Read register value by parsing firmware's UART text output."""
-        if not self.connected:
+        """Read register — for CHIP_ID parse UART boot line, for others send RREG command."""
+        if not self.connected or not self.serial:
             return None
         with self.lock:
             try:
-                if self.serial:
-                    if address == 0x3F:
-                        # For connection verification, check boot message or active stream
-                        self.serial.timeout = 2.0
-                        for _ in range(30):
-                            line = self.serial.readline().decode("ascii", errors="ignore").strip()
-                            if not line:
-                                continue
-                            logger.debug(f"UART line: {line}")
+                self.serial.reset_input_buffer()
+                # CHIP_ID (0x3F): parse from firmware boot line "Chip ID: 0xXX"
+                if address == 0x3F:
+                    self.serial.timeout = 2.0
+                    for _ in range(30):
+                        line = self.serial.readline().decode("ascii", errors="ignore").strip()
+                        if not line:
+                            continue
                             
-                            # Match explicit Chip ID print
-                            if "Chip ID:" in line:
-                                parts = line.split("0x")
-                                if len(parts) > 1:
-                                    try:
-                                        val = int(parts[-1].strip(), 16)
-                                        logger.info(f"Parsed CHIP_ID from boot message: 0x{val:02X}")
-                                        return val
-                                    except ValueError:
-                                        pass
-                                return 0xD4
+                        # Match explicit Chip ID print
+                        if "Chip ID:" in line:
+                            parts = line.split("0x")
+                            if len(parts) > 1:
+                                try:
+                                    return int(parts[-1].strip(), 16)
+                                except ValueError:
+                                    pass
+                            return 0xD4
                             
-                            # Match active streaming indicators if already running
-                            if any(ind in line for ind in ["LHR VALUE:", "LHR_LSB", "Combined:", "SUCCESS: LDC1101", "ERROR:", "Status:"]):
-                                logger.info(f"Detected active LDC1101 streaming: '{line}' -> returning CHIP_ID 0xD4")
-                                return 0xD4
-                        logger.warning("No connection indicators found in UART stream")
-                        return 0
-                    else:
-                        # For other registers, we read/clear a line from the stream
-                        return self.serial.readline().decode("ascii", errors="ignore").strip()
+                        # Match active streaming indicators if already running
+                        if any(ind in line for ind in ["LHR VALUE:", "LHR_LSB", "Combined:", "SUCCESS: LDC1101", "ERROR:", "Status:"]):
+                            logger.info(f"Detected active LDC1101 streaming: '{line}' -> returning CHIP_ID 0xD4")
+                            return 0xD4
+                    logger.warning("No connection indicators found in UART stream")
+                    return 0
+                # All other registers: send RREG command
+                cmd = f"RREG:{address:02X}\r\n"
+                self.serial.write(cmd.encode("ascii"))
+                self.serial.flush()
+                self.serial.timeout = 1.0
+                for _ in range(10):
+                    line = self.serial.readline().decode("ascii", errors="ignore").strip()
+                    if "RREG_ACK" in line:
+                        # Format: RREG_ACK:AA:VV
+                        parts = line.split(":")
+                        if len(parts) == 3:
+                            try:
+                                return int(parts[2], 16)
+                            except ValueError:
+                                pass
+                logger.warning(f"No RREG_ACK for addr=0x{address:02X}")
+                return 0
             except Exception as e:
-                logger.error(f"Serial read error: {e}")
+                logger.error(f"read_register error: {e}")
                 self.connected = False
                 return None
 
