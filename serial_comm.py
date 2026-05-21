@@ -106,7 +106,7 @@ class SerialConnection:
                 self.serial.write(cmd.encode("ascii"))
                 self.serial.flush()
                 self.serial.timeout = 1.5
-                for _ in range(15):
+                for _ in range(50):
                     line = self.serial.readline().decode("ascii", errors="ignore").strip()
                     if "WREG_ACK" in line:
                         logger.info(f"Write ACK: {line}")
@@ -170,7 +170,7 @@ class SerialConnection:
                 self.serial.write(cmd.encode("ascii"))
                 self.serial.flush()
                 self.serial.timeout = 1.0
-                for _ in range(10):
+                for _ in range(50):
                     line = self.serial.readline().decode("ascii", errors="ignore").strip()
                     if "RREG_ACK" in line:
                         # Format: RREG_ACK:AA:VV
@@ -181,7 +181,7 @@ class SerialConnection:
                             except ValueError:
                                 pass
                 logger.warning(f"No RREG_ACK for addr=0x{address:02X}")
-                return 0
+                return None
             except Exception as e:
                 logger.error(f"read_register error: {e}")
                 self.connected = False

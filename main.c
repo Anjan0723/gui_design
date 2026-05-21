@@ -1,4 +1,3 @@
-
 #include <stdint.h>
 #include <stdio.h>
 
@@ -18,7 +17,7 @@
 #define LDC1101_LHR_RCOUNT_LSB      0x30
 #define LDC1101_LHR_RCOUNT_MSB      0x31
 #define LDC1101_STATUS              0x20
-
+#define LDC1101_LHR_STATUS          0x3B
 //function prototypes
 void System_clock_init(void);
 void Gpio_Init(void);
@@ -32,6 +31,7 @@ uint8_t parse_hex2(char *s);
 void  LMode(void);
 void LDC_WriteReg(uint8_t reg, uint8_t val);
 uint8_t LDC_READ_STATUS(void);
+uint8_t LDC_READ_LHR_STATUS(void);
 void UART_WriteString(char *str);
 uint32_t Read_LHR_Data(void);
 void UART_Write_Hex(uint8_t chipId);
@@ -65,6 +65,7 @@ volatile uint8_t current_rcount_msb = 0x03;  // mirrors LHR_RCOUNT_MSB
 uint32_t system_clk;
 volatile uint8_t chipId;
 volatile uint8_t status;
+volatile uint8_t LHR_status;
 volatile uint32_t LHR_VAL;
 volatile uint8_t lsb, mid, msb;
 double frequency, inductance, distance;
@@ -112,7 +113,7 @@ void UART_ProcessByte(uint8_t byte) {
                     UART_WriteString("pF\r\n");
                 }
             }
-            
+
             // WREG:AA:VV - Write register
             else if(cmd_buf[0]=='W' && cmd_buf[1]=='R' && cmd_buf[2]=='E' &&
                     cmd_buf[3]=='G' && cmd_buf[4]==':' && cmd_buf[7]==':') {
@@ -169,7 +170,7 @@ void UART_ProcessByte(uint8_t byte) {
                 UART_Write_Hex(val);
                 UART_WriteString("\r\n");
             }
-            
+
             cmd_idx = 0;
         }
     } else if (cmd_idx < CMD_BUF_SIZE - 1) {
@@ -220,6 +221,7 @@ int main(void)
 
     status = LDC_READ_STATUS();
 
+
     UART_WriteString("Chip ID: 0x");
     UART_Write_Hex(chipId);
     UART_WriteString("\r\n");
@@ -253,6 +255,7 @@ int main(void)
         GPIOPinWrite(GPIO_PORTB_BASE, GPIO_PIN_5, GPIO_PIN_5); // CS HIGH
         //read status
         status = LDC_READ_STATUS();
+
         //error check
         if(status & 0x80)
         {
@@ -263,7 +266,7 @@ int main(void)
         //read lhr
         LHR_VAL = Read_LHR_Data();
         Debug_LHR_Registers();
-
+        LHR_status = LDC_READ_LHR_STATUS();
         Convert_LHR_to_Distance(LHR_VAL, &frequency, &inductance, &distance);
 
         UART_WriteString("LHR VALUE: 0x");
@@ -454,7 +457,7 @@ void  LMode(void)
     Delay_ms(10);
 
     LDC_WriteReg(LDC1101_RP_SET , 0x74);
-    
+
     // Readback verify
     uint8_t rb = LDC_ReadReg(LDC1101_RP_SET);
     UART_WriteString("RP_SET readback: 0x");
@@ -500,6 +503,11 @@ void LDC_WriteReg(uint8_t reg, uint8_t val)
 uint8_t LDC_READ_STATUS(void)
 {
     return LDC_ReadReg(LDC1101_STATUS);
+}
+
+uint8_t LDC_READ_LHR_STATUS(void)
+{
+    return LDC_ReadReg(LDC1101_LHR_STATUS);
 }
 
 void UART_WriteString(char *str)

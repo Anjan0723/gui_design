@@ -324,6 +324,11 @@ class LHRPageUI:
         self.rate_om = ttk.OptionMenu(graph_ctrl, self.graph_update_rate_var, "1:10", "1:1", "1:2", "1:5", "1:10", "1:20", "1:50")
         self.rate_om.pack(side="left", padx=5)
         
+        tk.Label(graph_ctrl, text="Smoothing:", bg=COLORS["bg_main"], font=FONTS["normal"]).pack(side="left", padx=(15,2))
+        self.smooth_var = tk.IntVar(value=8)
+        smooth_sp = tk.Spinbox(graph_ctrl, from_=1, to=30, textvariable=self.smooth_var, width=4, font=FONTS["normal"])
+        smooth_sp.pack(side="left")
+        
         # Matplotlib Strip Chart
         self.fig = Figure(figsize=(5, 4), dpi=100)
         self.ax = self.fig.add_subplot(111)
@@ -592,6 +597,21 @@ class LHRPageUI:
             return result
         return list(self.data_buffer)
 
+    def _smooth_data(self, data, window=8):
+        """
+        Apply moving average smoothing for display only.
+        Raw data is never modified — only the plotted line is smoothed.
+        window: number of samples to average (higher = smoother)
+        """
+        if len(data) < window:
+            return data
+        smoothed = []
+        for i in range(len(data)):
+            start = max(0, i - window // 2)
+            end   = min(len(data), i + window // 2 + 1)
+            smoothed.append(sum(data[start:end]) / (end - start))
+        return smoothed
+
     def _update_stats_display(self):
         """Update statistics panel based on currently selected data type."""
         selected = self.data_to_display_var.get()
@@ -655,7 +675,18 @@ class LHRPageUI:
         
         data = self._get_display_values()
         if data:
-            self.ax.plot(data, color=COLORS["accent_blue"], linewidth=1.5)
+            try:
+                window_size = self.smooth_var.get()
+            except Exception:
+                window_size = 1
+                
+            smoothed_vals = self._smooth_data(data, window=window_size)
+            self.ax.plot(smoothed_vals, 
+                         color="#1f77b4",
+                         linewidth=1.8,
+                         antialiased=True,
+                         solid_capstyle="round",
+                         solid_joinstyle="round")
             
             # Auto-scale Y
             if self.autoscale_y.get():

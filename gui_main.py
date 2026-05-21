@@ -566,86 +566,99 @@ class MainGUI:
         if not is_hardware_ready:
             # Auto-Simulation Mode: generate random values
             status_val = random.randint(0, 0xFF)
+            lhr_status_val = random.randint(0, 0xFF)
             rp_data = random.randint(0, 65535)
             l_data = random.randint(0, 65535)
             lhr_data = random.randint(0, 16777215)
         else:
             # Real hardware: parse continuous UART text stream in a non-blocking way
             status_val = self.reg_live_values.get(0x20, 0x00)
+            lhr_status_val = self.reg_live_values.get(0x3B, 0x00)
             lhr_data = (self.reg_live_values.get(0x3A, 0) << 16) | (self.reg_live_values.get(0x39, 0) << 8) | self.reg_live_values.get(0x38, 0)
             rp_data = 0
             l_data = 0
 
             try:
                 # Read all lines currently available in the receive buffer
-                while self.ser_conn.serial.in_waiting > 0:
-                    line = self.ser_conn.serial.readline().decode("ascii", errors="ignore").strip()
-                    if not line:
-                        continue
-                    
-                    if "LHR VALUE:" in line:
-                        parts = line.split("0x")
-                        if len(parts) > 1:
-                            try:
-                                lhr_data = int(parts[-1].strip(), 16)
-                            except ValueError:
-                                pass
-                    elif "LHR_LSB" in line:
-                        parts = line.split("0x")
-                        if len(parts) > 1:
-                            try:
-                                val = int(parts[-1].strip(), 16)
-                                self.reg_live_values[0x38] = val
-                            except ValueError:
-                                pass
-                    elif "LHR_MID" in line:
-                        parts = line.split("0x")
-                        if len(parts) > 1:
-                            try:
-                                val = int(parts[-1].strip(), 16)
-                                self.reg_live_values[0x39] = val
-                            except ValueError:
-                                pass
-                    elif "LHR_MSB" in line:
-                        parts = line.split("0x")
-                        if len(parts) > 1:
-                            try:
-                                val = int(parts[-1].strip(), 16)
-                                self.reg_live_values[0x3A] = val
-                            except ValueError:
-                                pass
-                    elif "Status: 0x" in line:
-                        parts = line.split("0x")
-                        if len(parts) > 1:
-                            try:
-                                status_val = int(parts[-1].strip(), 16)
-                                self.reg_live_values[0x20] = status_val
-                            except ValueError:
-                                pass
-                    elif "ERROR:" in line:
-                        status_val = 0x80
-                        self.reg_live_values[0x20] = status_val
-                    elif "SUCCESS:" in line:
-                        status_val = 0x00
-                        self.reg_live_values[0x20] = status_val
-                    elif "Chip ID:" in line:
-                        parts = line.split("0x")
-                        if len(parts) > 1:
-                            try:
-                                val = int(parts[-1].strip(), 16)
-                                self.reg_live_values[0x3F] = val
-                            except ValueError:
-                                pass
+                with self.ser_conn.lock:
+                    while self.ser_conn.serial.in_waiting > 0:
+                        line = self.ser_conn.serial.readline().decode("ascii", errors="ignore").strip()
+                        if not line:
+                            continue
+                        
+                        if "LHR VALUE:" in line:
+                            parts = line.split("0x")
+                            if len(parts) > 1:
+                                try:
+                                    lhr_data = int(parts[-1].strip(), 16)
+                                except ValueError:
+                                    pass
+                        elif "LHR_LSB" in line:
+                            parts = line.split("0x")
+                            if len(parts) > 1:
+                                try:
+                                    val = int(parts[-1].strip(), 16)
+                                    self.reg_live_values[0x38] = val
+                                except ValueError:
+                                    pass
+                        elif "LHR_MID" in line:
+                            parts = line.split("0x")
+                            if len(parts) > 1:
+                                try:
+                                    val = int(parts[-1].strip(), 16)
+                                    self.reg_live_values[0x39] = val
+                                except ValueError:
+                                    pass
+                        elif "LHR_MSB" in line:
+                            parts = line.split("0x")
+                            if len(parts) > 1:
+                                try:
+                                    val = int(parts[-1].strip(), 16)
+                                    self.reg_live_values[0x3A] = val
+                                except ValueError:
+                                    pass
+                        elif "Status: 0x" in line:
+                            parts = line.split("0x")
+                            if len(parts) > 1:
+                                try:
+                                    status_val = int(parts[-1].strip(), 16)
+                                    self.reg_live_values[0x20] = status_val
+                                except ValueError:
+                                    pass
+                        elif "LHR_STATUS: 0x" in line:
+                            parts = line.split("0x")
+                            if len(parts) > 1:
+                                try:
+                                    lhr_status_val = int(parts[-1].strip(), 16)
+                                    self.reg_live_values[0x3B] = lhr_status_val
+                                except ValueError:
+                                    pass
+                        elif "ERROR:" in line:
+                            status_val = 0x80
+                            self.reg_live_values[0x20] = status_val
+                        elif "SUCCESS:" in line:
+                            status_val = 0x00
+                            self.reg_live_values[0x20] = status_val
+                        elif "Chip ID:" in line:
+                            parts = line.split("0x")
+                            if len(parts) > 1:
+                                try:
+                                    val = int(parts[-1].strip(), 16)
+                                    self.reg_live_values[0x3F] = val
+                                except ValueError:
+                                    pass
             except Exception as e:
                 logger.error(f"Error parsing live UART data: {e}")
 
         # Schedule UI update safely on the main thread
-        self.root.after(100, lambda: self._update_ui_with_data(status_val, rp_data, l_data, lhr_data))
+        self.root.after(100, lambda: self._update_ui_with_data(status_val, lhr_status_val, rp_data, l_data, lhr_data))
 
-    def _update_ui_with_data(self, status_val, rp_data, l_data, lhr_data):
+    def _update_ui_with_data(self, status_val, lhr_status_val, rp_data, l_data, lhr_data):
         """Safely update UI with read data."""
         if status_val is None:
             status_val = 0
+        if lhr_status_val is None:
+            lhr_status_val = 0
             
         # Update UI
         # DRDYB is bit 6, active low (0 = data ready)
@@ -661,7 +674,7 @@ class MainGUI:
 
         # Update LHR page if it's the current view
         if hasattr(self, 'lhr_ui'):
-            self.lhr_ui.update_from_main_poll(status_val, lhr_data)
+            self.lhr_ui.update_from_main_poll(lhr_status_val, lhr_data)
 
         # Calculate fSENSOR
         if lhr_data > 0:
