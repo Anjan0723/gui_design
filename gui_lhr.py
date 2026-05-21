@@ -168,67 +168,96 @@ class LHRPageUI:
         tk.Label(info_row, text="Device ID:", bg=COLORS["bg_main"], font=FONTS["normal"]).pack(side="left", padx=(20, 0))
         self.did_lbl = tk.Label(info_row, text="--", bg="white", width=6, relief="sunken")
         self.did_lbl.pack(side="left", padx=5)
-        
-        # INTB & Optimization
-        opt_row = tk.Frame(self.config_frame, bg=COLORS["bg_main"])
-        opt_row.pack(fill="x", padx=10, pady=5)
-        
-        tk.Label(opt_row, text="INTB Disable:", bg=COLORS["bg_main"], font=FONTS["normal"]).pack(side="left")
-        self.intb_disable_cb = ttk.Combobox(opt_row, values=["Report Data Ready", "Do not Report Data Ready"], state="readonly", width=25)
-        self.intb_disable_cb.pack(side="left", padx=5)
-        self.intb_disable_cb.bind("<<ComboboxSelected>>", lambda e: self._write_reg_bit(0x0A, 7, self.intb_disable_cb.current()))
-        
-        self.optimize_var = tk.BooleanVar()
-        tk.Checkbutton(opt_row, text="Optimize LHR measurement", variable=self.optimize_var, 
-                       bg=COLORS["bg_main"], font=FONTS["normal"],
-                       command=lambda: self._write_reg_bit(0x05, 0, self.optimize_var.get())).pack(side="left", padx=20)
-        
-        # LHR Configuration Section
-        lhr_sec = ttk.LabelFrame(self.config_frame, text="LHR Configuration")
-        lhr_sec.pack(fill="both", expand=True, padx=10, pady=5)
-        
-        grid = tk.Frame(lhr_sec, bg=COLORS["bg_main"])
-        grid.pack(padx=20, pady=10)
-        
-        # Row 0: RCount & Offset
-        tk.Label(grid, text="Reference Count:", bg=COLORS["bg_main"]).grid(row=0, column=0, sticky="e", pady=5)
-        self.rcount_sp = tk.Spinbox(grid, from_=0, to=65535, width=10, command=self._on_rcount_change)
-        self.rcount_sp.grid(row=0, column=1, padx=5, sticky="w")
-        self.rcount_sp.bind("<Return>", lambda e: self._on_rcount_change())
-        
-        tk.Label(grid, text="Offset:", bg=COLORS["bg_main"]).grid(row=0, column=2, sticky="e", padx=(20, 0))
-        self.offset_sp = tk.Spinbox(grid, from_=0, to=65535, width=10, command=self._on_offset_change)
-        self.offset_sp.grid(row=0, column=3, padx=5, sticky="w")
-        self.offset_sp.bind("<Return>", lambda e: self._on_offset_change())
-        
-        # Row 1: INTB Function & Sensor FMIN
-        tk.Label(grid, text="INTB Function:", bg=COLORS["bg_main"]).grid(row=1, column=0, sticky="e", pady=5)
-        self.intb_func_cb = ttk.Combobox(grid, state="readonly", width=20, values=[
-            "Disabled", "LHR Data Ready", "RP+L Data Ready", "RP Hysteresis", "RP High Threshold", "L Hysteresis", "L High Threshold"
-        ])
-        self.intb_func_cb.grid(row=1, column=1, padx=5, sticky="w")
-        self.intb_func_cb.bind("<<ComboboxSelected>>", self._on_intb_func_change)
-        
-        tk.Label(grid, text="Sensor FMIN:", bg=COLORS["bg_main"]).grid(row=1, column=2, sticky="e", padx=(20, 0))
-        self.fmin_cb = ttk.Combobox(grid, state="readonly", width=15, values=[
-            "500 kHz", "533 kHz", "571 kHz", "615 kHz", "667 kHz", "727 kHz", "800 kHz", "889 kHz", 
-            "1 MHz", "1.14 MHz", "1.33 MHz", "1.6 MHz", "2 MHz", "2.67 MHz", "4 MHz", "8 MHz"
-        ])
-        self.fmin_cb.grid(row=1, column=3, padx=5, sticky="w")
-        self.fmin_cb.bind("<<ComboboxSelected>>", self._on_fmin_change)
-        
-        # Row 2: Clock Divider & RP Minimum
-        tk.Label(grid, text="Clock Divider:", bg=COLORS["bg_main"]).grid(row=2, column=0, sticky="e", pady=5)
-        self.clk_div_cb = ttk.Combobox(grid, state="readonly", width=20, values=["Not Divided", "Divide by 2", "Divide by 4", "Divide by 8"])
-        self.clk_div_cb.grid(row=2, column=1, padx=5, sticky="w")
-        self.clk_div_cb.bind("<<ComboboxSelected>>", self._on_clk_div_change)
-        
-        tk.Label(grid, text="RP Minimum:", bg=COLORS["bg_main"]).grid(row=2, column=2, sticky="e", padx=(20, 0))
-        self.rp_min_cb = ttk.Combobox(grid, state="readonly", width=15, values=[
-            "0.75 kOhms", "1.5 kOhms", "3 kOhms", "6 kOhms", "12 kOhms", "24 kOhms", "48 kOhms", "96 kOhms"
-        ])
-        self.rp_min_cb.grid(row=2, column=3, padx=5, sticky="w")
-        self.rp_min_cb.bind("<<ComboboxSelected>>", self._on_rp_min_change)
+        # Main two-column container
+        main_row = tk.Frame(self.config_frame, bg=COLORS["bg_main"])
+        main_row.pack(fill="both", expand=True, padx=10, pady=10)
+
+        # ── LEFT COLUMN — Status Indicators ──
+        left_col = tk.LabelFrame(main_row, text="Status Indicators",
+            bg=COLORS["bg_main"], font=FONTS["normal"])
+        left_col.pack(side="left", fill="y", padx=(0, 20), pady=5)
+
+        # All 8 indicators listed serially — NO sub-groups, NO titles
+        indicators = [
+            # (bit_num, field_name,    description,              reg_key)
+            (4, "ERR_ZC",        "Zero Count Error",        "lhr_status"),
+            (3, "ERR_OR",        "Over-range Error",        "lhr_status"),
+            (2, "ERR_UR",        "Under-range Error",       "lhr_status"),
+            (1, "ERR_OF",        "Overflow Error",          "lhr_status"),
+            (0, "LHR_DRDY",      "Data Ready",              "lhr_status"),
+            (7, "NO_SENSOR_OSC", "Sensor Oscillation Error","status"),
+            (6, "DRDYB",         "RP+L Data Ready",         "status"),
+            (0, "POR_READ",      "Power-On-Reset",          "status"),
+        ]
+
+        self.all_status_leds = {}  # unified dict for all LEDs
+
+        for bit, name, desc, reg_key in indicators:
+            row = tk.Frame(left_col, bg=COLORS["bg_main"])
+            row.pack(fill="x", padx=8, pady=2)
+
+            tk.Label(row, text=f"Bit {bit}", width=5,
+                font=FONTS["small"], bg=COLORS["bg_main"],
+                anchor="w").pack(side="left")
+
+            led = tk.Label(row, text="  ", bg="green",
+                width=3, relief="raised")
+            led.pack(side="left", padx=4)
+
+            tk.Label(row, text=name, width=14,
+                font=FONTS["normal"], bg=COLORS["bg_main"],
+                anchor="w").pack(side="left")
+
+            tk.Label(row, text=desc,
+                font=FONTS["small"], fg="gray",
+                bg=COLORS["bg_main"],
+                anchor="w").pack(side="left")
+
+            self.all_status_leds[name] = (led, bit, reg_key)
+
+        # ── RIGHT COLUMN — Display ──
+        right_col = tk.LabelFrame(main_row, text="Display",
+            bg=COLORS["bg_main"], font=FONTS["normal"])
+        right_col.pack(side="left", fill="both", expand=True, pady=5)
+
+        display_inner = tk.Frame(right_col, bg=COLORS["bg_main"])
+        display_inner.pack(expand=True, pady=30)
+
+        # LHR Count
+        tk.Label(display_inner, text="LHR Count:",
+            font=FONTS["normal"], bg=COLORS["bg_main"],
+            anchor="e", width=12).grid(row=0, column=0, padx=8, pady=10, sticky="e")
+        self.lhr_count_lbl = tk.Label(display_inner, text="--",
+            font=("Consolas", 13, "bold"), bg="white",
+            width=12, relief="sunken", anchor="center")
+        self.lhr_count_lbl.grid(row=0, column=1, padx=5)
+        tk.Label(display_inner, text="counts",
+            font=FONTS["small"], bg=COLORS["bg_main"],
+            anchor="w").grid(row=0, column=2, padx=4, sticky="w")
+
+        # Frequency
+        tk.Label(display_inner, text="Frequency:",
+            font=FONTS["normal"], bg=COLORS["bg_main"],
+            anchor="e", width=12).grid(row=1, column=0, padx=8, pady=10, sticky="e")
+        self.freq_lbl = tk.Label(display_inner, text="--",
+            font=("Consolas", 13, "bold"), bg="white",
+            width=12, relief="sunken", anchor="center")
+        self.freq_lbl.grid(row=1, column=1, padx=5)
+        tk.Label(display_inner, text="MHz",
+            font=FONTS["small"], bg=COLORS["bg_main"],
+            anchor="w").grid(row=1, column=2, padx=4, sticky="w")
+
+        # Inductance
+        tk.Label(display_inner, text="Inductance:",
+            font=FONTS["normal"], bg=COLORS["bg_main"],
+            anchor="e", width=12).grid(row=2, column=0, padx=8, pady=10, sticky="e")
+        self.inductance_lbl = tk.Label(display_inner, text="--",
+            font=("Consolas", 13, "bold"), bg="white",
+            width=12, relief="sunken", anchor="center")
+        self.inductance_lbl.grid(row=2, column=1, padx=5)
+        tk.Label(display_inner, text="µH",
+            font=FONTS["small"], bg=COLORS["bg_main"],
+            anchor="w").grid(row=2, column=2, padx=4, sticky="w")
         
         self._sync_config_with_registers()
 
@@ -394,40 +423,7 @@ class LHRPageUI:
         else:
             self.did_lbl.config(text="--")
         
-        # INTB Disable (0x0A bit 7)
-        intb2sdo = (self.reg_live_values.get(0x0A, 0x00) >> 7) & 1
-        self.intb_disable_cb.current(intb2sdo)
-        
-        # Optimize (0x05 bit 0)
-        self.optimize_var.set(bool(self.reg_live_values.get(0x05, 0x00) & 1))
-        
-        # RCount (0x30/0x31)
-        rcount = (self.reg_live_values.get(0x31, 0x0F) << 8) | self.reg_live_values.get(0x30, 0xFF)
-        self.rcount_sp.delete(0, "end")
-        self.rcount_sp.insert(0, str(rcount))
-        
-        # Offset (0x32/0x33)
-        offset = (self.reg_live_values.get(0x33, 0x00) << 8) | self.reg_live_values.get(0x32, 0x00)
-        self.offset_sp.delete(0, "end")
-        self.offset_sp.insert(0, str(offset))
-        
-        # INTB Function (0x0A bits 5:0)
-        intb_mode = self.reg_live_values.get(0x0A, 0x00) & 0x3F
-        # Simplified mapping (0-6)
-        mode_idx = min(6, intb_mode) 
-        self.intb_func_cb.current(mode_idx)
-        
-        # Sensor FMIN (0x04 bits 7:4)
-        min_freq = (self.reg_live_values.get(0x04, 0x03) >> 4) & 0x0F
-        self.fmin_cb.current(min_freq)
-        
-        # SENSOR_DIV (0x34 bits 1:0)
-        sdiv = self.reg_live_values.get(0x34, 0x00) & 0x03
-        self.clk_div_cb.current(sdiv)
-        
-        # RP_MIN (0x01 bits 2:0)
-        rpmin = self.reg_live_values.get(0x01, 0x07) & 0x07
-        self.rp_min_cb.current(7 - rpmin) # Correct mapping based on RP_OPTIONS
+        pass
 
     def _on_mode_toggle(self):
         """Handle Sleep/Running toggle button click."""
@@ -521,16 +517,29 @@ class LHRPageUI:
         is_connected = self.ser_conn and self.ser_conn.connected
         is_sim = not is_connected
         
-        # Update LEDs
-        for i, bit_name in enumerate(["LHR_DRDY", "ERR_OF", "ERR_UR", "ERR_OR", "ERR_ZC"]):
-            # LHR_STATUS bit mapping: 0=DRDY, 1=OF, 2=UR, 3=OR, 4=ZC
-            if is_connected or is_sim:
-                state = (status >> i) & 1
-                color = COLORS["success"] if ((i == 0 and state) or (i > 0 and not state)) else COLORS["error"]
+        lhr_status_reg = self.reg_live_values.get(0x3B, 0x00)
+        status_reg     = self.reg_live_values.get(0x20, 0x00)
+
+        for name, (led, bit, reg_key) in self.all_status_leds.items():
+            if reg_key == "lhr_status":
+                bit_val = (lhr_status_reg >> bit) & 1
             else:
-                color = "gray"
-            self.leds[bit_name].delete("all")
-            self.leds[bit_name].create_rectangle(0, 0, 40, 12, fill=color)
+                bit_val = (status_reg >> bit) & 1
+            
+            # Configuration View LED
+            led.config(bg="red" if bit_val else "green")
+            
+            # Measurement View Canvas LED (only LHR bits)
+            if name in self.leds:
+                if is_connected or is_sim:
+                    if name == "LHR_DRDY":
+                        meas_color = COLORS["success"] if bit_val else COLORS["error"]
+                    else:
+                        meas_color = COLORS["error"] if bit_val else COLORS["success"]
+                else:
+                    meas_color = "gray"
+                self.leds[name].delete("all")
+                self.leds[name].create_rectangle(0, 0, 40, 12, fill=meas_color)
         
         if not is_connected and not is_sim:
             # Force statistics to 0 and clear history
@@ -547,20 +556,37 @@ class LHRPageUI:
 
         # Process Data point
         self.raw_data_history.append(raw_val)
-        display_val = raw_val
         
-        # Calculation
-        f_clkin = self.clkin_freq_var.get() * 1e6
-        sdiv_idx = self.clk_div_cb.current()
-        if sdiv_idx < 0: sdiv_idx = 0 # Fallback if not selected
-        sdiv = 1 << sdiv_idx
-        f_sensor = f_clkin * sdiv * raw_val / (2**24)
-        
-        c_sensor = self.sensor_cap_var.get() * 1e-12
-        if f_sensor > 0 and c_sensor > 0:
-            inductance = (1.0 / (c_sensor * (2 * math.pi * f_sensor)**2)) * 1e6 # uH
+        # --- Live Display values ---
+        lhr_raw = self.reg_live_values.get(0x38, 0) | \
+                   (self.reg_live_values.get(0x39, 0) << 8) | \
+                   (self.reg_live_values.get(0x3A, 0) << 16)
+
+        self.lhr_count_lbl.config(text=f"{lhr_raw}")
+
+        f_sensor = 0
+        inductance = 0
+        if lhr_raw > 0:
+            import math
+            clkin = self.clkin_freq_var.get() * 1e6   # MHz → Hz
+            
+            # Read SENSOR_DIV directly from register since clk_div_cb is removed
+            sdiv_bits = self.reg_live_values.get(0x34, 0x00) & 0x03
+            sdiv = 1 << sdiv_bits
+            
+            freq_hz = (clkin * sdiv * lhr_raw) / 16777216.0
+            freq_mhz = freq_hz / 1e6
+            self.freq_lbl.config(text=f"{freq_mhz:.4f}")
+
+            c_f = self.sensor_cap_var.get() * 1e-12
+            if c_f > 0 and freq_hz > 0:
+                L_uH = (1.0 / (4.0 * math.pi**2 * freq_hz**2 * c_f)) * 1e6
+                self.inductance_lbl.config(text=f"{L_uH:.4f}")
+                f_sensor = freq_hz
+                inductance = L_uH
         else:
-            inductance = 0
+            self.freq_lbl.config(text="--")
+            self.inductance_lbl.config(text="--")
             
         view_type = self.data_to_display_var.get()
             
