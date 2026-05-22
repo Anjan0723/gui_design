@@ -73,6 +73,7 @@ class LHRPageUI:
         self.is_polling = False
         self.poll_thread = None
         self.data_buffer = deque(maxlen=100)
+        self.displacement_buffer = deque(maxlen=100)  # stores displacement in mm
         self.sample_count = 0
         self.raw_data_history = []
         self.update_counter = 0
@@ -258,7 +259,43 @@ class LHRPageUI:
         tk.Label(display_inner, text="µH",
             font=FONTS["small"], bg=COLORS["bg_main"],
             anchor="w").grid(row=2, column=2, padx=4, sticky="w")
-        
+
+        # Rs (Parasitic Resistance)
+        tk.Label(display_inner, text="Rs:",
+            font=FONTS["normal"], bg=COLORS["bg_main"],
+            anchor="e", width=12).grid(row=3, column=0, padx=8, pady=10, sticky="e")
+        self.rs_lbl = tk.Label(display_inner, text="--",
+            font=("Consolas", 13, "bold"), bg="white",
+            width=12, relief="sunken", anchor="center")
+        self.rs_lbl.grid(row=3, column=1, padx=5)
+        tk.Label(display_inner, text="Ω",
+            font=FONTS["small"], bg=COLORS["bg_main"],
+            anchor="w").grid(row=3, column=2, padx=4, sticky="w")
+
+        # Rp (Parasitic)
+        tk.Label(display_inner, text="Rp:",
+            font=FONTS["normal"], bg=COLORS["bg_main"],
+            anchor="e", width=12).grid(row=4, column=0, padx=8, pady=10, sticky="e")
+        self.rp_lbl = tk.Label(display_inner, text="--",
+            font=("Consolas", 13, "bold"), bg="white",
+            width=12, relief="sunken", anchor="center")
+        self.rp_lbl.grid(row=4, column=1, padx=5)
+        tk.Label(display_inner, text="kΩ",
+            font=FONTS["small"], bg=COLORS["bg_main"],
+            anchor="w").grid(row=4, column=2, padx=4, sticky="w")
+
+        # Q Factor
+        tk.Label(display_inner, text="Q Factor:",
+            font=FONTS["normal"], bg=COLORS["bg_main"],
+            anchor="e", width=12).grid(row=5, column=0, padx=8, pady=10, sticky="e")
+        self.qfactor_lbl = tk.Label(display_inner, text="--",
+            font=("Consolas", 13, "bold"), bg="white",
+            width=12, relief="sunken", anchor="center")
+        self.qfactor_lbl.grid(row=5, column=1, padx=5)
+        tk.Label(display_inner, text="",
+            font=FONTS["small"], bg=COLORS["bg_main"],
+            anchor="w").grid(row=5, column=2, padx=4, sticky="w")
+
         self._sync_config_with_registers()
 
     def _build_measure_view(self):
@@ -345,7 +382,7 @@ class LHRPageUI:
         graph_ctrl.pack(fill="x")
         
         tk.Label(graph_ctrl, text="Data to display:", bg=COLORS["bg_main"]).pack(side="left")
-        self.display_om = ttk.OptionMenu(graph_ctrl, self.data_to_display_var, "Frequency (MHz)", "Frequency (MHz)", "Inductance (µH)")
+        self.display_om = ttk.OptionMenu(graph_ctrl, self.data_to_display_var, "Frequency (MHz)", "Frequency (MHz)", "Inductance (µH)", "Displacement vs Inductance")
         self.display_om.pack(side="left", padx=5)
         self.data_to_display_var.trace_add("write", self._on_display_type_change)
         
@@ -549,6 +586,7 @@ class LHRPageUI:
             self.stat_std.set("0")
             self.raw_data_history = []
             self.data_buffer.clear()
+            self.displacement_buffer.clear()
             # Still refresh graph to show flat empty canvas
             self._refresh_graph(self.data_to_display_var.get())
             self.did_lbl.config(text="--")
@@ -566,14 +604,16 @@ class LHRPageUI:
 
         f_sensor = 0
         inductance = 0
+        # Default Rs value (parasitic resistance) - can be adjusted
+        rs_val = 5.0  # Ohms (default typical value)
         if lhr_raw > 0:
             import math
             clkin = self.clkin_freq_var.get() * 1e6   # MHz → Hz
-            
+
             # Read SENSOR_DIV directly from register since clk_div_cb is removed
             sdiv_bits = self.reg_live_values.get(0x34, 0x00) & 0x03
             sdiv = 1 << sdiv_bits
-            
+
             freq_hz = (clkin * sdiv * lhr_raw) / 16777216.0
             freq_mhz = freq_hz / 1e6
             self.freq_lbl.config(text=f"{freq_mhz:.4f}")
@@ -584,9 +624,32 @@ class LHRPageUI:
                 self.inductance_lbl.config(text=f"{L_uH:.4f}")
                 f_sensor = freq_hz
                 inductance = L_uH
+
+                # Calculate Rp (parasitic) = L / (Rs × C)
+                L_H = L_uH * 1e-6
+                if rs_val > 0 and c_f > 0:
+                    rp_val = L_H / (rs_val * c_f) / 1000  # Convert to kΩ
+                    self.rp_lbl.config(text=f"{rp_val:.4f}")
+
+                    # Calculate Q Factor = (1/Rs) × sqrt(L/C)
+                    q_val = (1.0 / rs_val) * math.sqrt(L_H / c_f)
+                    self.qfactor_lbl.config(text=f"{q_val:.2f}")
+                else:
+                    self.rp_lbl.config(text="--")
+                    self.qfactor_lbl.config(text="--")
+
+                # Display Rs
+                self.rs_lbl.config(text=f"{rs_val:.1f}")
+            else:
+                self.rp_lbl.config(text="--")
+                self.qfactor_lbl.config(text="--")
+                self.rs_lbl.config(text="--")
         else:
             self.freq_lbl.config(text="--")
             self.inductance_lbl.config(text="--")
+            self.rs_lbl.config(text="--")
+            self.rp_lbl.config(text="--")
+            self.qfactor_lbl.config(text="--")
             
         view_type = self.data_to_display_var.get()
             
@@ -598,12 +661,32 @@ class LHRPageUI:
             self._log_to_file(raw_val, f_sensor, inductance)
             
         self._update_stats_display()
-            
+
+        # Update displacement buffer
+        # NOTE: Displacement formula is a placeholder.
+        # After hardware calibration, measure inductance at known distances
+        # (e.g. 1mm=8.9µH, 5mm=8.2µH, 10mm=7.5µH) and update a, b accordingly.
+        # Or replace with a polynomial fit if the relationship is non-linear.
+        if inductance > 0:
+            displacement_mm = self._inductance_to_displacement(inductance)
+            self.displacement_buffer.append(displacement_mm)
+
         # Update Graph with rate control
         rate_str = self.graph_update_rate_var.get()
         rate = int(rate_str.split(":")[-1])
         if self.sample_count % rate == 0:
             self._refresh_graph(view_type)
+
+    def _inductance_to_displacement(self, L_uH):
+        """
+        Convert inductance (µH) to displacement (mm).
+        Uses linear approximation: d = a * L + b
+        Replace a and b with real calibration values after measuring.
+        Default: placeholder formula — update after calibration.
+        """
+        a = -10.0   # slope (mm/µH) — replace after calibration
+        b = 100.0   # intercept (mm) — replace after calibration
+        return a * L_uH + b
 
     def _get_display_values(self):
         """Convert data_buffer to display units based on selected type."""
@@ -641,10 +724,10 @@ class LHRPageUI:
     def _update_stats_display(self):
         """Update statistics panel based on currently selected data type."""
         selected = self.data_to_display_var.get()
-    
+
         if not self.data_buffer:
             return
-    
+
         if "Frequency" in selected:
             # Convert LHR counts to MHz
             values = [
@@ -653,7 +736,7 @@ class LHRPageUI:
             ]
             self.stats_unit_var.set("MHz")
             fmt = "{:.4f}"
-        elif "Inductance" in selected:
+        elif "Inductance" in selected and "Displacement" not in selected:
             # Convert LHR counts -> frequency -> inductance
             c_pf = self.sensor_cap_var.get()   # pF from Sensor Capacitor field
             c_f  = c_pf * 1e-12
@@ -668,9 +751,17 @@ class LHRPageUI:
                     values.append(0.0)
             self.stats_unit_var.set("µH")
             fmt = "{:.4f}"
+        elif "Displacement" in selected:
+            # Show statistics for displacement buffer
+            if self.displacement_buffer:
+                values = list(self.displacement_buffer)
+                self.stats_unit_var.set("mm")
+                fmt = "{:.4f}"
+            else:
+                return
         else:
             return
-    
+
         if values:
             self.stat_min.set(fmt.format(min(values)))
             self.stat_max.set(fmt.format(max(values)))
@@ -684,62 +775,112 @@ class LHRPageUI:
             # but usually immediate draw is fine for TkAgg
             pass
 
+        selected = self.data_to_display_var.get()
+
         self.ax.clear()
-        self.ax.set_xlabel("Samples")
-        self.ax.set_ylabel(ylabel)
-        self.ax.set_title(f"LHR {ylabel} Strip Chart")
-        
-        # Visibility Toggles
-        self.ax.xaxis.set_visible(self.show_x_scale.get())
-        self.ax.yaxis.set_visible(self.show_y_scale.get())
-        self.ax.spines['bottom'].set_visible(self.show_x_scale.get())
-        self.ax.spines['left'].set_visible(self.show_y_scale.get())
-        self.ax.spines['top'].set_visible(False)
-        self.ax.spines['right'].set_visible(False)
-        
-        self.ax.grid(True, alpha=0.3)
-        
-        data = self._get_display_values()
-        if data:
-            try:
-                window_size = self.smooth_var.get()
-            except Exception:
-                window_size = 1
-                
-            smoothed_vals = self._smooth_data(data, window=window_size)
-            self.ax.plot(smoothed_vals, 
-                         color="#1f77b4",
-                         linewidth=1.8,
-                         antialiased=True,
-                         solid_capstyle="round",
-                         solid_joinstyle="round")
-            
-            # Auto-scale Y
-            if self.autoscale_y.get():
-                dmin, dmax = min(data), max(data)
-                margin = (dmax - dmin) * 0.1 or dmax * 0.01 or 1
-                self.ax.set_ylim(dmin - margin, dmax + margin)
-            
-            # Auto-scale X (scroll)
-            if self.autoscale_x.get():
-                # X-axis is naturally autoscaled by plot unless we set limits
-                pass
+
+        # Handle Displacement vs Inductance mode (X = displacement, Y = inductance)
+        if "Displacement" in selected:
+            self.ax.set_xlabel("Displacement (mm)")
+            self.ax.set_ylabel("Inductance (µH)")
+            self.ax.set_title("Displacement vs Inductance")
+
+            # Get inductance values from display values
+            inductance_vals = self._get_display_values()
+            disp_buffer_list = list(self.displacement_buffer)
+            disp_vals = disp_buffer_list[-len(inductance_vals):] if inductance_vals else []
+
+            # Visibility Toggles
+            self.ax.xaxis.set_visible(self.show_x_scale.get())
+            self.ax.yaxis.set_visible(self.show_y_scale.get())
+            self.ax.spines['bottom'].set_visible(self.show_x_scale.get())
+            self.ax.spines['left'].set_visible(self.show_y_scale.get())
+            self.ax.spines['top'].set_visible(False)
+            self.ax.spines['right'].set_visible(False)
+
+            self.ax.grid(True, alpha=0.3)
+
+            if len(disp_vals) == len(inductance_vals) and len(disp_vals) > 1:
+                self.ax.plot(disp_vals, inductance_vals,
+                             color="#1f77b4",
+                             linewidth=1.8,
+                             antialiased=True,
+                             solid_capstyle="round",
+                             solid_joinstyle="round")
+                # Auto-scale both axes
+                if self.autoscale_y.get():
+                    self.ax.set_ylim(min(inductance_vals) - 0.1, max(inductance_vals) + 0.1)
+                if self.autoscale_x.get():
+                    self.ax.set_xlim(min(disp_vals) - 1, max(disp_vals) + 1)
             else:
-                self.ax.set_xlim(0, 100) # Fixed view
+                self.ax.plot([0]*100, color=COLORS["accent_blue"], alpha=0)
+                self.ax.set_ylim(0, 1)
         else:
-            # Show empty line at 0
-            self.ax.plot([0]*100, color=COLORS["accent_blue"], alpha=0)
-            self.ax.set_ylim(0, 1)
+            # Normal strip chart (Frequency or Inductance vs Samples)
+            self.ax.set_xlabel("Samples")
+            self.ax.set_ylabel(ylabel)
+            self.ax.set_title(f"LHR {ylabel} Strip Chart")
+
+            # Visibility Toggles
+            self.ax.xaxis.set_visible(self.show_x_scale.get())
+            self.ax.yaxis.set_visible(self.show_y_scale.get())
+            self.ax.spines['bottom'].set_visible(self.show_x_scale.get())
+            self.ax.spines['left'].set_visible(self.show_y_scale.get())
+            self.ax.spines['top'].set_visible(False)
+            self.ax.spines['right'].set_visible(False)
+
+            self.ax.grid(True, alpha=0.3)
+
+            data = self._get_display_values()
+            if data:
+                try:
+                    window_size = self.smooth_var.get()
+                except Exception:
+                    window_size = 1
+
+                smoothed_vals = self._smooth_data(data, window=window_size)
+                self.ax.plot(smoothed_vals,
+                             color="#1f77b4",
+                             linewidth=1.8,
+                             antialiased=True,
+                             solid_capstyle="round",
+                             solid_joinstyle="round")
+
+                # Auto-scale Y
+                if self.autoscale_y.get():
+                    dmin, dmax = min(data), max(data)
+                    margin = (dmax - dmin) * 0.1 or dmax * 0.01 or 1
+                    self.ax.set_ylim(dmin - margin, dmax + margin)
+
+                # Auto-scale X (scroll)
+                if self.autoscale_x.get():
+                    # X-axis is naturally autoscaled by plot unless we set limits
+                    pass
+                else:
+                    self.ax.set_xlim(0, 100) # Fixed view
+            else:
+                # Show empty line at 0
+                self.ax.plot([0]*100, color=COLORS["accent_blue"], alpha=0)
+                self.ax.set_ylim(0, 1)
 
         self.canvas.draw()
 
     def _on_display_type_change(self, *args):
         selected = self.data_to_display_var.get()
         if "Frequency" in selected:
+            self.ax.set_xlabel("Samples")
             self.ax.set_ylabel("Frequency (MHz)")
+            self.ax.set_title("LHR Frequency (MHz) Strip Chart")
             self.stats_unit_var.set("MHz")
-        elif "Inductance" in selected:
+        elif "Inductance" in selected and "Displacement" not in selected:
+            self.ax.set_xlabel("Samples")
             self.ax.set_ylabel("Inductance (µH)")
+            self.ax.set_title("LHR Inductance (µH) Strip Chart")
+            self.stats_unit_var.set("µH")
+        elif "Displacement" in selected:
+            self.ax.set_xlabel("Displacement (mm)")
+            self.ax.set_ylabel("Inductance (µH)")
+            self.ax.set_title("Displacement vs Inductance")
             self.stats_unit_var.set("µH")
         self.canvas.draw_idle()
         self._update_stats_display()
@@ -805,6 +946,7 @@ class LHRPageUI:
 
     def _clear_graph(self):
         self.data_buffer.clear()
+        self.displacement_buffer.clear()
         self.raw_data_history = []
         self.stat_min.set("0")
         self.stat_max.set("0")

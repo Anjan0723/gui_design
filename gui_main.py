@@ -939,6 +939,9 @@ class MainGUI:
         self.stop_live_data_polling()
         if hasattr(self, 'lhr_ui'):
             self.lhr_ui.update_device_id(None)
+        # Update Apps Calculator connection badge
+        if hasattr(self, 'apps_calc_ui'):
+            self.apps_calc_ui.set_connection_status(False)
 
     def _post_connect(self, success, chip_id, port):
         """Handle UI updates after connection attempt."""
@@ -953,7 +956,11 @@ class MainGUI:
             if hasattr(self, 'lhr_ui'):
                 self.lhr_ui.update_device_id(chip_id)
             self.ser_conn.connected = True
-            
+
+            # Update Apps Calculator connection badge
+            if hasattr(self, 'apps_calc_ui'):
+                self.apps_calc_ui.set_connection_status(True, port)
+
             # reset LW* column since MCU booted fresh with LMode() defaults
             if hasattr(self, 'reg_map_ui'):
                 self.root.after(100, self.reg_map_ui.reset_lw_column_to_defaults)
@@ -962,6 +969,9 @@ class MainGUI:
             # reset Device ID label on failed connect
             if hasattr(self, 'lhr_ui'):
                 self.lhr_ui.update_device_id(None)
+            # Update Apps Calculator connection badge
+            if hasattr(self, 'apps_calc_ui'):
+                self.apps_calc_ui.set_connection_status(False)
             if chip_id is not None:
                 self.conn_lbl.config(text="  Device not recognized  ", bg=COLORS["error"])
                 self.set_status(f"Device not recognized (CHIP_ID=0x{chip_id:02X})")
