@@ -158,6 +158,7 @@ void UART_ProcessByte(uint8_t byte) {
                 UART_WriteString(":RB:");
                 UART_Write_Hex(readback);   // Send readback so GUI can verify
                 UART_WriteString("\r\n");
+                Delay_ms(20);  // Give Python time to read ACK before next LHR data flood
             }
             // RREG:AA - Read register
             else if(cmd_buf[0]=='R' && cmd_buf[1]=='R' && cmd_buf[2]=='E' &&
@@ -169,6 +170,7 @@ void UART_ProcessByte(uint8_t byte) {
                 UART_WriteString(":");
                 UART_Write_Hex(val);
                 UART_WriteString("\r\n");
+                Delay_ms(20);  // Give Python time to read ACK before next LHR data flood
             }
 
             cmd_idx = 0;
@@ -235,8 +237,7 @@ int main(void)
     {
         // Sensor not oscillating
         UART_WriteString("ERROR: NO_SENSOR_OSC\r\n");
-        while(1);//stop
-
+        // We do NOT block in an infinite loop here, so UART can still be polled.
     }
     UART_WriteString("SUCCESS: LDC1101 ready!\r\n");
     Delay_ms(1000);
@@ -260,14 +261,17 @@ int main(void)
         if(status & 0x80)
         {
             UART_WriteString("ERROR: Oscillation stopped!\r\n");
-            Delay_ms(100);
-            continue;
+            // Do not skip the rest of the loop; let the GUI receive the zero/error LHR values
         }
         //read lhr
         LHR_VAL = Read_LHR_Data();
         Debug_LHR_Registers();
         LHR_status = LDC_READ_LHR_STATUS();
         Convert_LHR_to_Distance(LHR_VAL, &frequency, &inductance, &distance);
+
+        UART_WriteString("LHR_STATUS: 0x");
+        UART_Write_Hex(LHR_status);
+        UART_WriteString("\r\n");
 
         UART_WriteString("LHR VALUE: 0x");
         UART_Write_Hex32(LHR_VAL);

@@ -47,7 +47,7 @@ import threading
 class SerialConnection:
     """Handle serial communication with LDC1101."""
 
-    def __init__(self, port=None, baudrate=115200, timeout=0.1):
+    def __init__(self, port=None, baudrate=115200, timeout=1.0):
         self.port = port
         self.baudrate = baudrate
         self.timeout = timeout
@@ -56,7 +56,12 @@ class SerialConnection:
         self.lock = threading.Lock()
 
     def connect(self):
-        """Establish serial connection."""
+        """Establish serial connection.
+        
+        Opens the port WITHOUT asserting DTR/RTS to avoid resetting the 
+        MSP432 board via the XDS110 debugger. Uses two-stage open:
+        configure first, then open.
+        """
         if self.port is None:
             logger.error("Cannot connect: port is None")
             return False
@@ -70,16 +75,63 @@ class SerialConnection:
 
         with self.lock:
             try:
-                import serial # Ensure local import is available
-                self.serial = serial.Serial(
-                    port=self.port,
-                    baudrate=self.baudrate,
-                    timeout=self.timeout,
-                    write_timeout=0.5 # Add write timeout to prevent hangs
-                )
+                import serial as _serial  # Ensure local import is available
+                import time
+                logger.info(f"Attempting to open {self.port} at {self.baudrate} baud...")
+                
+                # Two-stage open: configure FIRST, then open.
+                # This prevents the default DTR assertion that resets the board.
+                ser = _serial.Serial()
+                ser.port = self.port
+                ser.baudrate = self.baudrate
+                ser.timeout = self.timeout
+                ser.write_timeout = 2.0
+                ser.bytesize = _serial.EIGHTBITS
+                ser.parity = _serial.PARITY_NONE
+                ser.stopbits = _serial.STOPBITS_ONE
+                ser.xonxoff = False
+                ser.rtscts = False
+                ser.dsrdtr = False
+                # Prevent DTR/RTS assertion on open — this is the key fix.
+                # Without this, opening the port resets the MSP432 via XDS110.
+                ser.dtr = False
+                ser.rts = False
+                ser.open()
+                
+                self.serial = ser
+                logger.info(f"Port {self.port} opened (DTR/RTS not asserted)")
+                
+                # Brief stabilization delay
+                time.sleep(0.3)
+                
+                # Drain any buffered flood data (e.g. "ERROR: Oscillation stopped!")
+                # so subsequent reads start clean
+                drained = 0
+                drain_start = time.time()
+                while time.time() - drain_start < 1.0:
+                    n = self.serial.in_waiting
+                    if n > 0:
+                        discarded = self.serial.read(n)
+                        drained += len(discarded)
+                        logger.debug(f"Drained {len(discarded)} bytes of buffered data")
+                    else:
+                        # Wait a bit to catch any more flood data
+                        time.sleep(0.1)
+                        if self.serial.in_waiting == 0:
+                            break
+                
+                if drained > 0:
+                    logger.info(f"Drained {drained} total bytes of buffered data")
+                
+                self.serial.reset_input_buffer()
+                self.serial.reset_output_buffer()
                 self.connected = True
-                logger.info(f"Connected to {self.port} at {self.baudrate} baud")
+                logger.info(f"Port {self.port} opened successfully, ready for commands")
                 return True
+            except _serial.SerialException as e:
+                logger.error(f"Failed to open {self.port}: {e}")
+                self.connected = False
+                return False
             except Exception as e:
                 logger.error(f"Failed to connect to {self.port}: {e}")
                 self.connected = False
@@ -134,58 +186,86 @@ class SerialConnection:
                 self.connected = False
                 return False
 
-    def read_register(self, address):
-        """Read register — for CHIP_ID parse UART boot line, for others send RREG command."""
+    def read_register_fast(self, address, timeout=5.0):
+        """
+        Read register — handles firmware's continuous UART output.
+        Uses aggressive scanning to find RREG_ACK buried in flood.
+        """
         if not self.connected or not self.serial:
             return None
         with self.lock:
             try:
+                import time
+
+                # Flush stale data first
                 self.serial.reset_input_buffer()
-                # CHIP_ID (0x3F): parse from firmware boot line "Chip ID: 0xXX"
-                if address == 0x3F:
-                    self.serial.timeout = 2.0
-                    for _ in range(30):
-                        line = self.serial.readline().decode("ascii", errors="ignore").strip()
-                        if not line:
-                            continue
-                            
-                        # Match explicit Chip ID print
-                        if "Chip ID:" in line:
-                            parts = line.split("0x")
-                            if len(parts) > 1:
-                                try:
-                                    return int(parts[-1].strip(), 16)
-                                except ValueError:
-                                    pass
-                            return 0xD4
-                            
-                        # Match active streaming indicators if already running
-                        if any(ind in line for ind in ["LHR VALUE:", "LHR_LSB", "Combined:", "SUCCESS: LDC1101", "ERROR:", "Status:"]):
-                            logger.info(f"Detected active LDC1101 streaming: '{line}' -> returning CHIP_ID 0xD4")
-                            return 0xD4
-                    logger.warning("No connection indicators found in UART stream")
-                    return 0
-                # All other registers: send RREG command
+                time.sleep(0.02)
+
+                # Send command (twice to ensure it gets through flood)
                 cmd = f"RREG:{address:02X}\r\n"
                 self.serial.write(cmd.encode("ascii"))
                 self.serial.flush()
-                self.serial.timeout = 1.0
-                for _ in range(50):
-                    line = self.serial.readline().decode("ascii", errors="ignore").strip()
-                    if "RREG_ACK" in line:
-                        # Format: RREG_ACK:AA:VV
-                        parts = line.split(":")
-                        if len(parts) == 3:
-                            try:
-                                return int(parts[2], 16)
-                            except ValueError:
-                                pass
-                logger.warning(f"No RREG_ACK for addr=0x{address:02X}")
+                logger.debug(f"Sent: {cmd.strip()}")
+
+                # Brief pause then send again in case first got lost
+                time.sleep(0.05)
+                self.serial.write(cmd.encode("ascii"))
+                self.serial.flush()
+                logger.debug(f"Sent (retry): {cmd.strip()}")
+
+                # Aggressively scan all available data
+                self.serial.timeout = 0.1
+                deadline = time.time() + timeout
+                buffer = ""
+                while time.time() < deadline:
+                    try:
+                        if self.serial.in_waiting > 0:
+                            data = self.serial.read(self.serial.in_waiting)
+                            if data:
+                                buffer += data.decode("ascii", errors="ignore")
+                                while '\n' in buffer:
+                                    line, buffer = buffer.split('\n', 1)
+                                    line = line.strip()
+                                    if not line:
+                                        continue
+                                    logger.debug(f"RX: {line}")
+
+                                    if "RREG_ACK" in line:
+                                        parts = line.split(":")
+                                        if len(parts) >= 3:
+                                            try:
+                                                val = int(parts[2], 16)
+                                                logger.info(f"Reg 0x{address:02X} = 0x{val:02X}")
+                                                return val
+                                            except ValueError:
+                                                pass
+
+                                    if "Chip ID:" in line or "chip id" in line.lower():
+                                        parts = line.split("0x")
+                                        if len(parts) > 1:
+                                            try:
+                                                val = int(parts[-1].strip()[:2], 16)
+                                                logger.info(f"Found CHIP_ID 0x{val:02X}")
+                                                return val
+                                            except ValueError:
+                                                pass
+                        else:
+                            time.sleep(0.01)
+                    except Exception as e:
+                        logger.debug(f"Read error: {e}")
+                        pass
+
+                logger.warning(f"No RREG_ACK for 0x{address:02X} within {timeout}s")
                 return None
+
             except Exception as e:
-                logger.error(f"read_register error: {e}")
+                logger.error(f"read_register_fast error: {e}")
                 self.connected = False
                 return None
+
+    def read_register(self, address):
+        """Read register - uses read_register_fast with longer timeout."""
+        return self.read_register_fast(address, timeout=5.0)
 
     def send_csensor(self, pf_value: float):
         """Send Csensor pF value to MCU and wait for ACK."""
@@ -213,3 +293,53 @@ class SerialConnection:
             except Exception as e:
                 logger.error(f"send_csensor error: {e}")
                 return False
+
+    def read_lhr_data(self):
+        """Read LHR_DATA registers 0x38, 0x39, 0x3A via RREG commands."""
+        if not self.connected or not self.serial:
+            return None
+        lsb = self.read_register(0x38)
+        mid = self.read_register(0x39)
+        msb = self.read_register(0x3A)
+        if lsb is None or mid is None or msb is None:
+            return None
+        return ((msb & 0xFF) << 16) | ((mid & 0xFF) << 8) | (lsb & 0xFF)
+
+    def dump_uart_data(self, timeout=3.0):
+        """Dump all raw UART data for debugging - returns all lines received."""
+        if not self.connected or not self.serial:
+            return []
+        lines = []
+        with self.lock:
+            try:
+                old_timeout = self.serial.timeout
+                self.serial.timeout = timeout
+                logger.info("=== Starting UART dump ===")
+                while True:
+                    line = self.serial.readline().decode("ascii", errors="ignore").strip()
+                    if not line:
+                        break
+                    logger.info(f"UART: '{line}'")
+                    lines.append(line)
+                logger.info(f"=== UART dump complete: {len(lines)} lines ===")
+                self.serial.timeout = old_timeout
+            except Exception as e:
+                logger.error(f"UART dump error: {e}")
+        return lines
+
+    def peek_buffer(self):
+        """Quickly peek at what's in the UART buffer without blocking."""
+        if not self.connected or not self.serial:
+            return ""
+        try:
+            data = ""
+            self.serial.timeout = 0  # Non-blocking
+            while self.serial.in_waiting > 0:
+                byte = self.serial.read(1)
+                if byte:
+                    char = byte.decode("ascii", errors="ignore")
+                    data += char
+            return data
+        except Exception as e:
+            logger.error(f"peek_buffer error: {e}")
+            return ""

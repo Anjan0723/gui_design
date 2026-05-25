@@ -11,6 +11,7 @@ from collections import deque
 import statistics
 import csv
 import os
+import numpy as np
 
 # Matplotlib imports
 import matplotlib
@@ -73,7 +74,9 @@ class LHRPageUI:
         self.is_polling = False
         self.poll_thread = None
         self.data_buffer = deque(maxlen=100)
-        self.displacement_buffer = deque(maxlen=100)  # stores displacement in mm
+        self.displacement_buffer = deque(maxlen=100)  # stores normalized displacement in mm (relative to first reading)
+        self.displacement_ref = None  # reference point — set on first reading after reset
+        self._last_valid_displacement = 0.0  # for sync fallback
         self.sample_count = 0
         self.raw_data_history = []
         self.update_counter = 0
@@ -364,7 +367,7 @@ class LHRPageUI:
         
         self.stats_unit_var = tk.StringVar(value="MHz")
 
-        for label, var in [("Minimum", self.stat_min), ("Maximum", self.stat_max), 
+        for label, var in [("Minimum", self.stat_min), ("Maximum", self.stat_max),
                           ("Average", self.stat_avg), ("Std.dev", self.stat_std)]:
             row = tk.Frame(stat_sec, bg=COLORS["bg_main"])
             row.pack(fill="x", padx=5, pady=5)
@@ -373,7 +376,7 @@ class LHRPageUI:
             val_frame.pack(fill="x")
             tk.Label(val_frame, textvariable=var, bg="white", font=FONTS["courier"]).pack(side="left", padx=2)
             tk.Label(val_frame, textvariable=self.stats_unit_var, bg="white", fg="blue", font=FONTS["tiny_italic"]).pack(side="right", padx=2)
-            
+
         # Right Graph Panel
         right_panel = tk.Frame(body, bg=COLORS["bg_main"])
         right_panel.pack(side="right", fill="both", expand=True)
@@ -469,6 +472,9 @@ class LHRPageUI:
         is_sim = self._is_sim_mode or not is_connected
 
         if self.mode_var.get() == "Running":
+            # Reset displacement reference for new measurement session
+            self.displacement_ref = None
+            self.displacement_buffer.clear()
             # Write FUNC_MODE = 0x00 (Active) to register 0x0B
             val = self.reg_live_values.get(0x0B, 0x01) & ~0x03
             self._write_reg(0x0B, val)
@@ -587,6 +593,7 @@ class LHRPageUI:
             self.raw_data_history = []
             self.data_buffer.clear()
             self.displacement_buffer.clear()
+            self.displacement_ref = None  # Reset reference point
             # Still refresh graph to show flat empty canvas
             self._refresh_graph(self.data_to_display_var.get())
             self.did_lbl.config(text="--")
@@ -662,15 +669,29 @@ class LHRPageUI:
             
         self._update_stats_display()
 
-        # Update displacement buffer
-        # NOTE: Displacement formula is a placeholder.
-        # After hardware calibration, measure inductance at known distances
-        # (e.g. 1mm=8.9µH, 5mm=8.2µH, 10mm=7.5µH) and update a, b accordingly.
-        # Or replace with a polynomial fit if the relationship is non-linear.
+        # Update displacement buffer - always sync with data_buffer length
+        # Normalize displacement to start from 0 (relative to first reading)
         if inductance > 0:
-            displacement_mm = self._inductance_to_displacement(inductance)
-            self.displacement_buffer.append(displacement_mm)
+            raw_displacement = self._inductance_to_displacement(inductance)
+            self._last_valid_displacement = raw_displacement
 
+            # Set reference on first valid reading after reset
+            if self.displacement_ref is None:
+                self.displacement_ref = raw_displacement
+
+            # Normalize — always starts from 0
+            normalized = raw_displacement - self.displacement_ref
+            self.displacement_buffer.append(normalized)
+        else:
+            # Use last known displacement to keep buffers in sync
+            last_disp = getattr(self, '_last_valid_displacement', 0.0)
+            if self.displacement_ref is not None:
+                normalized = last_disp - self.displacement_ref
+            else:
+                normalized = 0.0
+            self.displacement_buffer.append(normalized)
+
+        # Update current displacement display (show with + sign for direction)
         # Update Graph with rate control
         rate_str = self.graph_update_rate_var.get()
         rate = int(rate_str.split(":")[-1])
@@ -680,20 +701,27 @@ class LHRPageUI:
     def _inductance_to_displacement(self, L_uH):
         """
         Convert inductance (µH) to displacement (mm).
-        Uses linear approximation: d = a * L + b
-        Replace a and b with real calibration values after measuring.
-        Default: placeholder formula — update after calibration.
+        3rd order polynomial fit from calibration data.
+        R-squared = 0.9994 (excellent fit)
+
+        Calibration points used:
+        L(µH): 6.52, 6.66, 6.90, 7.20, 7.42, 7.57, 7.75, 7.90, 7.99, 8.20, 8.38
+        d(mm): 1.0,  1.2,  1.5,  1.8,  2.0,  2.2,  2.5,  2.8,  3.0,  3.5,  4.0
+
+        Formula: d = a*L³ + b*L² + c*L + d_const
         """
-        a = -10.0   # slope (mm/µH) — replace after calibration
-        b = 100.0   # intercept (mm) — replace after calibration
-        return a * L_uH + b
+        a =   0.433113
+        b =  -9.162041
+        c =  65.644598
+        d_const = -157.555257
+        return a * (L_uH**3) + b * (L_uH**2) + c * L_uH + d_const
 
     def _get_display_values(self):
         """Convert data_buffer to display units based on selected type."""
         selected = self.data_to_display_var.get()
         if "Frequency" in selected:
             return [(16000000.0 * v) / 16777216.0 / 1e6 for v in self.data_buffer]
-        elif "Inductance" in selected:
+        elif "Inductance" in selected or "Displacement" in selected:
             import math
             c_f = self.sensor_cap_var.get() * 1e-12
             result = []
@@ -781,40 +809,57 @@ class LHRPageUI:
 
         # Handle Displacement vs Inductance mode (X = displacement, Y = inductance)
         if "Displacement" in selected:
-            self.ax.set_xlabel("Displacement (mm)")
-            self.ax.set_ylabel("Inductance (µH)")
-            self.ax.set_title("Displacement vs Inductance")
-
-            # Get inductance values from display values
             inductance_vals = self._get_display_values()
-            disp_buffer_list = list(self.displacement_buffer)
-            disp_vals = disp_buffer_list[-len(inductance_vals):] if inductance_vals else []
+            disp_vals = list(self.displacement_buffer)
+            if inductance_vals and disp_vals:
+                disp_vals = disp_vals[-len(inductance_vals):]
 
-            # Visibility Toggles
-            self.ax.xaxis.set_visible(self.show_x_scale.get())
-            self.ax.yaxis.set_visible(self.show_y_scale.get())
-            self.ax.spines['bottom'].set_visible(self.show_x_scale.get())
-            self.ax.spines['left'].set_visible(self.show_y_scale.get())
-            self.ax.spines['top'].set_visible(False)
-            self.ax.spines['right'].set_visible(False)
+            if len(disp_vals) >= 2 and len(disp_vals) == len(inductance_vals):
+                # Sort by displacement so line draws cleanly left to right
+                paired = sorted(zip(disp_vals, inductance_vals), key=lambda x: x[0])
+                sorted_d = [p[0] for p in paired]
+                sorted_l = [p[1] for p in paired]
 
-            self.ax.grid(True, alpha=0.3)
+                # Smooth both after sorting
+                smooth_d = self._smooth_data(sorted_d, window=self.smooth_var.get())
+                smooth_l = self._smooth_data(sorted_l, window=self.smooth_var.get())
 
-            if len(disp_vals) == len(inductance_vals) and len(disp_vals) > 1:
-                self.ax.plot(disp_vals, inductance_vals,
-                             color="#1f77b4",
-                             linewidth=1.8,
-                             antialiased=True,
-                             solid_capstyle="round",
-                             solid_joinstyle="round")
-                # Auto-scale both axes
-                if self.autoscale_y.get():
-                    self.ax.set_ylim(min(inductance_vals) - 0.1, max(inductance_vals) + 0.1)
-                if self.autoscale_x.get():
-                    self.ax.set_xlim(min(disp_vals) - 1, max(disp_vals) + 1)
-            else:
-                self.ax.plot([0]*100, color=COLORS["accent_blue"], alpha=0)
-                self.ax.set_ylim(0, 1)
+                self.ax.cla()
+                self.ax.set_title("Displacement vs Inductance", fontsize=11, fontweight="bold")
+                self.ax.set_xlabel("Displacement (mm)", fontsize=9)
+                self.ax.set_ylabel("Inductance (µH)", fontsize=9)
+                self.ax.grid(True, linestyle="--", alpha=0.4, color="gray", linewidth=0.5)
+
+                # Single clean smooth line — same style as frequency chart
+                self.ax.plot(smooth_d, smooth_l,
+                    color="#1f77b4",
+                    linewidth=1.8,
+                    antialiased=True,
+                    solid_capstyle="round",
+                    solid_joinstyle="round")
+
+                # Clean axis padding
+                if smooth_d and smooth_l:
+                    d_min, d_max = min(smooth_d), max(smooth_d)
+                    l_min, l_max = min(smooth_l), max(smooth_l)
+                    d_pad = max(0.05, (d_max - d_min) * 0.2)
+                    l_pad = max(0.01, (l_max - l_min) * 0.2)
+                    self.ax.set_xlim(d_min - d_pad, d_max + d_pad)
+                    self.ax.set_ylim(l_min - l_pad, l_max + l_pad)
+
+                self.canvas.draw_idle()
+                return
+
+            # Default state when insufficient data
+            self.ax.cla()
+            self.ax.set_title("Displacement vs Inductance", fontsize=11, fontweight="bold")
+            self.ax.set_xlabel("Displacement (mm)", fontsize=9)
+            self.ax.set_ylabel("Inductance (µH)", fontsize=9)
+            self.ax.grid(True, linestyle="--", alpha=0.4, color="gray", linewidth=0.5)
+            self.ax.set_xlim(0, 1)
+            self.ax.set_ylim(6, 8)
+            self.canvas.draw_idle()
+            return
         else:
             # Normal strip chart (Frequency or Inductance vs Samples)
             self.ax.set_xlabel("Samples")
@@ -881,7 +926,10 @@ class LHRPageUI:
             self.ax.set_xlabel("Displacement (mm)")
             self.ax.set_ylabel("Inductance (µH)")
             self.ax.set_title("Displacement vs Inductance")
-            self.stats_unit_var.set("µH")
+            self.stats_unit_var.set("mm")
+            # Refresh graph immediately when switching to Displacement mode
+            self._refresh_graph("Inductance (µH)")
+            return
         self.canvas.draw_idle()
         self._update_stats_display()
 
@@ -947,6 +995,7 @@ class LHRPageUI:
     def _clear_graph(self):
         self.data_buffer.clear()
         self.displacement_buffer.clear()
+        self.displacement_ref = None  # Reset reference point
         self.raw_data_history = []
         self.stat_min.set("0")
         self.stat_max.set("0")

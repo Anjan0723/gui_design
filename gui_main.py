@@ -150,7 +150,7 @@ class MainGUI:
         tk.Button(top_bar, text="Refresh", command=refresh_ports,
                   font=FONTS["normal"], width=8).pack(side="left", padx=2)
 
-        tk.Button(top_bar, text="Connect", command=self.connect_and_verify,
+        tk.Button(top_bar, text="Connect", command=self._on_connect_clicked,
                   font=FONTS["normal"], width=8).pack(side="left", padx=2)
 
         tk.Button(top_bar, text="Save Config",
@@ -745,8 +745,7 @@ class MainGUI:
 
         # Bind Apps Calculator (recalculate + sync parameters)
         self.apps_calc_ui.bind_traces(
-            self.apps_calc_ui.recalculate,
-            self.apps_calc_ui.sync_parameters
+            self.apps_calc_ui.recalculate
         )
 
         def _on_csensor_changed(*args):
@@ -810,8 +809,20 @@ class MainGUI:
         if ports:
             self.port_var.set(ports[0])
 
+    def _on_connect_clicked(self):
+        """Always allow reconnect — reset stuck state first."""
+        if self.is_connecting:
+            logger.warning("Forcing reset of stuck connection attempt")
+            self.is_connecting = False
+            if self.ser_conn:
+                try:
+                    self.ser_conn.disconnect()
+                except:
+                    pass
+        self.connect_and_verify()
+
     def connect_and_verify(self, retry=False):
-        """Connect to device and verify CHIP_ID in a background thread."""
+        """Connect to device and verify CHIP_ID with timeout watchdog."""
         if self.is_connecting:
             self.set_status("Connection attempt already in progress...")
             return
@@ -835,53 +846,81 @@ class MainGUI:
         self.conn_lbl.config(text="  CONNECTING...  ", bg=COLORS["warning"])
 
         # Run connection in background thread to avoid UI freeze
-        threading.Thread(target=self._bg_connect_with_retry, args=(port, retry), daemon=True).start()
+        def _do_connect():
+            self._bg_connect_with_retry(port, retry)
+
+        t = threading.Thread(target=_do_connect, daemon=True)
+        t.start()
+
+        # Hard 20 second timeout watchdog to ensure we don't freeze indefinitely
+        def _watchdog():
+            t.join(timeout=20.0)
+            if t.is_alive():
+                logger.error("Connection thread timed out after 20s — forcing reset")
+                self.is_connecting = False
+                self.root.after(0, lambda: self._post_connect(False, None, port, "Timeout after 20s"))
+
+        threading.Thread(target=_watchdog, daemon=True).start()
 
     def _bg_connect_with_retry(self, port, retry):
-        """Background thread for connection with retry logic."""
+        """Background thread for connection with retry logic.
+        
+        Opens the port ONCE, then retries the CHIP_ID read up to 3 times.
+        Does NOT re-open the port on each retry (that would re-trigger DTR reset).
+        """
         max_retries = 3
-        retry_delay = 0.5  # seconds
+        retry_delay = 0.3  # seconds between read retries
+        success = False
+        chip_id = None
+        error_msg = None
 
-        for attempt in range(max_retries):
-            success = False
-            chip_id = None
+        try:
+            # Stop ALL polling before attempting connection
+            self.root.after(0, self.stop_live_data_polling)
 
-            try:
-                # Stop ALL polling before attempting connection
-                self.root.after(0, self.stop_live_data_polling)
-
-                if "(Mock)" in port:
-                    time.sleep(0.5)
-                    chip_id = self.reg_live_values.get(0x3F, 0xD4)
-                    success = (chip_id == 0xD4)
-                else:
-                    self.ser_conn.port = port
-                    if self.ser_conn.connect():
+            if "(Mock)" in port:
+                time.sleep(0.5)
+                chip_id = self.reg_live_values.get(0x3F, 0xD4)
+                success = (chip_id == 0xD4)
+            else:
+                self.ser_conn.port = port
+                if self.ser_conn.connect():
+                    # Port opened successfully (connect() already drained flood data)
+                    # Now try reading CHIP_ID with retries
+                    for attempt in range(max_retries):
+                        logger.info(f"Reading CHIP_ID (0x3F)... attempt {attempt + 1}/{max_retries}")
                         chip_id = self.ser_conn.read_register(0x3F)
-                        success = (chip_id == 0xD4)
-                    else:
-                        success = False
-                        chip_id = None
-
-                if success:
-                    break
-
-                # Retry if failed and more attempts left
-                if attempt < max_retries - 1:
-                    logger.info(f"Connection attempt {attempt + 1} failed, retrying...")
-                    time.sleep(retry_delay)
+                        if chip_id == 0xD4:
+                            success = True
+                            logger.info(f"CHIP_ID verified: 0x{chip_id:02X}")
+                            break
+                        elif chip_id is not None:
+                            logger.warning(f"Unexpected CHIP_ID: 0x{chip_id:02X} (expected 0xD4)")
+                            break  # Got a response, just wrong ID
+                        else:
+                            if attempt < max_retries - 1:
+                                logger.info(f"No response, retrying in {retry_delay}s...")
+                                time.sleep(retry_delay)
+                            else:
+                                logger.error(f"No CHIP_ID response after {max_retries} attempts")
+                                error_msg = "No response from device after multiple attempts"
                 else:
-                    logger.error(f"Connection failed after {max_retries} attempts")
+                    error_msg = f"Failed to open {port}"
 
-            except Exception as e:
-                logger.error(f"Connection error: {e}", exc_info=True)
+        except Exception as e:
+            logger.error(f"Connection error: {e}", exc_info=True)
+            error_msg = str(e)
 
-        self.root.after(0, lambda: self._post_connect(success, chip_id, port))
+        if not success and chip_id is None and not error_msg:
+            error_msg = "Device not responding"
+
+        self.root.after(0, lambda: self._post_connect(success, chip_id, port, error_msg))
 
     def _bg_connect(self, port):
         """Background thread for connection and verification."""
         success = False
         chip_id = None
+        error_msg = None
 
         try:
             # Stop ALL polling before attempting connection
@@ -908,9 +947,13 @@ class MainGUI:
             logger.error(f"Connection error: {e}", exc_info=True)
             success = False
             chip_id = None
+            error_msg = str(e)
+
+        if not success and chip_id is None and not error_msg:
+            error_msg = "Device not responding"
 
         # Update UI safely on main thread
-        self.root.after(0, lambda: self._post_connect(success, chip_id, port))
+        self.root.after(0, lambda: self._post_connect(success, chip_id, port, error_msg))
 
     def _check_connection_health(self):
         """Check if serial connection is still healthy."""
@@ -943,7 +986,7 @@ class MainGUI:
         if hasattr(self, 'apps_calc_ui'):
             self.apps_calc_ui.set_connection_status(False)
 
-    def _post_connect(self, success, chip_id, port):
+    def _post_connect(self, success, chip_id, port, error_msg=None):
         """Handle UI updates after connection attempt."""
         self.is_connecting = False
 
@@ -977,7 +1020,10 @@ class MainGUI:
                 self.set_status(f"Device not recognized (CHIP_ID=0x{chip_id:02X})")
             else:
                 self.conn_lbl.config(text="  NOT CONNECTED  ", bg=COLORS["error"])
-                self.set_status(f"Connection failed on {port}")
+                msg = f"Connection failed on {port}"
+                if error_msg:
+                    msg += f" - {error_msg}"
+                self.set_status(msg)
             self.ser_conn.disconnect()
 
         # Sync reference and restart polling

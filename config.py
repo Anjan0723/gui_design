@@ -75,7 +75,7 @@ R2_STEP_OHMS = 12770
 R2_OPTIONS_COUNT = 64
 
 # Debug flag
-DEBUG = False
+DEBUG = True
 
 # Logging configuration
 import logging
@@ -97,6 +97,11 @@ def setup_logging():
             logging.StreamHandler()
         ]
     )
+    
+    # Suppress verbose third-party debug logs
+    logging.getLogger("matplotlib").setLevel(logging.WARNING)
+    logging.getLogger("PIL").setLevel(logging.WARNING)
+    
     return logging.getLogger("LDC1101_GUI")
 
 logger = setup_logging()
