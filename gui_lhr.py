@@ -80,6 +80,14 @@ class LHRPageUI:
         self.sample_count = 0
         self.raw_data_history = []
         self.update_counter = 0
+
+        # Stable graph buffers (batch averaging)
+        self.stable_disp_buffer = []    # averaged stable displacement values
+        self.stable_ind_buffer = []     # averaged stable inductance values
+        self.batch_disp = []            # current batch accumulator
+        self.batch_ind = []             # current batch accumulator
+        self.BATCH_SIZE = 20            # average every 20 readings → 1 stable point
+        self.MAX_STABLE_POINTS = 100    # keep last 100 stable points on graph
         
         # Create sub-view frames
         self.config_frame = tk.Frame(self.main_frame, bg=COLORS["bg_main"])
@@ -475,6 +483,11 @@ class LHRPageUI:
             # Reset displacement reference for new measurement session
             self.displacement_ref = None
             self.displacement_buffer.clear()
+            # Clear stable buffers for fresh start
+            self.stable_disp_buffer.clear()
+            self.stable_ind_buffer.clear()
+            self.batch_disp.clear()
+            self.batch_ind.clear()
             # Write FUNC_MODE = 0x00 (Active) to register 0x0B
             val = self.reg_live_values.get(0x0B, 0x01) & ~0x03
             self._write_reg(0x0B, val)
@@ -594,6 +607,11 @@ class LHRPageUI:
             self.data_buffer.clear()
             self.displacement_buffer.clear()
             self.displacement_ref = None  # Reset reference point
+            # Clear stable buffers on disconnect
+            self.stable_disp_buffer.clear()
+            self.stable_ind_buffer.clear()
+            self.batch_disp.clear()
+            self.batch_ind.clear()
             # Still refresh graph to show flat empty canvas
             self._refresh_graph(self.data_to_display_var.get())
             self.did_lbl.config(text="--")
@@ -680,16 +698,39 @@ class LHRPageUI:
                 self.displacement_ref = raw_displacement
 
             # Normalize — always starts from 0
-            normalized = raw_displacement - self.displacement_ref
-            self.displacement_buffer.append(normalized)
+            normalized_displacement = raw_displacement - self.displacement_ref
+
+            # Batch averaging: collect readings, average each batch, only plot stable values
+            self.batch_disp.append(normalized_displacement)
+            self.batch_ind.append(inductance)
+
+            # When batch is full → compute average → add ONE stable point
+            if len(self.batch_disp) >= self.BATCH_SIZE:
+                avg_disp = sum(self.batch_disp) / len(self.batch_disp)
+                avg_ind = sum(self.batch_ind) / len(self.batch_ind)
+
+                self.stable_disp_buffer.append(avg_disp)
+                self.stable_ind_buffer.append(avg_ind)
+
+                # Keep only last MAX_STABLE_POINTS
+                if len(self.stable_disp_buffer) > self.MAX_STABLE_POINTS:
+                    self.stable_disp_buffer.pop(0)
+                    self.stable_ind_buffer.pop(0)
+
+                # Clear batch for next round
+                self.batch_disp.clear()
+                self.batch_ind.clear()
+
+            # Still append to displacement_buffer for other uses (statistics)
+            self.displacement_buffer.append(normalized_displacement)
         else:
             # Use last known displacement to keep buffers in sync
             last_disp = getattr(self, '_last_valid_displacement', 0.0)
             if self.displacement_ref is not None:
-                normalized = last_disp - self.displacement_ref
+                normalized_displacement = last_disp - self.displacement_ref
             else:
-                normalized = 0.0
-            self.displacement_buffer.append(normalized)
+                normalized_displacement = 0.0
+            self.displacement_buffer.append(normalized_displacement)
 
         # Update current displacement display (show with + sign for direction)
         # Update Graph with rate control
@@ -809,36 +850,35 @@ class LHRPageUI:
 
         # Handle Displacement vs Inductance mode (X = displacement, Y = inductance)
         if "Displacement" in selected:
-            inductance_vals = self._get_display_values()
-            disp_vals = list(self.displacement_buffer)
-            if inductance_vals and disp_vals:
-                disp_vals = disp_vals[-len(inductance_vals):]
+            # Use stable buffers (batch-averaged)
+            disp_vals = list(self.stable_disp_buffer)
+            ind_vals = list(self.stable_ind_buffer)
 
-            if len(disp_vals) >= 2 and len(disp_vals) == len(inductance_vals):
-                # Sort by displacement so line draws cleanly left to right
-                paired = sorted(zip(disp_vals, inductance_vals), key=lambda x: x[0])
+            if len(disp_vals) >= 2:
+                # Sort by displacement for clean left-to-right curve
+                paired = sorted(zip(disp_vals, ind_vals), key=lambda x: x[0])
                 sorted_d = [p[0] for p in paired]
                 sorted_l = [p[1] for p in paired]
 
-                # Smooth both after sorting
-                smooth_d = self._smooth_data(sorted_d, window=self.smooth_var.get())
-                smooth_l = self._smooth_data(sorted_l, window=self.smooth_var.get())
+                # Smooth the already-stable data lightly
+                smooth_d = self._smooth_data(sorted_d, window=3)
+                smooth_l = self._smooth_data(sorted_l, window=3)
 
                 self.ax.cla()
-                self.ax.set_title("Displacement vs Inductance", fontsize=11, fontweight="bold")
+                self.ax.set_title("Displacement vs Inductance",
+                    fontsize=11, fontweight="bold")
                 self.ax.set_xlabel("Displacement (mm)", fontsize=9)
                 self.ax.set_ylabel("Inductance (µH)", fontsize=9)
-                self.ax.grid(True, linestyle="--", alpha=0.4, color="gray", linewidth=0.5)
+                self.ax.grid(True, linestyle="--", alpha=0.4)
 
-                # Single clean smooth line — same style as frequency chart
                 self.ax.plot(smooth_d, smooth_l,
                     color="#1f77b4",
-                    linewidth=1.8,
+                    linewidth=2.0,
                     antialiased=True,
                     solid_capstyle="round",
                     solid_joinstyle="round")
 
-                # Clean axis padding
+                # Axis padding
                 if smooth_d and smooth_l:
                     d_min, d_max = min(smooth_d), max(smooth_d)
                     l_min, l_max = min(smooth_l), max(smooth_l)
@@ -1001,6 +1041,11 @@ class LHRPageUI:
         self.stat_max.set("0")
         self.stat_avg.set("0")
         self.stat_std.set("0")
+        # Clear stable buffers too
+        self.stable_disp_buffer.clear()
+        self.stable_ind_buffer.clear()
+        self.batch_disp.clear()
+        self.batch_ind.clear()
         self._refresh_graph(self.data_to_display_var.get())
 
     def _copy_data_to_clipboard(self):

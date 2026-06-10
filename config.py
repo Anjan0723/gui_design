@@ -45,7 +45,7 @@ VERSION = "1.0.0.7"
 # Window settings
 WINDOW_WIDTH = 1280
 WINDOW_HEIGHT = 780
-WINDOW_TITLE = "LDC1101 EVM GUI"
+WINDOW_TITLE = "Eddy Current Displacement Measurement"
 
 # Table column widths
 TABLE_COL_WIDTHS = [170, 70, 70, 50, 45, 70, 70]

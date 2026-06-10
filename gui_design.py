@@ -191,7 +191,7 @@ write_buffer    = {}
 #  WINDOW
 # ═══════════════════════════════════════════════════════════════
 root = tk.Tk()
-root.title("LDC1101 EVM GUI")
+root.title("Eddy Current Displacement Measurement")
 root.geometry("1280x780")
 root.configure(bg="#f0f0f0")
 root.resizable(True, True)
@@ -229,7 +229,7 @@ root.config(menu=menubar)
 title_bar = tk.Frame(root, bg="#1f3864", height=48)
 title_bar.pack(fill="x")
 title_bar.pack_propagate(False)
-tk.Label(title_bar, text="LDC1101 EVM GUI",
+tk.Label(title_bar, text="Eddy Current Displacement Measurement",
          bg="#1f3864", fg="white",
          font=("Arial", 18, "bold")).pack(side="left", padx=20, pady=8)
 sim_var = tk.BooleanVar(value=False)
