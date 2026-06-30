@@ -200,7 +200,7 @@ style = ttk.Style()
 style.theme_use("clam")
 style.configure("Treeview",
     background="white", foreground="black",
-    fieldbackground="white", rowheight=22,
+    fieldbackground="white",
     font=("Arial", 9))
 style.configure("Treeview.Heading",
     background="#dce6f1", foreground="#1f3864",

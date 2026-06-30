@@ -33,6 +33,8 @@ class LHRPageUI:
         self.reg_map_ui = reg_map_ui
         self.ser_conn = ser_conn
         self.sim_var = sim_var
+        self.colors = COLORS
+        self.fonts = FONTS
         
         # Thread-safe mirrored variables
         self._is_sim_mode = sim_var.get() if sim_var else False
@@ -141,45 +143,157 @@ class LHRPageUI:
         self.measure_frame.pack_forget()
         self.config_frame.pack(fill="both", expand=True)
 
+    def _make_section_card(self, parent, title, icon=""):
+        """Create a styled section card with header."""
+        outer = tk.Frame(parent,
+            bg=COLORS["bg_white"],
+            highlightbackground=COLORS["border"],
+            highlightthickness=1)
+        outer.pack(fill="x", padx=8, pady=4)
+
+        header = tk.Frame(outer, bg=COLORS["bg_section"],
+            highlightbackground=COLORS["border"],
+            highlightthickness=1)
+        header.pack(fill="x")
+        tk.Label(header,
+            text=f"  {icon}  {title}" if icon else f"  {title}",
+            font=FONTS["heading"],
+            bg=COLORS["bg_section"],
+            fg="#3a4a5c").pack(
+            side="left", padx=8, pady=5)
+
+        body = tk.Frame(outer, bg=COLORS["bg_white"])
+        body.pack(fill="both", expand=True, padx=10, pady=8)
+        return body
+
+    def _make_display_card(self, parent, label, unit, var_name):
+        """Styled metric card for live values."""
+        card = tk.Frame(parent,
+            bg=COLORS["bg_section"],
+            highlightbackground=COLORS["border"],
+            highlightthickness=1)
+        card.pack(side="left", fill="both",
+                  expand=True, padx=4, pady=2)
+
+        tk.Label(card,
+            text=label.upper(),
+            font=("Segoe UI", 8, "bold"),
+            bg=COLORS["bg_section"],
+            fg=COLORS["text_muted"]).pack(
+            anchor="w", padx=8, pady=(6,0))
+
+        lbl = tk.Label(card,
+            text="--",
+            font=FONTS["value_lg"],
+            bg=COLORS["bg_section"],
+            fg=COLORS["accent"])
+        lbl.pack(anchor="w", padx=8)
+
+        tk.Label(card,
+            text=unit,
+            font=FONTS["small"],
+            bg=COLORS["bg_section"],
+            fg=COLORS["text_muted"]).pack(
+            anchor="w", padx=8, pady=(0,6))
+
+        setattr(self, var_name, lbl)
+        return lbl
+
+    def _update_mode_button(self, running: bool):
+        """Update the mode button appearance based on running state."""
+        if running:
+            self.mode_btn.config(
+                text="● Running",
+                bg=COLORS["success"],
+                fg="#ffffff",
+                font=("Segoe UI", 10, "bold"),
+                relief="flat", padx=12, pady=4)
+        else:
+            self.mode_btn.config(
+                text="Sleep",
+                bg=COLORS["bg_white"],
+                fg=COLORS["text_secondary"],
+                font=FONTS["normal"],
+                relief="flat", padx=12, pady=4,
+                highlightbackground=COLORS["border"],
+                highlightthickness=1)
+
     def _build_config_view(self):
         """Build the LHR Configuration sub-view."""
-        # Top Header
-        header = tk.Frame(self.config_frame, bg=COLORS["bg_main"])
-        header.pack(fill="x", padx=10, pady=5)
-        
-        tk.Button(header, text="\u2611 Go to Streaming", font=FONTS["normal_bold"], 
-                  command=self._switch_to_measure).pack(side="left")
-        
-        tk.Label(header, text="LHR Configuration", font=("Arial", 12, "bold"), 
-                 fg=COLORS["error"], bg=COLORS["bg_main"]).pack(side="right")
-        
-        # Mode Toggle & Logging
-        ctrl_section = ttk.LabelFrame(self.config_frame, text="Device & Logging")
-        ctrl_section.pack(fill="x", padx=10, pady=5)
-        
-        mode_btn = tk.Checkbutton(ctrl_section, textvariable=self.mode_var, variable=self.mode_var,
+        # Top Header - Modern card style
+        header = tk.Frame(self.config_frame, bg=COLORS["primary"], height=44)
+        header.pack(fill="x")
+        header.pack_propagate(False)
+
+        # Go to Streaming button - left side
+        self.goto_stream_btn = tk.Button(header,
+            text="\u2611 Go to Streaming",
+            font=FONTS["normal"],
+            bg=COLORS["bg_white"],
+            fg=COLORS["text_primary"],
+            relief="flat",
+            padx=10, pady=4,
+            cursor="hand2",
+            highlightbackground=COLORS["border"],
+            highlightthickness=1,
+            command=self._switch_to_measure)
+        self.goto_stream_btn.pack(side="left", padx=(12, 8))
+
+        tk.Label(header, text="\ud83d\udcca LHR Configuration",
+            font=FONTS["title"],
+            bg=COLORS["primary"], fg="white").pack(side="left", padx=16, pady=8)
+
+        tk.Label(header, text=f"24-bit Resolution",
+            font=FONTS["small"],
+            bg=COLORS["primary"], fg="white").pack(side="right", padx=16, pady=8)
+
+        # Mode Toggle & Logging - Modern card style
+        ctrl_section = tk.Frame(self.config_frame, bg=COLORS["bg_section"], bd=1, relief="solid",
+                                highlightbackground=COLORS["border"], highlightthickness=1)
+        ctrl_section.pack(fill="x", padx=10, pady=8)
+
+        tk.Label(ctrl_section, text="Device & Logging", font=FONTS["section_title"],
+                bg=COLORS["bg_section"], fg=COLORS["primary"]).pack(anchor="w", padx=12, pady=(8, 4))
+
+        controls_row = tk.Frame(ctrl_section, bg=COLORS["bg_section"])
+        controls_row.pack(fill="x", padx=12, pady=(0, 8))
+
+        mode_btn = tk.Checkbutton(controls_row, textvariable=self.mode_var, variable=self.mode_var,
                                   onvalue="Running", offvalue="Sleep", indicatoron=False,
-                                  font=FONTS["normal_bold"], width=15, selectcolor=COLORS["success"],
+                                  font=FONTS["normal_bold"], width=12, selectcolor=COLORS["success"],
                                   command=self._on_mode_toggle)
-        mode_btn.pack(side="left", padx=10, pady=5)
-        
-        tk.Checkbutton(ctrl_section, text="Enable Data Log", variable=self.enable_log_var,
-                       bg=COLORS["bg_main"], font=FONTS["normal"]).pack(side="left", padx=10)
-        
-        tk.Entry(ctrl_section, textvariable=self.log_path_var, width=40, font=FONTS["small"]).pack(side="left", padx=5)
-        tk.Button(ctrl_section, text="Browse", command=self._browse_log_file).pack(side="left", padx=2)
-        
-        # Device Info Row
-        info_row = tk.Frame(self.config_frame, bg=COLORS["bg_main"])
-        info_row.pack(fill="x", padx=10, pady=5)
-        
-        tk.Label(info_row, text="Csensor:", bg=COLORS["bg_main"], font=FONTS["normal"]).pack(side="left")
-        self.csensor_lbl = tk.Label(info_row, text="390 pF", bg="white", width=8, relief="sunken")
-        self.csensor_lbl.pack(side="left", padx=5)
-        
-        tk.Label(info_row, text="Device ID:", bg=COLORS["bg_main"], font=FONTS["normal"]).pack(side="left", padx=(20, 0))
-        self.did_lbl = tk.Label(info_row, text="--", bg="white", width=6, relief="sunken")
-        self.did_lbl.pack(side="left", padx=5)
+        mode_btn.pack(side="left", padx=4)
+
+        tk.Checkbutton(controls_row, text="Enable Data Log", variable=self.enable_log_var,
+                       bg=COLORS["bg_section"], font=FONTS["small"]).pack(side="left", padx=12)
+
+        log_row = tk.Frame(ctrl_section, bg=COLORS["bg_section"])
+        log_row.pack(fill="x", padx=12, pady=(0, 8))
+
+        tk.Entry(log_row, textvariable=self.log_path_var, width=40, font=FONTS["small"],
+                bg=COLORS["bg_input"]).pack(side="left", fill="x", expand=True)
+        tk.Button(log_row, text="Browse", command=self._browse_log_file,
+                 bg=COLORS["primary"], fg="white", relief="flat", padx=8).pack(side="left", padx=4)
+
+        # Device Info Row - Modern card style
+        info_card = tk.Frame(self.config_frame, bg=COLORS["bg_section"], bd=1, relief="solid",
+                            highlightbackground=COLORS["border"], highlightthickness=1)
+        info_card.pack(fill="x", padx=10, pady=8)
+
+        info_row = tk.Frame(info_card, bg=COLORS["bg_section"])
+        info_row.pack(fill="x", padx=12, pady=8)
+
+        tk.Label(info_row, text="Csensor:", bg=COLORS["bg_section"], font=FONTS["normal"],
+                fg=COLORS["text_secondary"]).pack(side="left")
+        self.csensor_lbl = tk.Label(info_row, text="390 pF", bg=COLORS["bg_white"],
+                                    font=FONTS["courier"], padx=8, relief="flat")
+        self.csensor_lbl.pack(side="left", padx=4)
+
+        tk.Label(info_row, text="Device ID:", bg=COLORS["bg_section"], font=FONTS["normal"],
+                fg=COLORS["text_secondary"]).pack(side="left", padx=(20, 0))
+        self.did_lbl = tk.Label(info_row, text="--", bg=COLORS["bg_white"],
+                               font=FONTS["courier"], padx=8, relief="flat")
+        self.did_lbl.pack(side="left", padx=4)
         # Main two-column container
         main_row = tk.Frame(self.config_frame, bg=COLORS["bg_main"])
         main_row.pack(fill="both", expand=True, padx=10, pady=10)
@@ -212,7 +326,7 @@ class LHRPageUI:
                 font=FONTS["small"], bg=COLORS["bg_main"],
                 anchor="w").pack(side="left")
 
-            led = tk.Label(row, text="  ", bg="green",
+            led = tk.Label(row, text="  ", bg=COLORS["led_green"],
                 width=3, relief="raised")
             led.pack(side="left", padx=4)
 
@@ -221,7 +335,7 @@ class LHRPageUI:
                 anchor="w").pack(side="left")
 
             tk.Label(row, text=desc,
-                font=FONTS["small"], fg="gray",
+                font=FONTS["small"], fg=COLORS["text_muted"],
                 bg=COLORS["bg_main"],
                 anchor="w").pack(side="left")
 
@@ -240,8 +354,9 @@ class LHRPageUI:
             font=FONTS["normal"], bg=COLORS["bg_main"],
             anchor="e", width=12).grid(row=0, column=0, padx=8, pady=10, sticky="e")
         self.lhr_count_lbl = tk.Label(display_inner, text="--",
-            font=("Consolas", 13, "bold"), bg="white",
-            width=12, relief="sunken", anchor="center")
+            font=("Consolas", 13, "bold"), bg="#FFFFFF",
+            width=12, relief="solid", bd=1, anchor="center")
+        self.lhr_count_lbl.config(bg='#FFFFFF', fg='#212121')
         self.lhr_count_lbl.grid(row=0, column=1, padx=5)
         tk.Label(display_inner, text="counts",
             font=FONTS["small"], bg=COLORS["bg_main"],
@@ -252,8 +367,9 @@ class LHRPageUI:
             font=FONTS["normal"], bg=COLORS["bg_main"],
             anchor="e", width=12).grid(row=1, column=0, padx=8, pady=10, sticky="e")
         self.freq_lbl = tk.Label(display_inner, text="--",
-            font=("Consolas", 13, "bold"), bg="white",
-            width=12, relief="sunken", anchor="center")
+            font=("Consolas", 13, "bold"), bg="#FFFFFF",
+            width=12, relief="solid", bd=1, anchor="center")
+        self.freq_lbl.config(bg='#FFFFFF', fg='#212121')
         self.freq_lbl.grid(row=1, column=1, padx=5)
         tk.Label(display_inner, text="MHz",
             font=FONTS["small"], bg=COLORS["bg_main"],
@@ -264,8 +380,9 @@ class LHRPageUI:
             font=FONTS["normal"], bg=COLORS["bg_main"],
             anchor="e", width=12).grid(row=2, column=0, padx=8, pady=10, sticky="e")
         self.inductance_lbl = tk.Label(display_inner, text="--",
-            font=("Consolas", 13, "bold"), bg="white",
-            width=12, relief="sunken", anchor="center")
+            font=("Consolas", 13, "bold"), bg="#FFFFFF",
+            width=12, relief="solid", bd=1, anchor="center")
+        self.inductance_lbl.config(bg='#FFFFFF', fg='#212121')
         self.inductance_lbl.grid(row=2, column=1, padx=5)
         tk.Label(display_inner, text="µH",
             font=FONTS["small"], bg=COLORS["bg_main"],
@@ -276,8 +393,9 @@ class LHRPageUI:
             font=FONTS["normal"], bg=COLORS["bg_main"],
             anchor="e", width=12).grid(row=3, column=0, padx=8, pady=10, sticky="e")
         self.rs_lbl = tk.Label(display_inner, text="--",
-            font=("Consolas", 13, "bold"), bg="white",
-            width=12, relief="sunken", anchor="center")
+            font=("Consolas", 13, "bold"), bg="#FFFFFF",
+            width=12, relief="solid", bd=1, anchor="center")
+        self.rs_lbl.config(bg='#FFFFFF', fg='#212121')
         self.rs_lbl.grid(row=3, column=1, padx=5)
         tk.Label(display_inner, text="Ω",
             font=FONTS["small"], bg=COLORS["bg_main"],
@@ -288,8 +406,9 @@ class LHRPageUI:
             font=FONTS["normal"], bg=COLORS["bg_main"],
             anchor="e", width=12).grid(row=4, column=0, padx=8, pady=10, sticky="e")
         self.rp_lbl = tk.Label(display_inner, text="--",
-            font=("Consolas", 13, "bold"), bg="white",
-            width=12, relief="sunken", anchor="center")
+            font=("Consolas", 13, "bold"), bg="#FFFFFF",
+            width=12, relief="solid", bd=1, anchor="center")
+        self.rp_lbl.config(bg='#FFFFFF', fg='#212121')
         self.rp_lbl.grid(row=4, column=1, padx=5)
         tk.Label(display_inner, text="kΩ",
             font=FONTS["small"], bg=COLORS["bg_main"],
@@ -300,8 +419,9 @@ class LHRPageUI:
             font=FONTS["normal"], bg=COLORS["bg_main"],
             anchor="e", width=12).grid(row=5, column=0, padx=8, pady=10, sticky="e")
         self.qfactor_lbl = tk.Label(display_inner, text="--",
-            font=("Consolas", 13, "bold"), bg="white",
-            width=12, relief="sunken", anchor="center")
+            font=("Consolas", 13, "bold"), bg="#FFFFFF",
+            width=12, relief="solid", bd=1, anchor="center")
+        self.qfactor_lbl.config(bg='#FFFFFF', fg='#212121')
         self.qfactor_lbl.grid(row=5, column=1, padx=5)
         tk.Label(display_inner, text="",
             font=FONTS["small"], bg=COLORS["bg_main"],
@@ -318,7 +438,8 @@ class LHRPageUI:
         tk.Button(header, text="\u2611 Go to Configuration", font=FONTS["normal_bold"], 
                   command=self._switch_to_config).pack(side="left")
         
-        tk.Label(header, text="LHR Measurement", font=("Arial", 12, "bold"), 
+        LHR_RESOLUTION_BITS = 24   # LHR_DATA is 24-bit (3 registers × 8 bits)
+        tk.Label(header, text=f"LHR Measurement  ({LHR_RESOLUTION_BITS}-bit)", font=("Arial", 12, "bold"), 
                  fg=COLORS["error"], bg=COLORS["bg_main"]).pack(side="right")
         
         # Mode Toggle & Logging (Synced with config)
@@ -380,10 +501,10 @@ class LHRPageUI:
             row = tk.Frame(stat_sec, bg=COLORS["bg_main"])
             row.pack(fill="x", padx=5, pady=5)
             tk.Label(row, text=f"{label}:", bg=COLORS["bg_main"], font=FONTS["normal"]).pack(anchor="w")
-            val_frame = tk.Frame(row, bg="white", relief="sunken", bd=1)
+            val_frame = tk.Frame(row, bg="#FFFFFF", relief="solid", bd=1)
             val_frame.pack(fill="x")
-            tk.Label(val_frame, textvariable=var, bg="white", font=FONTS["courier"]).pack(side="left", padx=2)
-            tk.Label(val_frame, textvariable=self.stats_unit_var, bg="white", fg="blue", font=FONTS["tiny_italic"]).pack(side="right", padx=2)
+            tk.Label(val_frame, textvariable=var, bg="#FFFFFF", fg="#212121", font=FONTS["courier"]).pack(side="left", padx=2)
+            tk.Label(val_frame, textvariable=self.stats_unit_var, bg="#FFFFFF", fg="#757575", font=FONTS["tiny_italic"]).pack(side="right", padx=2)
 
         # Right Graph Panel
         right_panel = tk.Frame(body, bg=COLORS["bg_main"])
@@ -480,6 +601,8 @@ class LHRPageUI:
         is_sim = self._is_sim_mode or not is_connected
 
         if self.mode_var.get() == "Running":
+            # Update button appearance
+            self._update_mode_button(True)
             # Reset displacement reference for new measurement session
             self.displacement_ref = None
             self.displacement_buffer.clear()
@@ -492,6 +615,8 @@ class LHRPageUI:
             val = self.reg_live_values.get(0x0B, 0x01) & ~0x03
             self._write_reg(0x0B, val)
         else:
+            # Update button appearance
+            self._update_mode_button(False)
             # Write FUNC_MODE = 0x01 (Sleep) to register 0x0B
             val = (self.reg_live_values.get(0x0B, 0x01) & ~0x03) | 0x01
             self._write_reg(0x0B, val)
@@ -582,8 +707,8 @@ class LHRPageUI:
             else:
                 bit_val = (status_reg >> bit) & 1
             
-            # Configuration View LED
-            led.config(bg="red" if bit_val else "green")
+            # Configuration View LED - flat style with new colors
+            led.config(bg=COLORS["led_red"] if bit_val else COLORS["led_green"])
             
             # Measurement View Canvas LED (only LHR bits)
             if name in self.leds:

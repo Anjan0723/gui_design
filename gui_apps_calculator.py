@@ -101,20 +101,24 @@ class AppsCalculatorUI:
 
     def _build_header(self):
         """Build page header with title and connection badge."""
-        # Page header bar
-        header = tk.Frame(self.frame, bg="#1a3a5c", height=50)
+        # Page header bar - modern style
+        header = tk.Frame(self.frame, bg=COLORS["primary"], height=50)
         header.pack(fill="x")
         header.pack_propagate(False)
 
-        tk.Label(header, text="Apps Calculator",
-            font=("Segoe UI", 14, "bold"),
-            bg="#1a3a5c", fg="white").pack(side="left", padx=15, pady=10)
+        tk.Label(header, text="🧮 Apps Calculator",
+            font=FONTS["title"],
+            bg=COLORS["primary"], fg="white").pack(side="left", padx=15, pady=10)
 
-        # Connection status badge — top right of header
+        # Connection status badge — modern badge style
         self.conn_badge = tk.Label(header,
-            text="● NOT CONNECTED",
-            font=("Segoe UI", 10, "bold"),
-            bg="#1a3a5c", fg="#ff4444")
+            text="○ NOT CONNECTED",
+            font=FONTS["small_bold"],
+            bg=COLORS["error"],
+            fg="white",
+            padx=12,
+            pady=4,
+            relief="flat")
         self.conn_badge.pack(side="right", padx=15, pady=10)
 
     def _build_content(self):
@@ -145,67 +149,83 @@ class AppsCalculatorUI:
 
     def _build_left_panel(self, parent):
         """Build left panel with sensor and loop parameters."""
-        # Entry style dictionary
-        entry_style = {
-            "font": ("Segoe UI", 10),
+        # Input entry style - white background with border
+        input_entry_style = {
+            "font": FONTS["normal"],
+            "bg":   COLORS["bg_white"],
+            "fg":   COLORS["text_primary"],
             "relief": "flat",
-            "bg": "#f0f4f8",
-            "fg": "#1a1a1a",
             "bd": 1,
+            "highlightbackground": COLORS["border"],
             "highlightthickness": 1,
-            "highlightbackground": "#c0cfe0",
-            "highlightcolor": "#1a3a5c",
+            "highlightcolor": COLORS["border_focus"],
             "width": 14
         }
 
         # Sensor Parameters section
         tk.Label(parent, text="Sensor Parameters",
-            font=("Segoe UI", 9, "bold"),
-            bg=COLORS["bg_main"], fg="#1a3a5c").pack(anchor="w", padx=10, pady=(10,2))
+            font=FONTS["heading"],
+            bg=COLORS["bg_main"], fg=COLORS["accent"]).pack(anchor="w", padx=10, pady=(10,2))
 
         ttk.Separator(parent, orient="horizontal").pack(fill="x", padx=10, pady=2)
 
         # Csensor
-        self._make_input_field(parent, "Csensor", self.nt_csensor_var, entry_style, pady=(8,4))
+        self._make_input_field(parent, "Csensor", self.nt_csensor_var, input_entry_style, pady=(8,4))
 
         # Lsensor
-        self._make_input_field(parent, "Lsensor", self.nt_lsensor_var, entry_style, pady=4)
+        self._make_input_field(parent, "Lsensor", self.nt_lsensor_var, input_entry_style, pady=4)
 
         # Rs_parasitic
-        self._make_input_field(parent, "Rs_parasitic", self.nt_rs_var, entry_style, pady=4)
+        self._make_input_field(parent, "Rs_parasitic", self.nt_rs_var, input_entry_style, pady=4)
 
         # Loop Parameters section
         tk.Label(parent, text="Loop Parameters",
-            font=("Segoe UI", 9, "bold"),
-            bg=COLORS["bg_main"], fg="#1a3a5c").pack(anchor="w", padx=10, pady=(15,2))
+            font=FONTS["heading"],
+            bg=COLORS["bg_main"], fg=COLORS["accent"]).pack(anchor="w", padx=10, pady=(15,2))
 
         ttk.Separator(parent, orient="horizontal").pack(fill="x", padx=10, pady=2)
 
         # Rp_Min dropdown with warning
-        self._make_dropdown_field(parent, "Rp_Min", self.nt_rpmin_var, RP_OPTIONS_LABELS, entry_style, pady=(8,4), has_warning=True)
+        self._make_dropdown_field(parent, "Rp_Min", self.nt_rpmin_var, RP_OPTIONS_LABELS, input_entry_style, pady=(8,4), has_warning=True)
 
         # Rp_Max dropdown with warning
-        self._make_dropdown_field(parent, "Rp_Max", self.nt_rpmax_var, RP_OPTIONS_LABELS, entry_style, pady=4, has_warning=True)
+        self._make_dropdown_field(parent, "Rp_Max", self.nt_rpmax_var, RP_OPTIONS_LABELS, input_entry_style, pady=4, has_warning=True)
 
         # C1 dropdown
-        self._make_dropdown_field(parent, "C1", self.nt_c1_var, C1_OPTIONS_LABELS, entry_style, pady=4)
+        self._make_dropdown_field(parent, "C1", self.nt_c1_var, C1_OPTIONS_LABELS, input_entry_style, pady=4)
 
         # C2 dropdown
-        self._make_dropdown_field(parent, "C2", self.nt_c2_var, C2_OPTIONS_LABELS, entry_style, pady=4)
+        self._make_dropdown_field(parent, "C2", self.nt_c2_var, C2_OPTIONS_LABELS, input_entry_style, pady=4)
 
         # Response time (user input)
-        self._make_input_field(parent, "Response time (µs)", self.nt_response_var, entry_style, pady=4)
+        self._make_input_field(parent, "Response time (µs)", self.nt_response_var, input_entry_style, pady=4)
 
     def _build_right_panel(self, parent):
         """Build right panel with calculated results."""
-        # Result style (read-only, green background)
+        # Result style (read-only, light green background - indicates output)
         result_style = {
-            "font": ("Consolas", 10, "bold"),
+            "font": FONTS["value"],
+            "bg":   COLORS["bg_output"],
+            "fg":   COLORS["success"],
             "relief": "flat",
-            "bg": "#e8f4e8",       # light green — indicates output
-            "fg": "#1a5c1a",
             "bd": 1,
             "state": "readonly",
+            "readonlybackground": COLORS["bg_output"],
+            "highlightbackground": COLORS["border"],
+            "highlightthickness": 1,
+            "width": 16
+        }
+
+        # Input style (white background with blue focus)
+        input_style = {
+            "font": FONTS["normal"],
+            "bg":   COLORS["bg_white"],
+            "fg":   COLORS["text_primary"],
+            "relief": "flat",
+            "bd": 1,
+            "highlightbackground": COLORS["border"],
+            "highlightthickness": 1,
+            "highlightcolor": COLORS["border_focus"],
             "width": 14
         }
 
@@ -238,30 +258,31 @@ class AppsCalculatorUI:
 
     def _build_freq_info_box(self, parent):
         """Build frequency range info box at bottom of right panel."""
-        info_frame = tk.Frame(parent, bg="#e8f0fe", relief="groove", bd=1)
+        info_frame = tk.Frame(parent, bg=COLORS["info_bg"], bd=1, relief="solid",
+                             highlightbackground=COLORS["accent_blue"], highlightthickness=1)
         info_frame.pack(fill="x", padx=10, pady=15)
 
-        tk.Label(info_frame, text="Valid Sensor Frequency Range",
-            font=("Segoe UI", 9, "bold"),
-            bg="#e8f0fe", fg="#1a3a5c").pack(anchor="w", padx=8, pady=(6,2))
+        tk.Label(info_frame, text="📡 Valid Sensor Frequency Range",
+            font=FONTS["label_bold"],
+            bg=COLORS["info_bg"], fg=COLORS["primary"]).pack(anchor="w", padx=12, pady=(8, 4))
 
-        freq_row = tk.Frame(info_frame, bg="#e8f0fe")
-        freq_row.pack(fill="x", padx=8, pady=(0,6))
+        freq_row = tk.Frame(info_frame, bg=COLORS["info_bg"])
+        freq_row.pack(fill="x", padx=12, pady=(0, 8))
 
-        tk.Label(freq_row, text="Min:", font=("Segoe UI", 9),
-            bg="#e8f0fe").pack(side="left")
+        tk.Label(freq_row, text="Min:", font=FONTS["small"],
+            bg=COLORS["info_bg"]).pack(side="left")
         self.freq_min_lbl = tk.Label(freq_row, text="500 kHz",
-            font=("Segoe UI", 9, "bold"), bg="#e8f0fe", fg="#1a3a5c")
-        self.freq_min_lbl.pack(side="left", padx=(2,15))
+            font=FONTS["small_bold"], bg=COLORS["info_bg"], fg=COLORS["primary"])
+        self.freq_min_lbl.pack(side="left", padx=(4, 20))
 
-        tk.Label(freq_row, text="Max:", font=("Segoe UI", 9),
-            bg="#e8f0fe").pack(side="left")
+        tk.Label(freq_row, text="Max:", font=FONTS["small"],
+            bg=COLORS["info_bg"]).pack(side="left")
         self.freq_max_lbl = tk.Label(freq_row, text="10 MHz",
-            font=("Segoe UI", 9, "bold"), bg="#e8f0fe", fg="#1a3a5c")
-        self.freq_max_lbl.pack(side="left", padx=2)
+            font=FONTS["small_bold"], bg=COLORS["info_bg"], fg=COLORS["primary"])
+        self.freq_max_lbl.pack(side="left", padx=4)
 
         tk.Label(freq_row, text="  ⚠ Fsensor must be within this range",
-            font=("Segoe UI", 8), bg="#e8f0fe", fg="#888888").pack(side="left")
+            font=FONTS["tiny_italic"], bg=COLORS["info_bg"], fg=COLORS["text_muted"]).pack(side="left")
 
     def _make_input_field(self, parent, label_text, var, style, pady=4, tooltip=None, has_warning=False):
         """Create an input field with label."""
@@ -303,6 +324,7 @@ class AppsCalculatorUI:
             bg=COLORS["bg_main"], fg="#333333", anchor="w", width=14).pack(side="left")
 
         entry = tk.Entry(row, textvariable=var, **style)
+        entry.config(bg='#FFFFFF', fg='#212121', insertbackground='#212121', relief='solid', bd=1)
         entry.pack(side="left", fill="x", expand=True)
 
         if unit:
@@ -378,11 +400,13 @@ class AppsCalculatorUI:
         if connected:
             self.conn_badge.config(
                 text=f"● CONNECTED  {port}",
-                fg="#00cc44")
+                bg=COLORS["success"],
+                fg="white")
         else:
             self.conn_badge.config(
-                text="● NOT CONNECTED",
-                fg="#ff4444")
+                text="○ NOT CONNECTED",
+                bg=COLORS["error"],
+                fg="white")
 
     def _set_warning(self, label, text, color):
         """Update warning label text and color."""

@@ -195,6 +195,45 @@ REGISTERS = [
         "readonly_bits": [7, 6, 5, 4, 3, 2, 1, 0],
     },
     # ═══════════════════════════════════════════════════════════════
+    # Sub-group: "4 RP+L registers (read)"
+    # ═══════════════════════════════════════════════════════════════
+    {
+        "name": "RP_DATA_LSB", "address": 0x21, "default": 0x00, "mode": "R", "size": 8,
+        "description": (
+            "RP_DATA[7:0]\nRP Conversion Result Data Output - bits 7:0\n"
+            "Least significant byte of 16-bit RP measurement"
+        ),
+        "fields": [{"name": f"RP_DATA[{i}]", "bit": i} for i in range(7, -1, -1)],
+        "readonly_bits": [7, 6, 5, 4, 3, 2, 1, 0],
+    },
+    {
+        "name": "RP_DATA_MSB", "address": 0x22, "default": 0x00, "mode": "R", "size": 8,
+        "description": (
+            "RP_DATA[15:8]\nRP Conversion Result Data Output - bits 15:8\n"
+            "Most significant byte of 16-bit RP measurement"
+        ),
+        "fields": [{"name": f"RP_DATA[{i+8}]", "bit": i} for i in range(7, -1, -1)],
+        "readonly_bits": [7, 6, 5, 4, 3, 2, 1, 0],
+    },
+    {
+        "name": "L_DATA_LSB", "address": 0x23, "default": 0x00, "mode": "R", "size": 8,
+        "description": (
+            "L_DATA[7:0]\nL Conversion Result Data Output - bits 7:0\n"
+            "Least significant byte of 16-bit L measurement"
+        ),
+        "fields": [{"name": f"L_DATA[{i}]", "bit": i} for i in range(7, -1, -1)],
+        "readonly_bits": [7, 6, 5, 4, 3, 2, 1, 0],
+    },
+    {
+        "name": "L_DATA_MSB", "address": 0x24, "default": 0x00, "mode": "R", "size": 8,
+        "description": (
+            "L_DATA[15:8]\nL Conversion Result Data Output - bits 15:8\n"
+            "Most significant byte of 16-bit L measurement"
+        ),
+        "fields": [{"name": f"L_DATA[{i+8}]", "bit": i} for i in range(7, -1, -1)],
+        "readonly_bits": [7, 6, 5, 4, 3, 2, 1, 0],
+    },
+    # ═══════════════════════════════════════════════════════════════
     # Sub-group: "3 status registers (read)"
     # ═══════════════════════════════════════════════════════════════
     {

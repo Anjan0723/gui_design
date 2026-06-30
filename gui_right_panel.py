@@ -34,10 +34,10 @@ class RightPanelUI:
     def _create_write_section(self):
         """Create Write Data section."""
         wd_frame = ttk.LabelFrame(self.frame, text="Write Data")
-        wd_frame.pack(fill="x", padx=4, pady=2)
+        wd_frame.pack(fill="x", padx=4, pady=1)
 
         wd_inner = tk.Frame(wd_frame, bg=COLORS["bg_main"])
-        wd_inner.pack(fill="x", padx=4, pady=4)
+        wd_inner.pack(fill="x", padx=4, pady=1)
 
         tk.Label(wd_inner, text="x", bg=COLORS["bg_main"],
                  font=FONTS["normal"]).pack(side="left")
@@ -47,16 +47,16 @@ class RightPanelUI:
                                      relief="sunken", bd=2)
         self.write_entry.pack(side="left", padx=4)
 
-        self._btn(wd_frame, "Write Register", lambda: None, 16).pack(pady=2)
-        self._btn(wd_frame, "Write All", lambda: None, 16).pack(pady=2)
+        self._btn(wd_frame, "Write Register", lambda: None, 16).pack(pady=1)
+        self._btn(wd_frame, "Write All", lambda: None, 16).pack(pady=1)
 
     def _create_read_section(self):
         """Create Read Data section."""
         rd_frame = ttk.LabelFrame(self.frame, text="Read Data")
-        rd_frame.pack(fill="x", padx=4, pady=6)
+        rd_frame.pack(fill="x", padx=4, pady=1)
 
         rd_inner = tk.Frame(rd_frame, bg=COLORS["bg_main"])
-        rd_inner.pack(fill="x", padx=4, pady=4)
+        rd_inner.pack(fill="x", padx=4, pady=1)
 
         tk.Label(rd_inner, text="x", bg=COLORS["bg_main"],
                  font=FONTS["normal"]).pack(side="left")
@@ -65,16 +65,16 @@ class RightPanelUI:
                  font=FONTS["courier"], relief="sunken", bd=2,
                  state="readonly").pack(side="left", padx=4)
 
-        self._btn(rd_frame, "Read Register", lambda: None, 16).pack(pady=2)
-        self._btn(rd_frame, "Read All", lambda: None, 16).pack(pady=2)
+        self._btn(rd_frame, "Read Register", lambda: None, 16).pack(pady=1)
+        self._btn(rd_frame, "Read All", lambda: None, 16).pack(pady=1)
 
     def _create_address_section(self):
         """Create Current Address section."""
         ca_frame = ttk.LabelFrame(self.frame, text="Current Address")
-        ca_frame.pack(fill="x", padx=4, pady=4)
+        ca_frame.pack(fill="x", padx=4, pady=1)
 
         ca_inner = tk.Frame(ca_frame, bg=COLORS["bg_main"])
-        ca_inner.pack(fill="x", padx=4, pady=4)
+        ca_inner.pack(fill="x", padx=4, pady=1)
 
         tk.Label(ca_inner, text="x", bg=COLORS["bg_main"],
                  font=FONTS["normal"]).pack(side="left")
@@ -84,27 +84,28 @@ class RightPanelUI:
                  state="readonly").pack(side="left", padx=4)
 
     def _create_bit_section(self):
-        """Create bit checkboxes section."""
-        rd_bits_frame = ttk.LabelFrame(self.frame, text="Register Data")
-        rd_bits_frame.pack(fill="both", expand=True, padx=4, pady=4)
+        """Create bit checkboxes section — compact, no scroll."""
+        rd_bits_frame = ttk.LabelFrame(self.frame, text="Register Bits")
+        rd_bits_frame.pack(fill="both", expand=True, padx=4, pady=1)
 
         for i in range(8):
             bit_num = 7 - i
             row = tk.Frame(rd_bits_frame, bg=COLORS["bg_main"])
-            row.pack(fill="x", padx=6, pady=1)
+            row.pack(fill="x", padx=4, pady=0)
 
             tk.Label(row, text=str(bit_num), bg=COLORS["bg_main"],
-                     font=FONTS["normal_bold"], width=2, anchor="e").pack(
+                     font=("Segoe UI", 8, "bold"), width=2, anchor="e").pack(
                          side="left", padx=(0, 2))
 
             bv = tk.BooleanVar(value=False)
             cb = tk.Checkbutton(row, variable=bv, bg=COLORS["bg_main"],
-                                activebackground=COLORS["bg_main"])
+                                activebackground=COLORS["bg_main"],
+                                padx=0, pady=0)
             cb.pack(side="left")
 
             fl = tk.Label(row, text="", bg=COLORS["bg_main"],
-                          font=FONTS["small"], anchor="w", fg=COLORS["fg_label"])
-            fl.pack(side="left", padx=4)
+                          font=("Segoe UI", 8), anchor="w", fg=COLORS["fg_label"])
+            fl.pack(side="left", padx=2)
 
             self.bit_vars.append(bv)
             self.bit_cb_wgts.append(cb)
@@ -112,8 +113,8 @@ class RightPanelUI:
 
     def _create_config_buttons(self):
         """Create Load/Save Config buttons."""
-        self._btn(self.frame, "Load Config", lambda: None, 14).pack(pady=(4, 2))
-        self._btn(self.frame, "Save Config", lambda: None, 14).pack(pady=2)
+        self._btn(self.frame, "Load Config", lambda: None, 14).pack(pady=(2, 1))
+        self._btn(self.frame, "Save Config", lambda: None, 14).pack(pady=1)
 
     def _btn(self, parent, text, cmd, width=14):
         """Create a button."""

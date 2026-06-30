@@ -22,6 +22,7 @@ class RegisterMapUI:
             (" configuration reg ", [0x01, 0x02, 0x03, 0x04, 0x05, 0x0B, 0x0C,
                                       0x30, 0x31, 0x32, 0x33, 0x34]),
             (" data registers ", [0x38, 0x39, 0x3A]),
+            (" RP+L registers ", [0x21, 0x22, 0x23, 0x24]),
             (" status registers ", [0x20, 0x3B, 0x3F]),
         ]
 
@@ -35,26 +36,42 @@ class RegisterMapUI:
         self._create_description()
 
     def _create_table(self):
-        """Create the register map Treeview."""
-        # Search bar
-        search_frame = tk.Frame(self.frame, bg=COLORS["bg_main"])
+        """Create the register map Treeview with modern styling."""
+        # Search bar - modern card style
+        search_frame = tk.Frame(self.frame, bg=COLORS["bg_section"], bd=1, relief="solid",
+                              highlightbackground=COLORS["border"], highlightthickness=1)
         search_frame.pack(fill="x", padx=4, pady=(4, 2))
 
-        tk.Label(search_frame, text="Search:", bg=COLORS["bg_main"],
-                 font=FONTS["small"]).pack(side="left", padx=(0, 4))
+        # Search icon
+        tk.Label(search_frame, text="🔍", bg=COLORS["bg_section"],
+                 font=("Segoe UI", 10)).pack(side="left", padx=(8, 4))
 
         self.search_var = tk.StringVar()
         self.search_var.trace_add("write", self._on_search_changed)
         search_entry = tk.Entry(search_frame, textvariable=self.search_var,
-                                 width=20, font=FONTS["small"])
-        search_entry.pack(side="left", padx=4)
+                                 width=20, font=FONTS["normal"],
+                                 bg=COLORS["bg_input"], relief="flat", bd=1)
+        search_entry.pack(side="left", padx=4, pady=6)
 
-        tk.Button(search_frame, text="Clear", font=FONTS["small"],
+        tk.Button(search_frame, text="✕ Clear", font=FONTS["small"],
                   command=lambda: self.search_var.set(""),
-                  width=6).pack(side="left", padx=2)
+                  bg=COLORS["bg_section"], fg=COLORS["text_secondary"],
+                  relief="flat", padx=8, pady=4).pack(side="left", padx=2)
 
         self.tree = ttk.Treeview(self.frame, columns=TABLE_COLUMNS,
-                                  show="headings", selectmode="browse")
+                                  show="headings", selectmode="browse",
+                                  style="Modern.Treeview")
+
+        # Apply modern style
+        style = ttk.Style()
+        style.theme_use("clam")
+        style.configure("Modern.Treeview", background="white", foreground="black",
+                      fieldbackground="white", font=FONTS["normal"])
+        style.configure("Modern.Treeview.Heading",
+                       background=COLORS["primary"], foreground="white",
+                       font=FONTS["normal_bold"], relief="flat")
+        style.map("Modern.Treeview", background=[("selected", COLORS["accent_blue"])],
+                 foreground=[("selected", "white")])
 
         for col, w in zip(TABLE_COLUMNS, TABLE_COL_WIDTHS):
             self.tree.heading(col, text=col)
@@ -62,11 +79,11 @@ class RegisterMapUI:
             self.tree.column(col, width=w, anchor=anchor, minwidth=w)
 
         # Configure tags for styling
-        self.tree.tag_configure("group", background=COLORS["bg_group"],
-                                font=("Arial", 9, "bold"))
-        self.tree.tag_configure("subgroup", background="#E8E8E8",
-                                font=("Arial", 9, "bold"))
-        self.tree.tag_configure("even", background=COLORS["bg_even"])
+        self.tree.tag_configure("group", background=COLORS["primary"],
+                                font=FONTS["normal_bold"], foreground="white")
+        self.tree.tag_configure("subgroup", background=COLORS["bg_section"],
+                                font=FONTS["normal_bold"], foreground=COLORS["primary"])
+        self.tree.tag_configure("even", background=COLORS["bg_white"])
         self.tree.tag_configure("odd", background=COLORS["bg_odd"])
         self.tree.tag_configure("note", foreground=COLORS["fg_gray"],
                                 font=FONTS["tiny_italic"])
@@ -216,8 +233,9 @@ class RegisterMapUI:
         desc_frame.pack(fill="x", pady=(4, 0))
 
         self.desc_text = tk.Text(desc_frame, height=7, font=FONTS["courier"],
-                                 bg=COLORS["bg_white"], relief="sunken", bd=1,
+                                 bg="#FFFFFF", fg="#212121", relief="solid", bd=1,
                                  wrap="word", state="disabled")
+        self.desc_text.config(insertbackground='black')
 
         desc_sb = ttk.Scrollbar(desc_frame, orient="vertical",
                                 command=self.desc_text.yview)

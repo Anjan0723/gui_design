@@ -24,6 +24,7 @@ from gui_register_map import RegisterMapUI
 from gui_right_panel import RightPanelUI
 from gui_apps_calculator import AppsCalculatorUI
 from gui_lhr import LHRPageUI
+from gui_rpl import RPLFrame
 from serial_comm import SerialConnection
 
 
@@ -92,18 +93,18 @@ class MainGUI:
         """Configure ttk styles."""
         style = ttk.Style()
         style.theme_use("clam")
-        style.configure("Treeview", background="white", foreground="black",
-                       fieldbackground="white", rowheight=22, font=FONTS["normal"])
-        style.configure("Treeview.Heading", background=COLORS["bg_header"],
-                       foreground=COLORS["fg_bold"], font=FONTS["normal_bold"],
-                       relief="groove")
-        style.map("Treeview", background=[("selected", COLORS["accent_blue"])],
-                 foreground=[("selected", "white")])
+        style.configure('Treeview', background='#FFFFFF', foreground='#212121', fieldbackground='#FFFFFF', rowheight=25)
+        style.configure('Treeview.Heading', background='#E8F0FE', foreground='#1A73E8', font=('Segoe UI', 9, 'bold'), relief='groove')
+        style.map('Treeview', background=[('selected', '#E8F0FE')], foreground=[('selected', '#1A73E8')])
         style.configure("TLabelframe", background=COLORS["bg_main"])
         style.configure("TLabelframe.Label", background=COLORS["bg_main"],
                        font=FONTS["normal_bold"], foreground=COLORS["fg_bold"])
         style.configure("TButton", font=FONTS["normal"])
         style.configure("TCombobox", font=FONTS["normal"])
+        style.configure('TCombobox', fieldbackground='#FFFFFF', foreground='#212121', background='#FFFFFF')
+        style.configure('TSpinbox', fieldbackground='#FFFFFF', foreground='#212121')
+        style.configure('TEntry', fieldbackground='#FFFFFF', foreground='#212121')
+        style.map('TCombobox', fieldbackground=[('readonly','#FFFFFF')], foreground=[('readonly','#212121')], selectbackground=[('readonly','#E8F0FE')])
 
     def _create_menu(self):
         """Create menu bar."""
@@ -114,66 +115,179 @@ class MainGUI:
         self.root.config(menu=menubar)
 
     def _create_title_bar(self):
-        """Create custom title bar."""
-        title_bar = tk.Frame(self.root, bg=COLORS["bg_dark"], height=48)
+        """Create custom title bar - modern compact design."""
+        title_bar = tk.Frame(self.root, bg=COLORS["primary"], height=36)
         title_bar.pack(fill="x")
         title_bar.pack_propagate(False)
 
-        tk.Label(title_bar, text=WINDOW_TITLE,
-                 bg=COLORS["bg_dark"], fg=COLORS["fg_white"],
-                 font=FONTS["title"]).pack(side="left", padx=20, pady=8)
+        # App icon and title
+        title_frame = tk.Frame(title_bar, bg=COLORS["primary"])
+        title_frame.pack(side="left", padx=16, pady=6)
+
+        # Icon
+        tk.Label(title_frame, text="📊", bg=COLORS["primary"],
+                 fg=COLORS["text_on_primary"], font=("Segoe UI", 14)).pack(side="left", padx=(0, 8))
+
+        # Title with version
+        title_label = tk.Label(title_frame, text=WINDOW_TITLE,
+                 bg=COLORS["primary"], fg=COLORS["text_on_primary"],
+                 font=FONTS["title"])
+        title_label.pack(side="left")
+
+        # Version badge
+        tk.Label(title_frame, text=f"v{VERSION}",
+                 bg=COLORS["primary_light"], fg="white",
+                 font=FONTS["small"]).pack(side="left", padx=(8, 0))
+
+        # Right side — Load/Save buttons
+        right_bar = tk.Frame(title_bar, bg=COLORS["primary"])
+        right_bar.pack(side="right", padx=12)
+
+        # Modern compact toolbar buttons
+        btn_style = {
+            "font": FONTS["small"],
+            "bg": COLORS["primary_light"],
+            "fg": "#fff",
+            "relief": "flat",
+            "padx": 12,
+            "pady": 4,
+            "bd": 0,
+            "cursor": "hand2"
+        }
+
+        # Load/Save buttons with icons
+        tk.Button(right_bar, text="📂 Load", command=self.load_config, **btn_style).pack(side="left", padx=3)
+        tk.Button(right_bar, text="💾 Save", command=self.save_config, **btn_style).pack(side="left", padx=3)
+
+        # Connection status badge - modern style with icon
+        self.conn_badge = tk.Label(right_bar,
+            text="○ NOT CONNECTED",
+            font=FONTS["small_bold"],
+            bg=COLORS["error"],
+            fg="white",
+            padx=12,
+            pady=4,
+            relief="flat")
+        self.conn_badge.pack(side="left", padx=(12,0))
 
     def _create_top_bar(self):
-        """Create COM port and Save/Load bar."""
-        top_bar = tk.Frame(self.root, bg=COLORS["bg_top_bar"], pady=5, bd=1, relief="groove")
-        top_bar.pack(fill="x", padx=0)
+        """Create compact toolbar with modern styling."""
+        toolbar = tk.Frame(self.root, bg=COLORS["bg_white"],
+            relief="flat", bd=0,
+            highlightbackground=COLORS["border"],
+            highlightthickness=1)
+        toolbar.pack(fill="x", padx=0)
 
-        tk.Label(top_bar, text="COM Port", bg=COLORS["bg_top_bar"],
-                 font=FONTS["normal"]).pack(side="left", padx=(12, 4))
+        # Compact toolbar styling - reduced padding
+        toolbar_btn_style = {
+            "font": FONTS["small"],
+            "bg": COLORS["bg_section"],
+            "fg": COLORS["text_secondary"],
+            "relief": "flat",
+            "padx": 10,
+            "pady": 4,
+            "bd": 0,
+            "cursor": "hand2"
+        }
 
-        self.port_cb = ttk.Combobox(top_bar, textvariable=self.port_var, width=18,
+        # COM Port section
+        tk.Label(toolbar, text="COM Port:",
+            font=FONTS["small"],
+            bg=COLORS["bg_white"],
+            fg=COLORS["text_secondary"]).pack(side="left", padx=(12, 4))
+
+        self.port_cb = ttk.Combobox(toolbar, textvariable=self.port_var, width=12,
                                      state="readonly", font=FONTS["normal"])
         self.port_cb.pack(side="left", padx=4)
 
         def refresh_ports():
             real_ports = [p.device for p in serial.tools.list_ports.comports()]
             if real_ports:
-                # Sort so COM3 comes before COM4 — Application UART is always the lower port
                 real_ports = sorted(real_ports, key=lambda p: int(''.join(filter(str.isdigit, p)) or 0))
-                ports = real_ports          # Only real ports if any exist
+                ports = real_ports
             else:
-                ports = ["COM3 (Mock)", "COM4 (Mock)"]   # Fall back to mock only if nothing real
+                ports = ["COM3 (Mock)", "COM4 (Mock)"]
             self.port_cb["values"] = ports
             if ports:
                 self.port_var.set(ports[0])
 
-        tk.Button(top_bar, text="Refresh", command=refresh_ports,
-                  font=FONTS["normal"], width=8).pack(side="left", padx=2)
+        tk.Button(toolbar, text="↻", command=refresh_ports, **toolbar_btn_style).pack(side="left", padx=2)
 
-        tk.Button(top_bar, text="Connect", command=self._on_connect_clicked,
-                  font=FONTS["normal"], width=8).pack(side="left", padx=2)
+        # Connect button - prominent style
+        connect_btn_style = toolbar_btn_style.copy()
+        connect_btn_style.update({
+            "bg": COLORS["success"],
+            "fg": "white"
+        })
+        tk.Button(toolbar, text="⚡ Connect", command=self._on_connect_clicked, **connect_btn_style).pack(side="left", padx=6)
 
-        tk.Button(top_bar, text="Save Config",
-                  font=FONTS["normal"], command=self.save_config).pack(side="right", padx=8)
-        tk.Button(top_bar, text="Load Config",
-                  font=FONTS["normal"], command=self.load_config).pack(side="right", padx=4)
+        # Separator
+        sep = tk.Frame(toolbar, bg=COLORS["border"], width=1)
+        sep.pack(side="left", padx=12, fill="y", pady=4)
+
+        # Right side: Connection status indicator
+        self.conn_indicator = tk.Frame(toolbar, bg=COLORS["bg_white"])
+        self.conn_indicator.pack(side="right", padx=12)
 
     def _create_main_body(self):
-        """Create main body with sidebar and content area."""
+        """Create main body with modern sidebar and content area."""
         self.body = tk.Frame(self.root, bg=COLORS["bg_main"])
         self.body.pack(fill="both", expand=True, padx=4, pady=4)
 
-        # Left sidebar
-        left_sb = ttk.LabelFrame(self.body, text="Selection", width=140)
-        left_sb.pack(side="left", fill="y", padx=(0, 4), pady=0)
-        left_sb.pack_propagate(False)
+        # Left sidebar - modern vertical navigation
+        sidebar = tk.Frame(self.body,
+            bg=COLORS["bg_white"], width=150,
+            highlightbackground=COLORS["border"],
+            highlightthickness=1)
+        sidebar.pack(side="left", fill="y", padx=(0, 4), pady=0)
+        sidebar.pack_propagate(False)
 
-        for item in SIDEBAR_ITEMS:
-            rb = tk.Radiobutton(left_sb, text=item, variable=self.sel_var, value=item,
-                               bg=COLORS["bg_main"], font=FONTS["normal"],
-                               anchor="w", indicatoron=True,
-                               command=self.on_selection_change)
-            rb.pack(fill="x", padx=6, pady=2)
+        # Navigation header with modern styling
+        nav_header = tk.Frame(sidebar, bg=COLORS["primary"], height=40)
+        nav_header.pack(fill="x")
+        nav_header.pack_propagate(False)
+
+        tk.Label(nav_header, text="⚡ Navigation",
+            font=FONTS["section_title"],
+            bg=COLORS["primary"],
+            fg="white").pack(padx=12, pady=8)
+
+        self.nav_buttons = {}
+        nav_items = [
+            ("RP+L",       "📈", self._show_rpl),
+            ("LHR",        "📊", self._show_lhr),
+            ("Apps Calc",  "🧮", self._show_apps_calc),
+            ("Registers",  "⚙", self._show_register_map),
+            ("About",      "ℹ", self._show_about),
+        ]
+
+        # Track active nav item
+        self._active_nav = None
+
+        for name, icon, cmd in nav_items:
+            # Container for nav item with indicator
+            nav_container = tk.Frame(sidebar, bg=COLORS["bg_white"])
+            nav_container.pack(fill="x", padx=4, pady=2)
+
+            # Active indicator bar (hidden by default)
+            indicator = tk.Frame(nav_container, bg=COLORS["primary"], width=4)
+            indicator.pack(side="left", fill="y")
+            indicator.pack_forget()  # Hide initially
+
+            btn = tk.Button(nav_container,
+                text=f"  {icon}  {name}",
+                font=FONTS["nav_item"],
+                bg=COLORS["bg_white"],
+                fg=COLORS["text_secondary"],
+                relief="flat", anchor="w",
+                padx=12, pady=12,
+                cursor="hand2",
+                bd=0,
+                activebackground=COLORS["accent_light"],
+                activeforeground=COLORS["primary"],
+                command=lambda c=cmd, n=name: self._nav_click(c, n))
+            btn.pack(fill="x", expand=True)
+            self.nav_buttons[name] = {"btn": btn, "indicator": indicator, "icon": icon}
 
         # Content area
         self.content_area = tk.Frame(self.body, bg=COLORS["bg_main"])
@@ -187,7 +301,7 @@ class MainGUI:
         self.tree = self.reg_map_ui.get_tree()
 
         # Right panel
-        self.right_panel = tk.Frame(self.content_area, bg=COLORS["bg_main"], width=260)
+        self.right_panel = tk.Frame(self.content_area, bg=COLORS["bg_main"], width=280)
         self.right_panel.pack(side="right", fill="y")
         self.right_panel.pack_propagate(False)
 
@@ -205,70 +319,98 @@ class MainGUI:
             self.reg_map_ui, self.ser_conn, self.sim_var
         )
 
+        # RP+L Page
+        self.rpl_ui = RPLFrame(
+            self.content_area, colors=COLORS, fonts=FONTS, ser_conn=self.ser_conn
+        )
+
+        # About Page (created once, will be shown/hidden)
+        self.about_frame = None
+        self._create_about_frame()
+
     def _create_right_panel_buttons(self):
-        """Create right panel buttons."""
-        tk.Button(self.right_panel, text="Tx R to W", font=FONTS["normal"], width=14,
-                  command=self.tx_r_to_w).pack(pady=(4, 8))
+        """Create right panel buttons with modern styling."""
+        # Modern card-style container - use fill="x", expand=False to not consume extra vertical space
+        panel_card = tk.Frame(self.right_panel, bg=COLORS["bg_white"], bd=1, relief="solid",
+                           highlightbackground=COLORS["border"], highlightthickness=1)
+        panel_card.pack(fill="x", expand=False, padx=4, pady=2)
 
-        # Write Data section
-        wd_frame = ttk.LabelFrame(self.right_panel, text="Write Data")
-        wd_frame.pack(fill="x", padx=4, pady=2)
+        # Transfer button
+        tk.Button(panel_card, text="↔ Transfer R→W", font=FONTS["normal_bold"],
+                  bg=COLORS["bg_section"], fg=COLORS["text_primary"],
+                  relief="flat", padx=10, pady=4, width=14,
+                  command=self.tx_r_to_w).pack(pady=(2, 4))
 
-        wd_inner = tk.Frame(wd_frame, bg=COLORS["bg_main"])
-        wd_inner.pack(fill="x", padx=4, pady=4)
+        # Write Data section - compact, no expand
+        wd_frame = tk.Frame(panel_card, bg=COLORS["bg_section"], bd=1, relief="solid",
+                           highlightbackground=COLORS["border"], highlightthickness=1)
+        wd_frame.pack(fill="x", expand=False, padx=4, pady=1)
 
-        tk.Label(wd_inner, text="x", bg=COLORS["bg_main"],
+        tk.Label(wd_frame, text="Write Data", font=FONTS["section_title"],
+                bg=COLORS["bg_section"], fg=COLORS["primary"]).pack(padx=8, pady=(2, 1))
+
+        wd_inner = tk.Frame(wd_frame, bg=COLORS["bg_section"])
+        wd_inner.pack(fill="x", padx=8, pady=1)
+
+        tk.Label(wd_inner, text="x", bg=COLORS["bg_section"],
                  font=FONTS["normal"]).pack(side="left")
 
         tk.Entry(wd_inner, textvariable=self.write_var, width=8,
-                font=FONTS["courier"], relief="sunken", bd=2).pack(side="left", padx=4)
+                font=FONTS["courier"], relief="flat", bd=1,
+                highlightbackground=COLORS["border"]).pack(side="left", padx=4)
 
-        tk.Button(wd_frame, text="Write Register", font=FONTS["normal"], width=16,
-                  command=self.write_register_cmd).pack(pady=2)
-        tk.Button(wd_frame, text="Write All", font=FONTS["normal"], width=16,
-                  command=self.write_all_cmd).pack(pady=2)
+        tk.Button(wd_frame, text="Write Register", font=FONTS["small"],
+                  bg=COLORS["primary"], fg="white", relief="flat", padx=10, pady=2,
+                  command=self.write_register_cmd).pack(pady=1)
+        tk.Button(wd_frame, text="Write All", font=FONTS["small"],
+                  bg=COLORS["bg_section"], fg=COLORS["text_secondary"], relief="flat", padx=10, pady=2,
+                  command=self.write_all_cmd).pack(pady=1)
 
-        # Read Data section
-        rd_frame = ttk.LabelFrame(self.right_panel, text="Read Data")
-        rd_frame.pack(fill="x", padx=4, pady=6)
+        # Read Data section - compact, no expand
+        rd_frame = tk.Frame(panel_card, bg=COLORS["bg_section"], bd=1, relief="solid",
+                           highlightbackground=COLORS["border"], highlightthickness=1)
+        rd_frame.pack(fill="x", expand=False, padx=4, pady=1)
 
-        rd_inner = tk.Frame(rd_frame, bg=COLORS["bg_main"])
-        rd_inner.pack(fill="x", padx=4, pady=4)
+        tk.Label(rd_frame, text="Read Data", font=FONTS["section_title"],
+                bg=COLORS["bg_section"], fg=COLORS["primary"]).pack(padx=8, pady=(2, 1))
 
-        tk.Label(rd_inner, text="x", bg=COLORS["bg_main"],
+        rd_inner = tk.Frame(rd_frame, bg=COLORS["bg_section"])
+        rd_inner.pack(fill="x", padx=8, pady=1)
+
+        tk.Label(rd_inner, text="x", bg=COLORS["bg_section"],
                  font=FONTS["normal"]).pack(side="left")
 
         tk.Entry(rd_inner, textvariable=self.read_val_var, width=8,
-                font=FONTS["courier"], relief="sunken", bd=2,
-                state="readonly").pack(side="left", padx=4)
+                font=FONTS["courier"], relief="flat", bd=1,
+                state="readonly", readonlybackground=COLORS["bg_white"]).pack(side="left", padx=4)
 
-        tk.Button(rd_frame, text="Read Register", font=FONTS["normal"], width=16,
-                  command=self.read_register_cmd).pack(pady=2)
-        tk.Button(rd_frame, text="Read All", font=FONTS["normal"], width=16,
-                  command=self.read_all_cmd).pack(pady=2)
+        tk.Button(rd_frame, text="Read Register", font=FONTS["small"],
+                  bg=COLORS["success"], fg="white", relief="flat", padx=10, pady=2,
+                  command=self.read_register_cmd).pack(pady=1)
+        tk.Button(rd_frame, text="Read All", font=FONTS["small"],
+                  bg=COLORS["bg_section"], fg=COLORS["text_secondary"], relief="flat", padx=10, pady=2,
+                  command=self.read_all_cmd).pack(pady=1)
 
-        # Address display
-        ca_frame = ttk.LabelFrame(self.right_panel, text="Current Address")
-        ca_frame.pack(fill="x", padx=4, pady=4)
+        # Address display - compact, no expand
+        ca_frame = tk.Frame(panel_card, bg=COLORS["bg_section"], bd=1, relief="solid",
+                           highlightbackground=COLORS["border"], highlightthickness=1)
+        ca_frame.pack(fill="x", expand=False, padx=4, pady=1)
 
-        ca_inner = tk.Frame(ca_frame, bg=COLORS["bg_main"])
-        ca_inner.pack(fill="x", padx=4, pady=4)
+        tk.Label(ca_frame, text="Address", font=FONTS["section_title"],
+                bg=COLORS["bg_section"], fg=COLORS["primary"]).pack(padx=8, pady=(2, 1))
 
-        tk.Label(ca_inner, text="x", bg=COLORS["bg_main"],
+        ca_inner = tk.Frame(ca_frame, bg=COLORS["bg_section"])
+        ca_inner.pack(fill="x", padx=8, pady=1)
+
+        tk.Label(ca_inner, text="x", bg=COLORS["bg_section"],
                  font=FONTS["normal"]).pack(side="left")
 
         tk.Entry(ca_inner, textvariable=self.addr_var, width=8,
-                font=FONTS["courier"], relief="sunken", bd=2,
-                state="readonly").pack(side="left", padx=4)
+                font=FONTS["courier"], relief="flat", bd=1,
+                state="readonly", readonlybackground=COLORS["bg_white"]).pack(side="left", padx=4)
 
-        # Bit checkboxes
+        # Bit checkboxes - this will expand to fill remaining space
         self._create_bit_panel()
-
-        # Config buttons
-        tk.Button(self.right_panel, text="Load Config", font=FONTS["normal"], width=14,
-                  command=self.load_config).pack(pady=(4, 2))
-        tk.Button(self.right_panel, text="Save Config", font=FONTS["normal"], width=14,
-                  command=self.save_config).pack(pady=2)
 
         # Device Mode Control panel
         self._create_mode_control_panel()
@@ -277,52 +419,165 @@ class MainGUI:
         self._create_live_data_panel()
 
     def _create_bit_panel(self):
-        """Create bit checkboxes."""
-        rd_bits_frame = ttk.LabelFrame(self.right_panel, text="Register Data")
-        rd_bits_frame.pack(fill="both", expand=True, padx=4, pady=4)
+        """Create bit checkboxes with modern styling - compact, no scroll."""
+        rd_bits_frame = tk.Frame(self.right_panel, bg=COLORS["bg_section"], bd=1, relief="solid",
+                                highlightbackground=COLORS["border"], highlightthickness=1)
+        # IMPORTANT: expand=True to fill remaining vertical space
+        rd_bits_frame.pack(fill="both", expand=True, padx=4, pady=2)
+
+        tk.Label(rd_bits_frame, text="Register Bits", font=FONTS["section_title"],
+                bg=COLORS["bg_section"], fg=COLORS["primary"]).pack(padx=8, pady=(2, 1))
 
         self.bit_vars = []
         self.bit_cb_wgts = []
         self.bit_lbl_wgts = []
 
+        # Direct frame - expand=True to fill available space
+        bits_inner = tk.Frame(rd_bits_frame, bg=COLORS["bg_section"])
+        bits_inner.pack(fill="both", expand=True, padx=4, pady=0)
+
+        # Create all 8 bit rows - tightly packed
         for i in range(8):
             bit_num = 7 - i
-            row = tk.Frame(rd_bits_frame, bg=COLORS["bg_main"])
-            row.pack(fill="x", padx=6, pady=1)
+            row = tk.Frame(bits_inner, bg=COLORS["bg_section"])
+            row.pack(fill="x", padx=4, pady=0)
 
-            tk.Label(row, text=str(bit_num), bg=COLORS["bg_main"],
+            tk.Label(row, text=str(bit_num), bg=COLORS["bg_section"],
                      font=FONTS["normal_bold"], width=2, anchor="e").pack(side="left", padx=(0, 2))
 
             bv = tk.BooleanVar(value=False)
-            cb = tk.Checkbutton(row, variable=bv, bg=COLORS["bg_main"],
-                               activebackground=COLORS["bg_main"],
-                               command=self.on_bit_changed)
+            cb = tk.Checkbutton(row, variable=bv, bg=COLORS["bg_section"],
+                               activebackground=COLORS["bg_section"],
+                               command=self.on_bit_changed,
+                               padx=0, pady=0)
             cb.pack(side="left")
 
-            fl = tk.Label(row, text="", bg=COLORS["bg_main"],
-                         font=FONTS["small"], anchor="w", fg=COLORS["fg_label"])
-            fl.pack(side="left", padx=4)
+            fl = tk.Label(row, text="", bg=COLORS["bg_section"],
+                         font=("Segoe UI", 8), anchor="w", fg=COLORS["fg_label"])
+            fl.pack(side="left", padx=2)
 
             self.bit_vars.append(bv)
             self.bit_cb_wgts.append(cb)
             self.bit_lbl_wgts.append(fl)
 
+        # Debug output after window is displayed
+        self.root.update_idletasks()
+        print("Register Bits frame height:", rd_bits_frame.winfo_height())
+        print("Bit rows:", len(self.bit_vars))
+
     def _create_status_bar(self):
-        """Create status bar."""
-        status_bar = tk.Frame(self.root, bg="#333333", height=24)
-        status_bar.pack(fill="x", side="bottom")
-        status_bar.pack_propagate(False)
+        """Create modern status bar."""
+        statusbar = tk.Frame(self.root,
+            bg=COLORS["primary"],
+            height=28)
+        statusbar.pack(fill="x", side="bottom")
+        statusbar.pack_propagate(False)
 
-        self.status_lbl = tk.Label(status_bar, text="idle", bg="#333333",
-                                  fg="white", font=FONTS["small"], anchor="w", width=40)
-        self.status_lbl.pack(side="left", padx=8)
+        self.status_lbl = tk.Label(statusbar,
+            text="✓ Live data polling started",
+            font=FONTS["small"],
+            bg=COLORS["primary"],
+            fg="white")
+        self.status_lbl.pack(side="left", padx=12, pady=4)
 
-        tk.Label(status_bar, text=f"Version: {VERSION}", bg="#333333",
-                fg=COLORS["fg_light_gray"], font=FONTS["small"]).pack(side="left", padx=20)
+        # Right side info
+        info_frame = tk.Frame(statusbar, bg=COLORS["primary"])
+        info_frame.pack(side="right", padx=12)
 
-        self.conn_lbl = tk.Label(status_bar, text="  NOT CONNECTED  ",
-                                bg=COLORS["error"], fg="white", font=FONTS["small_bold"])
-        self.conn_lbl.pack(side="right", padx=4, pady=2)
+        tk.Label(info_frame,
+            text=f"v{VERSION}",
+            font=FONTS["small"],
+            bg=COLORS["primary"],
+            fg=COLORS["primary_light"]).pack(side="right", pady=4)
+
+    # ═══════════════════════════════════════════════════════════════════════
+    #  NAVIGATION METHODS
+    # ═══════════════════════════════════════════════════════════════════════
+
+    def _nav_click(self, cmd, name):
+        """Handle navigation button click with modern highlighting."""
+        # Reset all buttons
+        for n, nav_info in self.nav_buttons.items():
+            nav_info["btn"].config(
+                bg=COLORS["bg_white"],
+                fg=COLORS["text_secondary"],
+                font=FONTS["nav_item"])
+            nav_info["indicator"].pack_forget()
+
+        # Highlight selected with indicator bar
+        nav_info = self.nav_buttons[name]
+        nav_info["btn"].config(
+            bg=COLORS["accent_light"],
+            fg=COLORS["primary"],
+            font=FONTS["nav_item"])
+        nav_info["indicator"].pack(side="left", fill="y")
+        self._active_nav = name
+
+        cmd()
+
+    def _show_rpl(self):
+        """Show RP+L page."""
+        self.center.pack_forget()
+        self.right_panel.pack_forget()
+        self.apps_calc_ui.get_frame().pack_forget()
+        self.lhr_ui.get_frame().pack_forget()
+        if hasattr(self, 'about_frame') and self.about_frame:
+            self.about_frame.pack_forget()
+        if hasattr(self, 'rpl_ui'): self.rpl_ui.pack(fill="both", expand=True)
+
+    def _show_lhr(self):
+        """Show LHR page."""
+        self.center.pack_forget()
+        self.right_panel.pack_forget()
+        self.apps_calc_ui.get_frame().pack_forget()
+        if hasattr(self, 'rpl_ui'): self.rpl_ui.pack_forget()
+        if hasattr(self, 'about_frame') and self.about_frame:
+            self.about_frame.pack_forget()
+        self.lhr_ui._sync_config_with_registers()
+        self.lhr_ui.get_frame().pack(fill="both", expand=True)
+
+    def _show_apps_calc(self):
+        """Show Apps Calculator page."""
+        self.center.pack_forget()
+        self.right_panel.pack_forget()
+        self.lhr_ui.get_frame().pack_forget()
+        if hasattr(self, 'rpl_ui'): self.rpl_ui.pack_forget()
+        if hasattr(self, 'about_frame') and self.about_frame:
+            self.about_frame.pack_forget()
+        self.apps_calc_ui.get_frame().pack(fill="both", expand=True)
+
+    def _show_register_map(self):
+        """Show Register Map page."""
+        self.apps_calc_ui.get_frame().pack_forget()
+        self.lhr_ui.get_frame().pack_forget()
+        if hasattr(self, 'rpl_ui'): self.rpl_ui.pack_forget()
+        if hasattr(self, 'about_frame') and self.about_frame:
+            self.about_frame.pack_forget()
+        self.center.pack(side="left", fill="both", expand=True, padx=(0, 4))
+        self.right_panel.pack(side="right", fill="y")
+
+    def _create_about_frame(self):
+        """Create About page frame (once)."""
+        self.about_frame = tk.Frame(self.content_area, bg=COLORS["bg_main"])
+        tk.Label(self.about_frame, text="About",
+            font=FONTS["title"],
+            bg=COLORS["bg_main"],
+            fg=COLORS["text_primary"]).pack(pady=20)
+        tk.Label(self.about_frame,
+            text=f"Eddy Current Displacement Measurement\nVersion {VERSION}\n\nLDC1101 GUI",
+            font=FONTS["normal"],
+            bg=COLORS["bg_main"],
+            fg=COLORS["text_secondary"]).pack()
+
+    def _show_about(self):
+        """Show About page."""
+        self.center.pack_forget()
+        self.right_panel.pack_forget()
+        self.apps_calc_ui.get_frame().pack_forget()
+        self.lhr_ui.get_frame().pack_forget()
+        if hasattr(self, 'rpl_ui'): self.rpl_ui.pack_forget()
+        if hasattr(self, 'about_frame') and self.about_frame:
+            self.about_frame.pack(fill="both", expand=True)
 
 
     # ═══════════════════════════════════════════════════════════════
@@ -330,25 +585,32 @@ class MainGUI:
     # ═══════════════════════════════════════════════════════════════
 
     def _create_mode_control_panel(self):
-        """Create Device Mode Control panel."""
-        mode_frame = ttk.LabelFrame(self.right_panel, text="Device Mode Control")
-        mode_frame.pack(fill="x", padx=4, pady=6)
+        """Create Device Mode Control panel with modern styling."""
+        mode_frame = tk.Frame(self.right_panel, bg=COLORS["bg_section"], bd=1, relief="solid",
+                             highlightbackground=COLORS["border"], highlightthickness=1)
+        mode_frame.pack(fill="x", padx=4, pady=4)
 
-        # Mode buttons
-        btn_frame = tk.Frame(mode_frame, bg=COLORS["bg_main"])
-        btn_frame.pack(fill="x", padx=4, pady=4)
+        tk.Label(mode_frame, text="Device Mode", font=FONTS["section_title"],
+                bg=COLORS["bg_section"], fg=COLORS["primary"]).pack(padx=8, pady=(6, 4))
 
-        tk.Button(btn_frame, text="Sleep", font=FONTS["normal"], width=8,
-                  command=self.set_mode_sleep).pack(side="left", padx=2)
-        tk.Button(btn_frame, text="Active", font=FONTS["normal"], width=8,
-                  command=self.set_mode_active).pack(side="left", padx=2)
-        tk.Button(btn_frame, text="Shutdown", font=FONTS["normal"], width=10,
-                  command=self.set_mode_shutdown).pack(side="left", padx=2)
+        # Mode buttons - modern flat style
+        btn_frame = tk.Frame(mode_frame, bg=COLORS["bg_section"])
+        btn_frame.pack(fill="x", padx=8, pady=4)
 
-        # Status label
-        self.mode_status_lbl = tk.Label(mode_frame, text="ACTIVE",
+        btn_style = {"font": FONTS["small_bold"], "relief": "flat", "padx": 8, "pady": 4}
+
+        tk.Button(btn_frame, text="Sleep", command=self.set_mode_sleep,
+                  bg=COLORS["warning"], fg="white", **btn_style).pack(side="left", padx=2)
+        tk.Button(btn_frame, text="Active", command=self.set_mode_active,
+                  bg=COLORS["success"], fg="white", **btn_style).pack(side="left", padx=2)
+        tk.Button(btn_frame, text="Shutdown", command=self.set_mode_shutdown,
+                  bg=COLORS["error"], fg="white", **btn_style).pack(side="left", padx=2)
+
+        # Status label - modern badge style
+        self.mode_status_lbl = tk.Label(mode_frame, text="● ACTIVE",
                                          bg=COLORS["success"], fg="white",
-                                         font=FONTS["normal_bold"], width=14, relief="groove")
+                                         font=FONTS["small_bold"], padx=12, pady=4,
+                                         relief="flat")
         self.mode_status_lbl.pack(pady=4)
 
     def set_mode_sleep(self):
@@ -406,53 +668,62 @@ class MainGUI:
     # ═══════════════════════════════════════════════════════════════
 
     def _create_live_data_panel(self):
-        """Create Live Data Readout panel."""
-        self.live_data_frame = ttk.LabelFrame(self.right_panel, text="Live Data Readout")
+        """Create Live Data Readout panel with modern styling."""
+        self.live_data_frame = tk.Frame(self.right_panel, bg=COLORS["bg_section"], bd=1, relief="solid",
+                                        highlightbackground=COLORS["border"], highlightthickness=1)
         self.live_data_frame.pack(fill="x", padx=4, pady=4)
 
-        # Data ready status
-        drdy_frame = tk.Frame(self.live_data_frame, bg=COLORS["bg_main"])
-        drdy_frame.pack(fill="x", padx=4, pady=2)
-        tk.Label(drdy_frame, text="Status:", bg=COLORS["bg_main"],
+        tk.Label(self.live_data_frame, text="Live Data", font=FONTS["section_title"],
+                bg=COLORS["bg_section"], fg=COLORS["primary"]).pack(padx=8, pady=(6, 4))
+
+        # Data ready status - modern badge
+        drdy_frame = tk.Frame(self.live_data_frame, bg=COLORS["bg_section"])
+        drdy_frame.pack(fill="x", padx=8, pady=2)
+        tk.Label(drdy_frame, text="Status:", bg=COLORS["bg_section"],
                  font=FONTS["normal"]).pack(side="left")
-        self.drdy_lbl = tk.Label(drdy_frame, text="Waiting", bg=COLORS["warning"],
-                                 fg="white", font=FONTS["normal_bold"], width=12, relief="groove")
+        self.drdy_lbl = tk.Label(drdy_frame, text="● Waiting", bg=COLORS["warning"],
+                                 fg="white", font=FONTS["small_bold"], padx=8, pady=3,
+                                 relief="flat")
         self.drdy_lbl.pack(side="left", padx=4)
 
-        # RP_DATA display
-        rp_frame = tk.Frame(self.live_data_frame, bg=COLORS["bg_main"])
-        rp_frame.pack(fill="x", padx=4, pady=2)
-        tk.Label(rp_frame, text="RP_DATA:", bg=COLORS["bg_main"],
-                 font=FONTS["normal"]).pack(side="left")
+        # RP_DATA display - modern input style
+        rp_frame = tk.Frame(self.live_data_frame, bg=COLORS["bg_section"])
+        rp_frame.pack(fill="x", padx=8, pady=2)
+        tk.Label(rp_frame, text="RP_DATA:", bg=COLORS["bg_section"],
+                 font=FONTS["small"], fg=COLORS["text_secondary"]).pack(side="left")
         self.rp_data_lbl = tk.Label(rp_frame, text="0 / 0x0000", bg=COLORS["bg_white"],
-                                    font=FONTS["courier"], width=14, relief="sunken")
+                                    font=FONTS["courier"], padx=6, pady=3,
+                                    relief="flat")
         self.rp_data_lbl.pack(side="left", padx=4)
 
         # L_DATA display
-        l_frame = tk.Frame(self.live_data_frame, bg=COLORS["bg_main"])
-        l_frame.pack(fill="x", padx=4, pady=2)
-        tk.Label(l_frame, text="L_DATA:", bg=COLORS["bg_main"],
-                 font=FONTS["normal"]).pack(side="left")
+        l_frame = tk.Frame(self.live_data_frame, bg=COLORS["bg_section"])
+        l_frame.pack(fill="x", padx=8, pady=2)
+        tk.Label(l_frame, text="L_DATA:", bg=COLORS["bg_section"],
+                 font=FONTS["small"], fg=COLORS["text_secondary"]).pack(side="left")
         self.l_data_lbl = tk.Label(l_frame, text="0 / 0x0000", bg=COLORS["bg_white"],
-                                   font=FONTS["courier"], width=14, relief="sunken")
+                                   font=FONTS["courier"], padx=6, pady=3,
+                                   relief="flat")
         self.l_data_lbl.pack(side="left", padx=4)
 
         # LHR_DATA display
-        lhr_frame = tk.Frame(self.live_data_frame, bg=COLORS["bg_main"])
-        lhr_frame.pack(fill="x", padx=4, pady=2)
-        tk.Label(lhr_frame, text="LHR_DATA:", bg=COLORS["bg_main"],
-                 font=FONTS["normal"]).pack(side="left")
+        lhr_frame = tk.Frame(self.live_data_frame, bg=COLORS["bg_section"])
+        lhr_frame.pack(fill="x", padx=8, pady=2)
+        tk.Label(lhr_frame, text="LHR_DATA:", bg=COLORS["bg_section"],
+                 font=FONTS["small"], fg=COLORS["text_secondary"]).pack(side="left")
         self.lhr_data_lbl = tk.Label(lhr_frame, text="0 / 0x000000", bg=COLORS["bg_white"],
-                                     font=FONTS["courier"], width=14, relief="sunken")
+                                     font=FONTS["courier"], padx=6, pady=3,
+                                     relief="flat")
         self.lhr_data_lbl.pack(side="left", padx=4)
 
         # fSENSOR display (back-calculated)
-        fsensor_frame = tk.Frame(self.live_data_frame, bg=COLORS["bg_main"])
-        fsensor_frame.pack(fill="x", padx=4, pady=2)
-        tk.Label(fsensor_frame, text="fSENSOR:", bg=COLORS["bg_main"],
-                 font=FONTS["normal"]).pack(side="left")
+        fsensor_frame = tk.Frame(self.live_data_frame, bg=COLORS["bg_section"])
+        fsensor_frame.pack(fill="x", padx=8, pady=2)
+        tk.Label(fsensor_frame, text="fSENSOR:", bg=COLORS["bg_section"],
+                 font=FONTS["small"], fg=COLORS["text_secondary"]).pack(side="left")
         self.fsensor_lbl = tk.Label(fsensor_frame, text="0 Hz", bg=COLORS["bg_white"],
-                                    font=FONTS["courier"], width=14, relief="sunken")
+                                    font=FONTS["courier"], padx=6, pady=3,
+                                    relief="flat")
         self.fsensor_lbl.pack(side="left", padx=4)
 
         # Graph panel (Strip Chart)
@@ -463,18 +734,24 @@ class MainGUI:
     # ═══════════════════════════════════════════════════════════════
 
     def _create_graph_panel(self):
-        """Create Strip Chart Graph panel."""
-        graph_frame = ttk.LabelFrame(self.right_panel, text="RP/L Strip Chart")
+        """Create Strip Chart Graph panel with modern styling."""
+        graph_frame = tk.Frame(self.right_panel, bg=COLORS["bg_section"], bd=1, relief="solid",
+                               highlightbackground=COLORS["border"], highlightthickness=1)
         graph_frame.pack(fill="x", padx=4, pady=4)
 
-        # Start/Stop button
-        self.graph_start_stop_btn = tk.Button(graph_frame, text="Start Graph",
-                                               font=FONTS["normal"], width=14,
-                                               command=self.toggle_graph)
-        self.graph_start_stop_btn.pack(pady=2)
+        tk.Label(graph_frame, text="RP/L Strip Chart", font=FONTS["section_title"],
+                bg=COLORS["bg_section"], fg=COLORS["primary"]).pack(padx=8, pady=(6, 4))
 
-        # Matplotlib figure
-        self.graph_fig = Figure(figsize=(4, 2.5), dpi=100)
+        # Start/Stop button - modern style
+        self.graph_start_stop_btn = tk.Button(graph_frame, text="▶ Start Graph",
+                                               font=FONTS["small_bold"],
+                                               bg=COLORS["primary"], fg="white",
+                                               relief="flat", padx=12, pady=4,
+                                               command=self.toggle_graph)
+        self.graph_start_stop_btn.pack(pady=4)
+
+        # Matplotlib figure - slightly larger for better visibility
+        self.graph_fig = Figure(figsize=(4.5, 2.5), dpi=100)
         self.graph_ax = self.graph_fig.add_subplot(111)
         self.graph_ax.set_xlabel("Sample", fontsize=8)
         self.graph_ax.set_ylabel("Value", fontsize=8)
@@ -484,7 +761,7 @@ class MainGUI:
         self.graph_ax.set_ylim(0, 65535)
 
         self.graph_canvas = FigureCanvasTkAgg(self.graph_fig, master=graph_frame)
-        self.graph_canvas.get_tk_widget().pack(fill="x", padx=2, pady=2)
+        self.graph_canvas.get_tk_widget().pack(fill="x", padx=4, pady=4)
         self.graph_canvas.draw()
 
     def toggle_graph(self):
@@ -676,6 +953,10 @@ class MainGUI:
         if hasattr(self, 'lhr_ui'):
             self.lhr_ui.update_from_main_poll(lhr_status_val, lhr_data)
 
+        # Update RP+L page if it's visible
+        if hasattr(self, 'rpl_ui') and self.rpl_ui.winfo_ismapped():
+            self.rpl_ui.update_from_registers(self.reg_live_values)
+
         # Calculate fSENSOR
         if lhr_data > 0:
             # LHR mode: fSENSOR = (fCLKIN * SENSOR_DIV * LHR_DATA) / 2^24
@@ -718,6 +999,9 @@ class MainGUI:
 
     def _do_initial_load(self):
         """Perform initial load."""
+        # Initialize with Registers page selected
+        self._nav_click(self._show_register_map, "Registers")
+
         first_iid = f"reg_{REGISTERS[0]['address']}"
         self.tree.selection_set(first_iid)
         self.tree.focus(first_iid)
@@ -836,14 +1120,20 @@ class MainGUI:
             # No retry needed for mock ports
             self.is_connecting = True
             self.set_status(f"Connecting to {port}...")
-            self.conn_lbl.config(text="  CONNECTING...  ", bg=COLORS["warning"])
+            self.conn_badge.config(
+                text="● CONNECTING...",
+                bg=COLORS["warning"],
+                fg="#fff")
             threading.Thread(target=self._bg_connect, args=(port,), daemon=True).start()
             return
 
         # For real ports, allow retry on failure
         self.is_connecting = True
         self.set_status(f"Connecting to {port}...")
-        self.conn_lbl.config(text="  CONNECTING...  ", bg=COLORS["warning"])
+        self.conn_badge.config(
+            text="● CONNECTING...",
+            bg=COLORS["warning"],
+            fg="#fff")
 
         # Run connection in background thread to avoid UI freeze
         def _do_connect():
@@ -977,7 +1267,10 @@ class MainGUI:
         """Handle unexpected connection loss."""
         logger.warning("Connection lost - updating UI")
         self.ser_conn.connected = False
-        self.conn_lbl.config(text="  CONNECTION LOST  ", bg=COLORS["error"])
+        self.conn_badge.config(
+            text="⚠ CONNECTION LOST",
+            bg=COLORS["warning"],
+            fg="white")
         self.set_status("Connection lost. Please reconnect.", color="#ff6666")
         self.stop_live_data_polling()
         if hasattr(self, 'lhr_ui'):
@@ -991,7 +1284,10 @@ class MainGUI:
         self.is_connecting = False
 
         if success:
-            self.conn_lbl.config(text="  LDC1101 detected ✓  ", bg=COLORS["success"])
+            self.conn_badge.config(
+                text="● CONNECTED",
+                bg=COLORS["success"],
+                fg="white")
             self.set_status(f"Connected to {port} - LDC1101 detected")
             if chip_id is not None:
                 self.reg_live_values[0x3F] = chip_id
@@ -1016,10 +1312,16 @@ class MainGUI:
             if hasattr(self, 'apps_calc_ui'):
                 self.apps_calc_ui.set_connection_status(False)
             if chip_id is not None:
-                self.conn_lbl.config(text="  Device not recognized  ", bg=COLORS["error"])
+                self.conn_badge.config(
+                    text="⚠ DEVICE NOT RECOGNIZED",
+                    bg=COLORS["warning"],
+                    fg="white")
                 self.set_status(f"Device not recognized (CHIP_ID=0x{chip_id:02X})")
             else:
-                self.conn_lbl.config(text="  NOT CONNECTED  ", bg=COLORS["error"])
+                self.conn_badge.config(
+                    text="○ NOT CONNECTED",
+                    bg=COLORS["error"],
+                    fg="white")
                 msg = f"Connection failed on {port}"
                 if error_msg:
                     msg += f" - {error_msg}"
@@ -1046,24 +1348,17 @@ class MainGUI:
                     break
 
     def on_selection_change(self):
-        """Handle sidebar selection change."""
+        """Handle sidebar selection change (legacy - kept for compatibility)."""
         sel = self.sel_var.get()
+        # Map old selection to new navigation
         if sel == "Apps Calculator":
-            self.center.pack_forget()
-            self.right_panel.pack_forget()
-            self.lhr_ui.get_frame().pack_forget()
-            self.apps_calc_ui.get_frame().pack(fill="both", expand=True)
+            self._show_apps_calc()
         elif sel == "LHR":
-            self.center.pack_forget()
-            self.right_panel.pack_forget()
-            self.apps_calc_ui.get_frame().pack_forget()
-            self.lhr_ui._sync_config_with_registers()
-            self.lhr_ui.get_frame().pack(fill="both", expand=True)
+            self._show_lhr()
+        elif sel == "RP+L":
+            self._show_rpl()
         else:
-            self.apps_calc_ui.get_frame().pack_forget()
-            self.lhr_ui.get_frame().pack_forget()
-            self.center.pack(side="left", fill="both", expand=True, padx=(0, 4))
-            self.right_panel.pack(side="right", fill="y")
+            self._show_register_map()
 
     def on_tree_select(self, event):
         """Handle tree selection."""
@@ -1123,6 +1418,14 @@ class MainGUI:
     def update_bit_panel(self, reg, value):
         """Update bit panel."""
         self.addr_var.set(str(reg["address"]))
+
+        # Clear all bit labels first
+        for i in range(8):
+            self.bit_lbl_wgts[i].config(text="")
+            self.bit_vars[i].set(False)
+            self.bit_cb_wgts[i].config(state="normal")
+
+        # Update with register's field info
         for i, field in enumerate(reg["fields"]):
             bit_num = field["bit"]
             bit_on = bool((value >> bit_num) & 1)

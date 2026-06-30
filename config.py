@@ -2,65 +2,177 @@
 #  CONFIGURATION - Colors, Fonts, Constants
 # ═══════════════════════════════════════════════════════════════
 
-# Colors
+# Modern Professional Engineering Color Palette
 COLORS = {
-    "bg_main": "#f0f0f0",
-    "bg_dark": "#1f3864",
-    "bg_white": "white",
-    "bg_header": "#dce6f1",
-    "bg_even": "white",
-    "bg_odd": "#f5f8ff",
-    "bg_group": "#dce6f1",
-    "bg_top_bar": "#e8e8e8",
-    "fg_normal": "black",
-    "fg_bold": "#1f3864",
-    "fg_white": "white",
-    "fg_gray": "#888888",
-    "fg_light_gray": "#aaaaaa",
-    "fg_label": "#333333",
-    "accent_blue": "#0078d7",
-    "accent": "#0078d7",
-    "success": "#107c10",
-    "error": "#cc0000",
-    "warning": "#ff4444",
-    "ti_red": "#c8102e",
-    "border": "#cccccc",
+    # Primary Colors
+    "primary":          "#1A73E8",
+    "primary_dark":     "#1557B0",
+    "primary_light":    "#4A90E2",
+
+    # Accent Colors
+    "accent":           "#1A73E8",
+    "accent_hover":     "#1557B0",
+    "accent_light":     "#E8F0FE",
+    "accent_blue":      "#34A853",
+
+    # Status Colors
+    "success":          "#34A853",
+    "success_bg":       "#E6F4EA",
+    "success_light":    "#1E8E3E",
+    "warning":          "#FBBC04",
+    "warning_bg":       "#FEF7E0",
+    "warning_light":    "#F9A825",
+    "error":            "#EA4335",
+    "error_bg":         "#FCE8E6",
+    "error_light":      "#D93025",
+    "info":             "#1A73E8",
+    "info_bg":          "#E8F0FE",
+
+    # Background Colors
+    "bg_main":          "#FFFFFF",
+    "bg_white":         "#F5F7FA",
+    "bg_section":       "#F5F7FA",
+    "bg_card":          "#FFFFFF",
+    "bg_input":         "#FFFFFF",
+    "bg_output":        "#F5F7FA",
+    "bg_hover":         "#E8F0FE",
+
+    # Text Colors
+    "text_primary":     "#212121",
+    "text_secondary":   "#5F6368",
+    "text_muted":       "#757575",
+    "text_on_primary":  "#FFFFFF",
+
+    # Border Colors
+    "border":           "#DADCE0",
+    "border_focus":     "#1A73E8",
+    "border_hover":     "#B9B9B9",
+
+    # LED/Status Indicator Colors
+    "led_green":        "#34A853",
+    "led_red":          "#EA4335",
+    "led_amber":        "#FBBC04",
+    "led_inactive":     "#DADCE0",
+
+    # Legacy keys — required for compatibility, do not remove
+    "bg_dark":          "#F5F7FA",
+    "bg_header":        "#E8F0FE",
+    "bg_even":          "#FFFFFF",
+    "bg_odd":           "#F5F7FA",
+    "bg_group":         "#F5F7FA",
+    "bg_top_bar":       "#E8F0FE",
+    "fg_normal":        "#212121",
+    "fg_bold":          "#1A73E8",
+    "fg_white":         "#FFFFFF",
+    "fg_gray":          "#5F6368",
+    "fg_light_gray":    "#757575",
+    "fg_label":         "#212121",
+    "ti_red":           "#EA4335",
+    "header":           "#1A73E8",
+    "header_text":      "#FFFFFF",
 }
 
-# Fonts
+# Modern Typography System - 2026 Engineering Tool Standards
 FONTS = {
-    "title": ("Arial", 18, "bold"),
-    "heading": ("Arial", 9, "bold"),
-    "normal": ("Arial", 9),
-    "normal_bold": ("Arial", 9, "bold"),
-    "courier": ("Courier New", 10),
-    "small": ("Arial", 8),
-    "small_bold": ("Arial", 8, "bold"),
-    "tiny_italic": ("Arial", 7, "italic"),
+    # Page Titles - 20px Bold
+    "page_title":       ("Segoe UI", 20, "bold"),
+
+    # Section Headers - 14-16px Bold
+    "section_title":    ("Segoe UI", 14, "bold"),
+    "section_subtitle": ("Segoe UI", 12, "bold"),
+
+    # Labels - 11-12px Regular
+    "label":            ("Segoe UI", 11),
+    "label_bold":       ("Segoe UI", 11, "bold"),
+    "label_small":      ("Segoe UI", 10),
+
+    # Measurement Values - 18-24px Bold - KPI Display
+    "value":           ("Consolas", 14, "bold"),
+    "value_lg":        ("Consolas", 18, "bold"),
+    "value_xl":        ("Consolas", 24, "bold"),
+
+    # KPI Display - Large prominent values
+    "kpi_value":       ("Consolas", 22, "bold"),
+    "kpi_label":       ("Segoe UI", 10, "bold"),
+    "kpi_unit":        ("Segoe UI", 10),
+
+    # Navigation
+    "nav_item":        ("Segoe UI", 11, "bold"),
+    "nav_item_small":  ("Segoe UI", 10),
+
+    # General
+    "normal":          ("Segoe UI", 11),
+    "normal_bold":     ("Segoe UI", 11, "bold"),
+    "small":           ("Segoe UI", 10),
+    "small_bold":      ("Segoe UI", 10, "bold"),
+    "mono":            ("Consolas", 11),
+    "courier":         ("Consolas", 10),
+    "tiny_italic":     ("Segoe UI", 9, "italic"),
+
+    # Legacy keys
+    "title":           ("Segoe UI", 18, "bold"),
+    "heading":         ("Segoe UI", 12, "bold"),
+    "heading_bold":    ("Segoe UI", 12, "bold"),
+}
+
+# Spacing System (8px base) - Professional spacing
+SPACING = {
+    "xs":   4,      # Extra small - 4px
+    "sm":   8,      # Small - 8px
+    "md":   16,     # Medium - 16px
+    "lg":   24,     # Large - 24px
+    "xl":   32,     # Extra large - 32px
+    "xxl":  48,     # Extra extra large - 48px
+}
+
+# Corner Radius - Modern rounded corners
+RADIUS = {
+    "sm":   4,      # Small - 4px
+    "md":   6,      # Medium - 6px
+    "lg":   8,      # Large - 8px
+    "xl":   12,     # Extra large - 12px
+}
+
+# Shadow definitions for cards
+SHADOWS = {
+    "sm": "0 1px 2px rgba(0,0,0,0.05)",
+    "md": "0 2px 4px rgba(0,0,0,0.1)",
+    "lg": "0 4px 8px rgba(0,0,0,0.15)",
 }
 
 # Version
-VERSION = "1.0.0.7"
+VERSION = "1.0.0.8"
+
+# Navigation Icons (Engineering tool style)
+NAV_ICONS = {
+    "RP+L": "📈",
+    "LHR": "📊",
+    "Apps Calc": "🧮",
+    "Registers": "⚙",
+    "About": "ℹ"
+}
 
 # Window settings
-WINDOW_WIDTH = 1280
-WINDOW_HEIGHT = 780
+WINDOW_WIDTH = 1400
+WINDOW_HEIGHT = 1100
 WINDOW_TITLE = "Eddy Current Displacement Measurement"
 
 # Table column widths
-TABLE_COL_WIDTHS = [170, 70, 70, 50, 45, 70, 70]
+TABLE_COL_WIDTHS = [200, 80, 80, 60, 55, 80, 80]
 TABLE_COLUMNS = (
     "Block / Register Name", "Address", "Default", "Mode", "Size", "LW*", "LR*"
 )
 
-# Sidebar items
+# Sidebar items with icons (modern engineering tool style)
 SIDEBAR_ITEMS = [
-    "LHR",
-    "Apps Calculator",
-    "Register Configuration",
-    "About"
+    ("RP+L", "📈"),
+    ("LHR", "📊"),
+    ("Apps Calc", "🧮"),
+    ("Registers", "⚙"),
+    ("About", "ℹ"),
 ]
-DEFAULT_SIDEBAR = "Register Configuration"
+SIDEBAR_LABELS = ["RP+L", "LHR", "Apps Calc", "Registers", "About"]
+DEFAULT_SIDEBAR = "Registers"
 
 # Menu bar
 MENU_ITEMS = ["File", "Script", "Debug", "Help"]
@@ -97,11 +209,11 @@ def setup_logging():
             logging.StreamHandler()
         ]
     )
-    
+
     # Suppress verbose third-party debug logs
     logging.getLogger("matplotlib").setLevel(logging.WARNING)
     logging.getLogger("PIL").setLevel(logging.WARNING)
-    
+
     return logging.getLogger("LDC1101_GUI")
 
 logger = setup_logging()
